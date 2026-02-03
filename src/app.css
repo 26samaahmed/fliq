@@ -3,3 +3,15 @@
 
 /* 2. Then load Tailwind */
 @import "tailwindcss";
+
+.font-aldrich {
+  font-family: 'Aldrich', sans-serif;
+}
+
+.font-arimo {
+  font-family: 'Arimo', sans-serif;
+}
+
+.font-aclonica {
+  font-family: 'Aclonica', sans-serif;
+}
