@@ -3,6 +3,10 @@
   import Footer from '$lib/components/footer/Footer.svelte';
   import BackorNext from '$lib/components/buttons/BackorNext.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
+
+  import Choice from '$lib/components/buttons/Choice.svelte';
+  import one_user_icon from '$lib/assets/one-user-icon.svg';
+  import two_users_icon from '$lib/assets/two-users-icon.svg';
 </script>
 
 <main class="bg-[#333745] min-h-screen p-6">
@@ -15,7 +19,16 @@
   <ProgressBar />
 
   <!-- page content -->
-  <div class="mt-16 flex justify-center gap-24">
+  <div class="mt-16 flex justify-center gap-64">
+    <div class="flex flex-col items-center gap-4">
+      <img src="{one_user_icon}" alt="One User Icon" class="h-full w-full" />
+      <Choice name="1 User"/>
+    </div>
+
+    <div class="flex flex-col items-center gap-4">
+      <img src="{two_users_icon}" alt="Two Users Icon" class="h-full w-full" />
+      <Choice name="2 Users"/>
+    </div>  
   </div>
 
   <div class="flex justify-center mt-20">
