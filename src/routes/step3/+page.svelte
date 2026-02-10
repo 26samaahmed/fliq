@@ -9,17 +9,17 @@
           {
             name: 'pattern',
             color: '#D38A8A',
-            page_ref: '/'
+            page_ref: '/step3/pattern/option1'
           },
           {
             name: 'color',
             color: '#89CDEF',
-            page_ref: '/'
+            page_ref: '/step3/pattern/option1'
           },
           {
             name: 'character',
             color: '#ABCF93',
-            page_ref: '/'
+            page_ref: '/step3/pattern/option1'
           },
   ]
   </script>
