@@ -14,9 +14,10 @@ async function getUserMedia() {
       audio: false,
     });
     video.srcObject = stream;
-    video.play();
+    await video.play();
   } catch (err) {
-    console.log(`Error: ${err}`);
+    console.error('Webcam error:', err);
+    alert(`Could not access webcam: ${err.message}`);
   }
 }
 
