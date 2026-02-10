@@ -36,7 +36,7 @@
   
   {#each frame_styles as frame}
     <a href="{frame.page_ref}" class="flex not-[]:items-center">
-      <div class="w-60 h-70 rounded-lg flex items-center justify-center" style="background-color: {frame.color};">
+      <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
       <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
     </div>
   </a>
