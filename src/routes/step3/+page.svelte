@@ -45,7 +45,6 @@
   </div>
   <div class="flex justify-center mt-10 gap-6">
     <BackorNext href="/step2" name="Back" />
-    <BackorNext href="/step4" name="Next" />
   </div>
   <Footer />
 </main>
