@@ -32,12 +32,14 @@
   <ProgressBar />
 
   <!-- page content -->
-  <div class="mt-16 flex justify-center gap-24">
+  <div class="mt-16 flex justify-center gap-5">
   
   {#each frame_styles as frame}
-    <div class="flex flex-col gap-3 items-center">
+    <a href="{frame.page_ref}" class="flex not-[]:items-center">
+      <div class="w-60 h-70 rounded-lg flex items-center justify-center" style="background-color: {frame.color};">
       <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
     </div>
+  </a>
   {/each}
 
   </div>
