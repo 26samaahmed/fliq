@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex items-center justify-between mb-8">
-  <p class="font-aclonica text-5xl text-[#FE5F56]">fliq.</p>
+  <a href="/" class="font-aclonica text-5xl text-[#FE5F56]">fliq.</a>
 
   <div class="flex items-center gap-12">
     
