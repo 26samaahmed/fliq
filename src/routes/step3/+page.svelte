@@ -3,7 +3,26 @@
 	import Footer from '$lib/components/footer/Footer.svelte';
   import BackorNext from '$lib/components/buttons/BackorNext.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
-</script>
+  import Choice from '$lib/components/buttons/Choice.svelte';
+
+  const frame_styles = [
+          {
+            name: 'pattern',
+            color: '#D38A8A',
+            page_ref: '/'
+          },
+          {
+            name: 'color',
+            color: '#89CDEF',
+            page_ref: '/'
+          },
+          {
+            name: 'character',
+            color: '#ABCF93',
+            page_ref: '/'
+          },
+  ]
+  </script>
 
 
 <main class="bg-[#333745] min-h-screen p-6">
@@ -14,8 +33,14 @@
 
   <!-- page content -->
   <div class="mt-16 flex justify-center gap-24">
-  </div>
+  
+  {#each frame_styles as frame}
+    <div class="flex flex-col gap-3 items-center">
+      <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
+    </div>
+  {/each}
 
+  </div>
   <div class="flex justify-center mt-10 gap-6">
     <BackorNext href="/step2" name="Back" />
     <BackorNext href="/step4" name="Next" />
