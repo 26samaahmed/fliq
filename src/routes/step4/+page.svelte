@@ -1,7 +1,6 @@
 <script>
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
-  import BackorNext from '$lib/components/buttons/BackorNext.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
 </script>
 
@@ -17,9 +16,5 @@
   </div>
 
 
-  <div class="flex justify-center mt-10 gap-6">
-    <BackorNext href="/step3" name="Back" />
-    <BackorNext href="/" name="Next" />
-  </div>
   <Footer />
 </main>

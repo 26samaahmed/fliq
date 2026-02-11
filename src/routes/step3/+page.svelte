@@ -1,7 +1,6 @@
 <script>
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
-  import BackorNext from '$lib/components/buttons/BackorNext.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
   import Choice from '$lib/components/buttons/Choice.svelte';
 
@@ -34,17 +33,14 @@
   <!-- page content -->
   <div class="mt-16 flex justify-center gap-5">
   
-  {#each frame_styles as frame}
-    <a href="{frame.page_ref}" class="flex not-[]:items-center">
-      <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
-      <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
-    </div>
-  </a>
-  {/each}
+    {#each frame_styles as frame}
+      <a href={frame.page_ref} class="flex not-[]:items-center">
+        <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
+        <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
+      </div>
+    </a>
+    {/each}
+  </div>
 
-  </div>
-  <div class="flex justify-center mt-10 gap-6">
-    <BackorNext href="/step2" name="Back" />
-  </div>
   <Footer />
 </main>

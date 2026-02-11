@@ -1,10 +1,9 @@
 <script>
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
-  import BackorNext from '$lib/components/buttons/BackorNext.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
-
   import Choice from '$lib/components/buttons/Choice.svelte';
+
   import one_user_icon from '$lib/assets/one-user-icon.svg';
   import two_users_icon from '$lib/assets/two-users-icon.svg';
 </script>
@@ -22,17 +21,13 @@
   <div class="mt-16 flex justify-center gap-64">
     <div class="flex flex-col items-center gap-4">
       <img src="{one_user_icon}" alt="One User Icon" class="h-full w-full" />
-      <Choice name="1 User"/>
+      <Choice name="1 User" href="/step2"/>
     </div>
 
     <div class="flex flex-col items-center gap-4">
       <img src="{two_users_icon}" alt="Two Users Icon" class="h-full w-full" />
-      <Choice name="2 Users"/>
+      <Choice name="2 Users" href="/step2"/>
     </div>  
-  </div>
-
-  <div class="flex justify-center mt-20">
-    <BackorNext href="/step2" name="Next" />
   </div>
 
   <Footer />
