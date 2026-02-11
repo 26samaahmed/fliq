@@ -7,7 +7,7 @@
 
 <main class="bg-[#333745] min-h-screen p-6">
   <Header />
-  <h1 class="font-aldrich text-4xl text-white text-center">Step 4: Choose Your Side</h1>
+  <h1 class="font-aldrich text-3xl text-white text-center">Step 4: Choose Your Side</h1>
 
   <ProgressBar />
 

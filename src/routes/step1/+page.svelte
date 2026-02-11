@@ -11,7 +11,7 @@
 <main class="bg-[#333745] min-h-screen p-6">
   <Header />
 
-  <h1 class="font-aldrich text-4xl text-white text-center">
+  <h1 class="font-aldrich text-3xl text-white text-center">
     Step 1: Number of Users
   </h1>
 
