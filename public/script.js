@@ -57,3 +57,28 @@ function addVideoStream(video, stream) {
     })
     videoGrid.append(video)
 }
+
+// Photo booth
+const canvas = document.getElementById('canvas')
+const photosDiv = document.getElementById('photos')
+
+document.getElementById('photo-button').addEventListener('click', () => {
+    socket.emit('take-photo')
+})
+
+document.getElementById('clear-button').addEventListener('click', () => {
+    photosDiv.innerHTML = ''
+})
+
+socket.on('take-photo', () => {
+    const videos = videoGrid.querySelectorAll('video')
+    const ctx = canvas.getContext('2d')
+    videos.forEach(video => {
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        ctx.drawImage(video, 0, 0)
+        const img = document.createElement('img')
+        img.src = canvas.toDataURL('image/png')
+        photosDiv.appendChild(img)
+    })
+})
