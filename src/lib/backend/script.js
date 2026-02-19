@@ -1,64 +1,85 @@
-const video = /** @type {HTMLVideoElement} */ (document.getElementById('video'));
-const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('canvas'));
-const photos = /** @type {HTMLElement} */ (document.getElementById('photos'));
-const photoButton = /** @type {HTMLButtonElement} */ (document.getElementById('photo-button'));
-const clearButton = /** @type {HTMLButtonElement} */ (document.getElementById('clear-button'));
-let width = 700,
-  height = 0,
-  streaming = false;
+// @ts-nocheck
+const socket = io('/')
+const videoGrid = document.getElementById('video-grid')
+const myPeer =  new Peer(undefined, {
+    host: '/',
+    port: '3001'
+})
+const myVideo = document.createElement('video')
+myVideo.muted = true
+const peers = {}
 
-async function getUserMedia() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false,
-    });
-    video.srcObject = stream;
-    await video.play();
-  } catch (err) {
-    console.error('Webcam error:', err);
-    alert(`Could not access webcam: ${err.message}`);
-  }
+
+navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: false
+}).then(stream => {
+    addVideoStream(myVideo, stream)
+
+    myPeer.on('call', call => {
+        call.answer(stream)
+        const video = document.createElement('video')
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream)
+        })
+    })
+
+    socket.on('user-connected', userID => {
+        connectToNewUser(userID, stream)
+    })
+})
+
+socket.on('user-disconnected', userID =>{
+    if (peers[userID]) { peers[userID].close() }
+})
+
+myPeer.on('open', id => {
+    socket.emit('join-room', ROOM_ID, id)
+})
+
+function connectToNewUser(userID, stream) {
+    const call = myPeer.call(userID, stream)
+    const video = document.createElement('video')
+    call.on('stream', userVideoStream => {
+        addVideoStream(video, userVideoStream)
+    })
+    call.on('close', () => {
+        video.remove()
+    })
+
+    peers[userID] = call
 }
 
-function streamVideo() {
-  if (!streaming) {
-    // Set video / canvas height
-    height = video.videoHeight / (video.videoWidth / width);
-    video.setAttribute('width', String(width));
-    video.setAttribute('height', String(height));
-    canvas.setAttribute('width', String(width));
-    canvas.setAttribute('height', String(height));
-    streaming = true;
-  }
+
+function addVideoStream(video, stream) {
+    video.srcObject = stream
+    video.addEventListener('loadedmetadata', () => {
+        video.play()
+    })
+    videoGrid.append(video)
 }
 
-function clear() {
-  // Clear photos
-  photos.innerHTML = '';
-}
+// Photo booth
+const canvas = document.getElementById('canvas')
+const photosDiv = document.getElementById('photos')
 
-function takePicture() {
-  // Create canvas
-  const context = canvas.getContext('2d');
-  if (width && height && context) {
-    // set canvas props
-    canvas.width = width;
-    canvas.height = height;
-    // Draw an image of the video on the canvas
-    context.drawImage(video, 0, 0, width, height);
-    // Create image from the canvas
-    const imgUrl = canvas.toDataURL('image/png');
-    // Create img element
-    const img = document.createElement('img');
-    // Set img src
-    img.setAttribute('src', imgUrl);
-    // Add image to photos
-    photos.appendChild(img);
-  }
-}
+document.getElementById('photo-button').addEventListener('click', () => {
+    socket.emit('take-photo')
+})
 
-document.addEventListener('DOMContentLoaded', getUserMedia);
-video.addEventListener('canplay', streamVideo);
-photoButton.addEventListener('click', takePicture);
-clearButton.addEventListener('click', clear);
+document.getElementById('clear-button').addEventListener('click', () => {
+    photosDiv.innerHTML = ''
+})
+
+socket.on('take-photo', () => {
+    const videos = videoGrid.querySelectorAll('video')
+    const ctx = canvas.getContext('2d')
+    videos.forEach(video => {
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        ctx.drawImage(video, 0, 0)
+        const img = document.createElement('img')
+        img.src = canvas.toDataURL('image/png')
+        photosDiv.appendChild(img)
+    })
+})
