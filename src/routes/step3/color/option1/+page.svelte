@@ -8,7 +8,7 @@
   
   <main class="bg-[#333745] min-h-screen p-6">
     <Header />
-    <h1 class="font-aldrich text-4xl text-white text-center">Step 3: Pick Strip Style</h1>
+    <h1 class="font-aldrich text-2xl text-white text-center">Step 3: Pick Strip Style</h1>
   
     <ProgressBar />
   
