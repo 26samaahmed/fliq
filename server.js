@@ -5,10 +5,15 @@ import { v4 as uuidV4 } from 'uuid';
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allows any device to connect
+    methods: ["GET", "POST"]
+  }
+});
 
 app.set('view engine', 'ejs')
-app.use(express.static('src/lib/backend'))
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
@@ -23,16 +28,14 @@ io.on('connection', socket => {
         socket.join(roomID)
         socket.to(roomID).emit('user-connected', userID)
 
-        socket.on('take-photo', () => {
-            io.in(roomID).emit('take-photo')
-        })
-
         socket.on('disconnect', () => {
             socket.to(roomID).emit('user-disconnected', userID)
         })
     })
 })
 
-server.listen(3000, () => {
-    console.log('Listening on port 3000')
-})
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+});
