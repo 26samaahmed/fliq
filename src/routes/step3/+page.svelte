@@ -24,22 +24,24 @@
   </script>
 
 
-<main class="bg-[#333745] min-h-screen p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
-  <h1 class="font-aldrich text-2xl text-white text-center">Step 3: Pick Strip Style</h1>
+  <div class="flex-1">
+    <h1 class="font-aldrich text-2xl text-white text-center">Step 3: Pick Strip Style</h1>
 
-  <ProgressBar />
+    <ProgressBar />
 
-  <!-- page content -->
-  <div class="mt-16 flex justify-center gap-5">
-  
-    {#each frame_styles as frame}
-      <a href={frame.page_ref} class="flex not-[]:items-center">
-        <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
-        <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
-      </div>
-    </a>
-    {/each}
+    <!-- page content -->
+    <div class="mt-16 flex justify-center gap-5">
+    
+      {#each frame_styles as frame}
+        <a href={frame.page_ref} class="flex not-[]:items-center">
+          <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
+          <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
+        </div>
+      </a>
+      {/each}
+    </div>
   </div>
 
   <Footer />

@@ -5,7 +5,7 @@
 
 <div class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
-  <div class="text-center mt-20">
+  <div class="text-center mt-20 flex-1">
     <h1 class="font-aldrich text-4xl text-white">Join Us!</h1>
     <p class="font-arimo text-xl text-[#E8F1F2] mt-5 w-230 mx-auto">[need to put text here] </p>
 

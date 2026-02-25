@@ -37,25 +37,27 @@
 </script>
 
 
-<main class="bg-[#333745] min-h-screen p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
-  <h1 class="font-aldrich text-2xl text-white text-center">Step 2: Choose the Layout</h1>
+  <div class="flex-1">
+    <h1 class="font-aldrich text-2xl text-white text-center">Step 2: Choose the Layout</h1>
 
-  <ProgressBar />
+    <ProgressBar />
 
-  <!-- page content -->
-  <div class="mt-16 flex flex-row justify-center gap-20">
+    <!-- page content -->
+    <div class="mt-16 flex flex-row justify-center gap-20">
 
-    {#each layouts as layout}
-      <div class="flex flex-col gap-2 items-center">
-        <img src={layout.image} alt={layout.name} class="w-auto h-auto shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" />
-        <p class="font-aldrich text-xl text-white text-center">{layout.size}</p>
-        <p class="font-aldrich text-xl text-white text-center">{layout.photos}</p>
-        <Choice href="/step3" name="Choose" />
-      </div>
-    {/each}
+      {#each layouts as layout}
+        <div class="flex flex-col gap-2 items-center">
+          <img src={layout.image} alt={layout.name} class="w-auto h-auto shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" />
+          <p class="font-aldrich text-xl text-white text-center">{layout.size}</p>
+          <p class="font-aldrich text-xl text-white text-center">{layout.photos}</p>
+          <Choice href="/step3" name="Choose" />
+        </div>
+      {/each}
 
-    <!--Add if statement to add shareable link if the user clicked on 2 users in step 1-->
+      <!--Add if statement to add shareable link if the user clicked on 2 users in step 1-->
+    </div>
   </div>
 
   <Footer />
