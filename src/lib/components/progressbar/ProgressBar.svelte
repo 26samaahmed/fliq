@@ -9,11 +9,11 @@
 </script>
 
 {#if currentStep() > 0}
-  <div class="max-w-2xl mx-auto mt-6">
+  <div class="max-w-2xl mx-auto mt-4 sm:mt-6">
     <div class="flex gap-2">
       {#each steps as _, i}
         <div
-          class="flex-1 h-3 transition-colors duration-300"
+          class="flex-1 h-2 sm:h-3 transition-colors duration-300"
           class:bg-[#9AFFB0]={i + 1 <= currentStep()}
           class:bg-[#EAEED6]={i + 1 > currentStep()}
           class:rounded-l-full={i === 0}

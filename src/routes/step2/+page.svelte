@@ -1,6 +1,7 @@
 <script>
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
+  import BackButton from '$lib/components/buttons/Back.svelte';
   import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
   import Choice from '$lib/components/buttons/Choice.svelte';
   import layout1 from '$lib/assets/layout1.svg';
@@ -39,6 +40,11 @@
 
 <main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
+
+  <div class="mb-4">
+    <BackButton href="/step1" />
+  </div>
+
   <div class="flex-1">
     <h1 class="font-aldrich text-2xl text-white text-center">Step 2: Choose the Layout</h1>
 
