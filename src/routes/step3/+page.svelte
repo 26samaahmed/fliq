@@ -33,17 +33,17 @@
   </div>
 
   <div class="flex-1">
-    <h1 class="font-aldrich text-2xl text-white text-center">Step 3: Pick Strip Style</h1>
+    <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center">Step 3: Pick Strip Style</h1>
 
     <ProgressBar />
 
     <!-- page content -->
-    <div class="mt-16 flex justify-center gap-5">
+    <div class="mt-16 flex flex-wrap sm:flex-row justify-center gap-5">
     
       {#each frame_styles as frame}
         <a href={frame.page_ref} class="flex not-[]:items-center">
-          <div class="w-60 h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
-          <p class="font-aldrich text-2xl text-white text-center">{frame.name}</p>
+          <div class="w-32 h-36 sm:w-60 sm:h-70 rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" style="background-color: {frame.color};">
+          <p class="font-aldrich text-lg sm:text-2xl text-white text-center">{frame.name}</p>
         </div>
       </a>
       {/each}

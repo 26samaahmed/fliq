@@ -46,18 +46,18 @@
   </div>
 
   <div class="flex-1">
-    <h1 class="font-aldrich text-2xl text-white text-center">Step 2: Choose the Layout</h1>
+    <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center">Step 2: Choose the Layout</h1>
 
     <ProgressBar />
 
     <!-- page content -->
-    <div class="mt-16 flex flex-row justify-center gap-20">
+    <div class="mt-16 flex flex-row flex-wrap justify-center gap-20">
 
       {#each layouts as layout}
-        <div class="flex flex-col gap-2 items-center">
+        <div class="flex flex-col gap1 sm:gap-2 items-center">
           <img src={layout.image} alt={layout.name} class="w-auto h-auto shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" />
-          <p class="font-aldrich text-xl text-white text-center">{layout.size}</p>
-          <p class="font-aldrich text-xl text-white text-center">{layout.photos}</p>
+          <p class="font-aldrich text-base sm:text-xl text-white text-center">{layout.size}</p>
+          <p class="font-aldrich text-base sm:text-xl text-white text-center">{layout.photos}</p>
           <Choice href="/step3" name="Choose" />
         </div>
       {/each}

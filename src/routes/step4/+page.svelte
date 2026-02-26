@@ -14,7 +14,7 @@
   </div>
 
   <div class="flex-1">
-    <h1 class="font-aldrich text-2xl text-white text-center">Step 4: Choose Your Side</h1>
+    <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center">Step 4: Choose Your Side</h1>
 
     <ProgressBar />
 
