@@ -2,8 +2,12 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
 const myPeer =  new Peer(undefined, {
-    host: '/',
-    port: '3001'
+    config: {
+        'iceServers': [
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun2.l.google.com:19302' },
+        ]
+    }
 })
 const myVideo = document.createElement('video')
 myVideo.muted = true
