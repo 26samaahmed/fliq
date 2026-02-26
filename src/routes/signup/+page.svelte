@@ -6,8 +6,8 @@
 <div class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
   <div class="text-center mt-20 flex-1">
-    <h1 class="font-aldrich text-4xl text-white">Sign Up for Fliq.</h1>
-    <p class="font-arimo text-xl text-[#E8F1F2] mt-5 w-230 mx-auto">Create a free account or <span class="underline text-[#DCDFF5] cursor-pointer">log in</span>.</p>
+    <h1 class="font-aldrich text-2xl sm:text-4xl text-white">Sign Up for Fliq.</h1>
+    <p class="font-arimo text-xl text-[#E8F1F2] mt-5 max-w-4xl mx-auto">Create a free account or <span class="underline text-[#DCDFF5] cursor-pointer"><a href="/login">log in</a></span>.</p>
 
     <form class="mt-10 flex flex-col items-center gap-6 text-white">
       <input type="text" placeholder="Name" class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5]" />
