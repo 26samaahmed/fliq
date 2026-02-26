@@ -29,7 +29,9 @@ navigator.mediaDevices.getUserMedia({
     })
 
     socket.on('user-connected', userID => {
-        connectToNewUser(userID, stream)
+        setTimeout(() => {
+            connectToNewUser(userID, stream)
+        }, 1000)
     })
 })
 
@@ -57,6 +59,9 @@ function connectToNewUser(userID, stream) {
 
 function addVideoStream(video, stream) {
     video.srcObject = stream
+    video.setAttribute('autoplay', '')
+    video.setAttribute('playsinline', '')
+    video.muted = true
     video.addEventListener('loadedmetadata', () => {
         video.play()
     })
