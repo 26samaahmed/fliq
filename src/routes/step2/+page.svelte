@@ -58,7 +58,7 @@
           <img src={layout.image} alt={layout.name} class="w-auto h-auto shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 mb-2" />
           <p class="font-aldrich text-base sm:text-xl text-white text-center">{layout.size}</p>
           <p class="font-aldrich text-base sm:text-xl text-white text-center">{layout.photos}</p>
-          <Choice href="/step3" name="Choose" />
+          <!--<Choice href="/step3" name="Choose" />-->
         </div>
       {/each}
 
