@@ -9,19 +9,26 @@
 <main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
-  <div class="mb-4">
-    <BackButton />
-  </div>
+  <div class="mt-4">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
+      <BackButton />
 
-  <div class="flex-1">
-    <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center">Step 4: Choose Your Side</h1>
+      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+        Step 4: Choose your side
+      </h1>
+
+      <div class="w-16"></div>
+    </div>
 
     <ProgressBar />
+  </div>
 
     <!-- page content -->
-    <div class="mt-16 flex justify-center gap-24">
+    <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
+      <div class="flex flex-row flex-wrap justify-center gap-10 sm:gap-16">
+    
+      </div>
     </div>
-  </div>
 
   <Footer />
 </main>

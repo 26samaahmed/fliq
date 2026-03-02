@@ -11,7 +11,7 @@
   const layouts = [
     { name: 'Layout 1', size: '2 x 6', photos: '3 Photo', image: layout1 },
     { name: 'Layout 2', size: '2 x 6', photos: '4 Photo', image: layout2 },
-    { name: 'Layout 3', size: '4 x 6', photos: '6 Photo', image: layout3 },
+    { name: 'Layout 3', size: '4 x 6', photos: '4 Photo', image: layout3 },
     { name: 'Layout 4', size: '4 x 6', photos: '4 Photo', image: layout4 }
   ];
 </script>
@@ -20,7 +20,7 @@
   <Header />
 
   <div class="mt-4">
-    <div class="flex items-center justify-between mb-2">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
@@ -45,7 +45,7 @@
             flex flex-col items-center
             gap-1 sm:gap-2
             p-4 sm:p-8
-            rounded-lg
+            rounded-md
             border border-white/10
             bg-white/5
             hover:bg-white/10
@@ -57,7 +57,7 @@
           "
         >
           <!-- Image frame -->
-          <div class="w-28 h-40 sm:w-32 sm:h-44 mb-2 flex items-center justify-center">
+          <div class="w-28 h-40 sm:w-36 sm:h-48 mb-2 flex items-center justify-center">
             <img
               src={layout.image}
               alt={layout.name}

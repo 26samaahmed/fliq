@@ -6,7 +6,7 @@
 
   // page ref needs to be dynamic based on the option, but for now we can hardcode it to the first option of each category
   const frame_styles = [
-    { name: 'Pattern', color: '#D38A8A', page_ref: '/step3/pattern/option1' },
+    { name: 'Design', color: '#D38A8A', page_ref: '/step3/design/option1' },
     { name: 'Color', color: '#89CDEF', page_ref: '/step3/color/option1' },
     { name: 'Character', color: '#ABCF93', page_ref: '/step3/character/option1' }
   ];
@@ -16,7 +16,7 @@
   <Header />
 
   <div class="mt-4">
-    <div class="flex items-center justify-between mb-2">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
@@ -39,15 +39,6 @@
           class="
             group
             flex flex-col items-center
-            p-4 sm:p-6
-            rounded-2xl
-            border border-white/10
-            bg-white/5
-            hover:bg-white/10
-            hover:border-white/30
-            shadow-lg
-            hover:shadow-xl
-            transition-all duration-200
             cursor-pointer
           "
         >
@@ -56,7 +47,7 @@
             class="
               w-32 h-40
               sm:w-56 sm:h-64
-              rounded-xl
+              rounded-lg
               flex items-center justify-center
               transition-transform duration-200
               group-hover:scale-105

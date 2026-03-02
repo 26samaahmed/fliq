@@ -4,8 +4,14 @@
   const steps = ['/step1', '/step2', '/step3', '/step4'];
 
   const currentStep = $derived(() => {
-    const index = steps.indexOf(page.url.pathname);
-    return index === -1 ? 0 : index + 1;
+    const path = page.url.pathname;
+
+    if (path.startsWith('/step1')) return 1;
+    if (path.startsWith('/step2')) return 2;
+    if (path.startsWith('/step3')) return 3;
+    if (path.startsWith('/step4')) return 4;
+
+    return 0;
   });
 </script>
 

@@ -10,7 +10,7 @@
   <Header />
 
   <div class="mt-4">
-    <div class="flex items-center justify-between mb-2">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
@@ -24,8 +24,11 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
-    <div class="flex justify-center gap-5">
+  <div class="flex-1 flex items-start justify-center pt-16">
+    <div class="text-center">
+      <h1 class="font-aldrich text-lg sm:text-2xl text-white">
+        Select a Design
+      </h1>
     </div>
   </div>
 

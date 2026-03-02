@@ -13,7 +13,7 @@
   <Header />
 
   <div class="mt-4">
-    <div class="flex items-center justify-between mb-2">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
