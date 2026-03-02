@@ -1,10 +1,18 @@
 <script>
-  export let href = '/';
+  import { goto } from '$app/navigation';
+
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      goto('/');
+    }
+  }
 </script>
 
-<a
-  href={href}
-  class="text-white text-lg font-aldrich hover:text-[#D9D9D9] hover:border-transparent rounded-full transition-colors duration-300"
+<button
+  on:click={goBack}
+  class="text-white text-lg font-aldrich px-3 py-2 rounded-full hover:bg-white/10 transition-colors duration-300"
 >
-&larr;
-</a>
+  ← Back
+</button>

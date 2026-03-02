@@ -1,7 +1,7 @@
 <script>
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
-  import ProgressBar from '$lib/components/progressbar/ProgressBar.svelte';
+  import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
 </script>
 
@@ -10,7 +10,7 @@
   <Header />
 
   <div class="mb-4">
-    <BackButton href="/step3" />
+    <BackButton />
   </div>
 
   <div class="flex-1">
