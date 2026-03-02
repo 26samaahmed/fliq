@@ -1,0 +1,17 @@
+/* 1. Load your Google Fonts FIRST */
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Aldrich&family=Arimo:wght@400;500;600&display=swap");
+
+/* 2. Then load Tailwind */
+@import "tailwindcss";
+
+.font-aldrich {
+  font-family: 'Aldrich', sans-serif;
+}
+
+.font-arimo {
+  font-family: 'Arimo', sans-serif;
+}
+
+.font-aclonica {
+  font-family: 'Aclonica', sans-serif;
+}
