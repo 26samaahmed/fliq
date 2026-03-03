@@ -13,7 +13,7 @@ const io = new Server(server, {
 });
 
 app.set('view engine', 'ejs')
-app.use(express.static('public'))
+app.use(express.static('src/lib/backend'))
 
 app.get('/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
