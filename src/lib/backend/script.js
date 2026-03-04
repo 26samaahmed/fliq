@@ -43,6 +43,11 @@ myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
 })
 
+socket.on('room-full', () => {
+    alert('This room is full. Please try a different link.')
+    window.location.href = '/'
+})
+
 function connectToNewUser(userID, stream) {
     const call = myPeer.call(userID, stream)
     const video = document.createElement('video')
@@ -74,6 +79,11 @@ const photosDiv = document.getElementById('photos')
 
 document.getElementById('photo-button').addEventListener('click', () => {
     socket.emit('take-photo')
+})
+
+document.getElementById('photo-button').style.display = 'none'
+socket.on('is-host', () => {
+    document.getElementById('photo-button').style.display = 'block'
 })
 
 document.getElementById('clear-button').addEventListener('click', () => {
