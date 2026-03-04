@@ -10,7 +10,7 @@ const io = new Server(server, {
     origin: "*", // Allows any device to connect
     methods: ["GET", "POST"]
   }
-});
+})
 
 app.set('view engine', 'ejs')
 app.use(express.static('src/lib/backend'))
@@ -38,4 +38,4 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
-});
+})

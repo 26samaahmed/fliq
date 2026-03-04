@@ -1,7 +1,7 @@
 services:
   - type: web
     name: fliq-app
-    runtime: node
+    runtime: node 
     plan: free # Ensures you stay on the free tier
     buildCommand: npm install
     startCommand: node server.js
