@@ -1,11 +1,10 @@
 <script>
-  import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
 </script>
 
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#12192F] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="flex-1">

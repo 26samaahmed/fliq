@@ -5,15 +5,15 @@
   let showPassword = false;
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col p-6">
+<div class="bg-[#12192F] min-h-screen flex flex-col p-6">
   <Header />
 
-  <div class="text-center mt-20 flex-1">
+  <div class="text-center mt-auto flex-1">
     <h1 class="font-aldrich text-2xl sm:text-4xl text-white">
       Welcome Back!
     </h1>
 
-    <p class="font-arimo text-base sm:text-xl text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
+    <p class="font-b612-mono-regular text-base sm:text-xl text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
       <i>
         Enter your credentials to access your account and start creating unforgettable photo memories with fliq.
       </i>
