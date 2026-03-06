@@ -1,8 +1,22 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
+  import { supabase } from '$lib/supabase';
+  import { goto } from '$app/navigation';
 
   let showPassword = false;
+  let email = '';
+  let password = '';
+  let error = '';
+
+  async function handleSignup() {
+    const { error: err } = await supabase.auth.signUp({ email, password });
+    if (err) {
+      error = err.message;
+    } else {
+      goto('/step1');
+    }
+  }
 </script>
 
 <div class="bg-[#333745] min-h-screen flex flex-col p-6">
@@ -20,7 +34,7 @@
       </a>.
     </p>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white">
+    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleSignup}>
       
       <!-- Name -->
       <input
@@ -39,6 +53,7 @@
         name="email"
         autocomplete="email"
         placeholder="Email"
+        bind:value={email}
         class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
@@ -50,6 +65,7 @@
           name="password"
           autocomplete="current-password"
           placeholder="Password"
+          bind:value={password}
           class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
@@ -79,6 +95,11 @@
           </a>
         </label>
       </div>
+
+      <!-- Error message -->
+      {#if error}
+        <p class="text-red-400 text-sm">{error}</p>
+      {/if}
 
       <!-- Submit -->
       <button
