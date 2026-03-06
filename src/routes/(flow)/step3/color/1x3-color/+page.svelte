@@ -44,7 +44,7 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex flex-col items-center justify-center gap-10">
+  <div class="flex-1 flex flex-col items-center justify-start pt-16 sm:pt-24 gap-10">
     <h1 class="font-aldrich text-lg sm:text-2xl text-white">
       Select a Color
     </h1>
