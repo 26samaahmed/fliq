@@ -30,7 +30,7 @@
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
-      <div class="w-16"></div>
+      <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
         Step 3: Pick Strip Style
@@ -43,7 +43,7 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex flex-col items-center justify-start pt-16 sm:pt-24 gap-10">
+  <div class="flex-1 flex flex-col items-center justify-start pt-8 sm:pt-12 gap-10">
     <h1 class="font-aldrich text-lg sm:text-2xl text-white">
       Select a Color
     </h1>
@@ -51,14 +51,10 @@
     <div class="grid grid-cols-4 gap-x-6 gap-y-10">
       {#each frames as frame (frame.alt)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
-          <img src={frame.src} alt="{frame.alt} Frame" class="w-40 object-contain rounded" />
+          <img src={frame.src} alt="{frame.alt} Frame" class="w-28 object-contain rounded" />
         </a>
       {/each}
     </div>
-  </div>
-
-  <div class="flex justify-center py-6">
-    <BackButton />
   </div>
 
   <Footer />

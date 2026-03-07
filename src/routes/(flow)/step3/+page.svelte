@@ -4,15 +4,18 @@
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
 
-  // page ref needs to be dynamic based on the option, but for now we can hardcode it to the first option of each category
+  import { browser } from '$app/environment';
+
+  const frame = browser ? (sessionStorage.getItem('frame') ?? '1x3') : '1x3';
+
   const frame_styles = [
-    { name: 'Design', color: '#D38A8A', page_ref: '/step3/design/1x3-design' },
-    { name: 'Color', color: '#89CDEF', page_ref: '/step3/color/1x3-color' },
-    { name: 'Character', color: '#ABCF93', page_ref: '/step3/character/1x3-character' }
+    { name: 'Design', color: '#D38A8A', page_ref: `/step3/design/${frame}-design` },
+    { name: 'Color', color: '#89CDEF', page_ref: `/step3/color/${frame}-color` },
+    { name: 'Character', color: '#ABCF93', page_ref: `/step3/character/${frame}-character` }
   ];
 </script>
 
-<main class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="mt-4">
