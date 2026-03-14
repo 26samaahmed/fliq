@@ -4,7 +4,7 @@
 </script>
 
 
-<main class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="flex-1">
