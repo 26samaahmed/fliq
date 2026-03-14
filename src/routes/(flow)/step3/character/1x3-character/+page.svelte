@@ -45,10 +45,10 @@
       Select a Character Design
     </h1>
 
-    <div class="flex flex-nowrap justify-center gap-8">
+    <div class="grid grid-flow-col auto-cols-max justify-center gap-10">
       {#each characters as character (character.alt)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
-          <div class="relative w-36">
+          <div class="relative w-28">
             <img src={BaseFrame} alt="Frame" class="w-full object-contain" />
             <img src={character.src} alt={character.alt} class="absolute inset-0 w-full h-full object-contain" />
           </div>

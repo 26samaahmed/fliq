@@ -49,10 +49,10 @@
       Select a Color
     </h1>
 
-    <div class="flex flex-nowrap justify-center gap-8">
+    <div class="grid grid-cols-4 gap-x-10 gap-y-10 justify-items-center">
       {#each frames as frame (frame.alt)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
-          <img src={frame.src} alt="{frame.alt} Frame" class="w-20 object-contain rounded" />
+          <img src={frame.src} alt={`${frame.alt} Frame`} class="w-28 object-contain rounded" />
         </a>
       {/each}
     </div>
