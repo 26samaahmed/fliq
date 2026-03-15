@@ -3,6 +3,7 @@
   import Footer from '$lib/components/footer/Footer.svelte';
   import SuccessPopup from '$lib/components/popup/Success.svelte';
 
+  import { user } from '$lib/stores/user';
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
 
@@ -15,6 +16,13 @@
   let popupMessage = "";
   let popupHeader = "";
 
+  async function loadUser() {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+
+    if (!authUser) return;
+    user.set(authUser);
+  }
+
   async function handleLogin() {
     const { error: err } = await supabase.auth.signInWithPassword({
       email,
@@ -24,15 +32,16 @@
     if (err) {
       error = err.message;
     } else {
+      await loadUser();
       popupHeader = "Welcome back!";
       popupTitle = "Login Successful";
       popupMessage = "You're all set. Let's continue.";
-
       showSuccess = true;
     }
   }
 
   function goToStep1() {
+    showSuccess = false;
     goto('/step1');
   }
 
