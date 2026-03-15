@@ -5,12 +5,17 @@
   import { goto } from '$app/navigation';
 
   let showPassword = false;
+  let name = '';
   let email = '';
   let password = '';
   let error = '';
 
   async function handleSignup() {
-    const { error: err } = await supabase.auth.signUp({ email, password });
+    const { error: err } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    });
     if (err) {
       error = err.message;
     } else {
@@ -43,6 +48,7 @@
         name="full-name"
         autocomplete="name"
         placeholder="Name"
+        bind:value={name}
         class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
