@@ -1,6 +1,7 @@
 <script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
+  import SuccessPopup from '$lib/components/popup/Success.svelte';
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
 
@@ -9,6 +10,10 @@
   let email = '';
   let password = '';
   let error = '';
+  let showSuccess = false;
+  let popupTitle = "";
+  let popupMessage = "";
+  let popupHeader = "";
 
   async function handleSignup() {
     const { error: err } = await supabase.auth.signUp({
@@ -16,11 +21,19 @@
       password,
       options: { data: { full_name: name } }
     });
+
     if (err) {
       error = err.message;
     } else {
-      goto('/step1');
+      popupHeader = "Account Created!";
+      popupTitle = "Signup Successful";
+      popupMessage = "Your account is ready. Let's get you started.";
+
+      showSuccess = true;
     }
+  }
+  function goToStep1() {
+    goto('/step1');
   }
 </script>
 
@@ -115,6 +128,13 @@
         Sign Up
       </button>
     </form>
+    <SuccessPopup
+      open={showSuccess}
+      onContinue={goToStep1}
+      header={popupHeader}
+      title={popupTitle}
+      message={popupMessage}
+    />
   </div>
 
   <Footer />
