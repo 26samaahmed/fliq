@@ -1,11 +1,12 @@
 <script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
-  
+  import EditInfo from '$lib/components/popup/EditInfo.svelte';
+
   import { supabase } from '$lib/supabase';
   import { user } from '$lib/stores/user';
-  import { onMount } from 'svelte';
-
+  import { onMount, onDestroy } from 'svelte';
+  import { browser } from '$app/environment';
 
   // Dummy albums data
   let albums = [
@@ -14,18 +15,46 @@
     { name: "Shared with me" }
   ];
 
+  let showEditModal = false;
 
   async function retrieveData() {
-    const { data: { user: authUser } } = await supabase.auth.getUser();
+    const { data, error } = await supabase.auth.getUser();
 
-    if (authUser) {
-      user.set(authUser);
+    if (error) {
+      console.error("Error retrieving user:", error);
+      return;
+    }
+
+    if (data?.user) {
+      user.set(data.user);
     }
   }
 
   onMount(() => {
     retrieveData();
   });
+
+  onDestroy(() => {
+    if (browser) {
+      document.body.style.overflow = "auto";
+    }
+  });
+
+  function openEditModal() {
+    showEditModal = true;
+
+    if (browser) {
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeEditModal() {
+    showEditModal = false;
+
+    if (browser) {
+      document.body.style.overflow = "auto";
+    }
+  }
 </script>
 
 <div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6">
@@ -49,11 +78,13 @@
             </h2>
           </div>
 
-          <!-- TODO: Add pop-up form to edit personal information -->
           <div class="flex justify-end pb-6">
-            <a href="/edit-profile" class="underline text-[#AFADAD] hover:text-white transition">
+            <button
+              class="underline text-[#AFADAD] hover:text-white transition"
+              on:click={openEditModal}
+            >
               Edit
-            </a>
+            </button>
           </div>
 
           <div class="flex flex-col w-full text-sm sm:text-base">
@@ -145,6 +176,11 @@
       </div>
 
     </div>
+    <EditInfo
+      open={showEditModal}
+      SaveChanges={closeEditModal}
+      Cancel={closeEditModal}
+    />
 
   </div>
 
