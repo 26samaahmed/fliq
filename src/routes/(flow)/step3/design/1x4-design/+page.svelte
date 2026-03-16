@@ -32,10 +32,10 @@
       Select a Design
     </h1>
 
-    <div class="flex flex-nowrap justify-center gap-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 justify-items-center">
       {#each designs as design (design.id)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
-          <div class="relative w-36">
+          <div class="relative w-28 sm:w-36">
             <img src={BaseFrame} alt="Design Frame" class="w-full object-contain" />
           </div>
         </a>

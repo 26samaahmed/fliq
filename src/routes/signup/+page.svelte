@@ -29,7 +29,7 @@
         name="full-name"
         autocomplete="name"
         placeholder="Name"
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="w-full max-w-xs px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Email -->
@@ -39,11 +39,11 @@
         name="email"
         autocomplete="email"
         placeholder="Email"
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="w-full max-w-xs px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
-      <div class="relative w-72">
+      <div class="relative w-full max-w-xs">
         <input
           type={showPassword ? 'text' : 'password'}
           required

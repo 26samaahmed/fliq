@@ -22,7 +22,7 @@
       </a>
     </div>
 
-    <img src={landing_frame} alt="Frame 1" class="m-auto h-fit" />
+    <img src={landing_frame} alt="Frame 1" class="m-auto h-fit max-w-full" />
   </div>
 
   <Footer />

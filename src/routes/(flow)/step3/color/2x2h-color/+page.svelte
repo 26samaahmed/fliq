@@ -48,10 +48,10 @@
       Select a Color
     </h1>
 
-    <div class="grid grid-cols-3 gap-x-8 gap-y-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
       {#each frames as frame (frame.alt)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
-          <img src={frame.src} alt="{frame.alt} Frame" class="w-80 object-contain rounded" />
+          <img src={frame.src} alt="{frame.alt} Frame" class="w-64 sm:w-72 lg:w-80 object-contain rounded" />
         </a>
       {/each}
     </div>
