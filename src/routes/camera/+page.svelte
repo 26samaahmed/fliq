@@ -1,5 +1,4 @@
 <script>
-  import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
 </script>
