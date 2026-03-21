@@ -1,0 +1,13 @@
+<svg width="120" height="445" viewBox="0 0 120 445" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#paint0_diamond_547_1225_clip_path)" data-figma-skip-parse="true"><g transform="matrix(-2.42904e-09 0.386 -0.10409 -5.924e-10 60 172)"><rect x="0" y="0" width="709.845" height="586.032" fill="url(#paint0_diamond_547_1225)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="709.845" height="586.032" transform="scale(1 -1)" fill="url(#paint0_diamond_547_1225)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="709.845" height="586.032" transform="scale(-1 1)" fill="url(#paint0_diamond_547_1225)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="709.845" height="586.032" transform="scale(-1)" fill="url(#paint0_diamond_547_1225)" opacity="1" shape-rendering="crispEdges"/></g></g><rect width="120" height="445" rx="2" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_DIAMOND&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.86666667461395264,&#34;g&#34;:0.88627451658248901,&#34;b&#34;:0.89803922176361084,&#34;a&#34;:1.0},&#34;position&#34;:0.250},{&#34;color&#34;:{&#34;r&#34;:0.40392157435417175,&#34;g&#34;:0.49803921580314636,&#34;b&#34;:0.55294120311737061,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.86666667461395264,&#34;g&#34;:0.88627451658248901,&#34;b&#34;:0.89803922176361084,&#34;a&#34;:1.0},&#34;position&#34;:0.250},{&#34;color&#34;:{&#34;r&#34;:0.40392157435417175,&#34;g&#34;:0.49803921580314636,&#34;b&#34;:0.55294120311737061,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:-4.8580777729512192e-06,&#34;m01&#34;:-208.17979431152344,&#34;m02&#34;:164.08988952636719,&#34;m10&#34;:772.00006103515625,&#34;m11&#34;:-1.1848006806758349e-06,&#34;m12&#34;:-214.00003051757812},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+<rect x="8" y="10" width="103" height="79" fill="#333745"/>
+<rect x="8" y="101" width="103" height="80" fill="#333745"/>
+<rect x="8" y="193" width="103" height="81" fill="#333745"/>
+<rect x="8" y="286" width="103" height="81" fill="#333745"/>
+<defs>
+<clipPath id="paint0_diamond_547_1225_clip_path"><rect width="120" height="445" rx="2"/></clipPath><linearGradient id="paint0_diamond_547_1225" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+<stop offset="0.25" stop-color="#DDE2E5"/>
+<stop offset="1" stop-color="#677F8D"/>
+</linearGradient>
+</defs>
+</svg>
