@@ -3,10 +3,28 @@
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
-  import BaseFrame from '$lib/assets/Character-Frames/base-frames/2x2h-base-frame.svg';
+  import Base1 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base1.svg';
+  import Base2 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base2.svg';
+  import Base3 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base3.svg';
+  import Base4 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base4.svg';
+  import Base5 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base5.svg';
+  import Base6 from '$lib/assets/Design-Frames/2x2h-design-base/2x2h-design-base6.svg';
+  import Overlay1 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay1.svg';
+  import Overlay2 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay2.svg';
+  import Overlay3 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay3.svg';
+  import Overlay4 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay4.svg';
+  import Overlay5 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay5.svg';
+  import Overlay6 from '$lib/assets/Design-Frames/2x2h-design-overlay/2x2h-design-overlay6.svg';
 
   const href = '/step4';
-  const designs = Array(6).fill(null).map((_, i) => ({ id: i }));
+  const designs = [
+    { base: Base1, overlay: Overlay1, id: 1 },
+    { base: Base2, overlay: Overlay2, id: 2 },
+    { base: Base3, overlay: Overlay3, id: 3 },
+    { base: Base4, overlay: Overlay4, id: 4 },
+    { base: Base5, overlay: Overlay5, id: 5 },
+    { base: Base6, overlay: Overlay6, id: 6 },
+  ];
 </script>
 
 <main class="bg-[#333745] min-h-screen flex flex-col p-6">
@@ -36,7 +54,8 @@
       {#each designs as design (design.id)}
         <a {href} class="hover:scale-105 transition-transform duration-200">
           <div class="relative w-64 sm:w-72 lg:w-80">
-            <img src={BaseFrame} alt="Design Frame" class="w-full object-contain" />
+            <img src={design.base} alt="Design Frame" class="w-full object-contain" />
+            <img src={design.overlay} alt="Design Overlay" class="absolute inset-0 w-full h-full object-contain" />
           </div>
         </a>
       {/each}
