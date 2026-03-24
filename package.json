@@ -38,7 +38,9 @@
 	},
 	"dependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",
+		"express": "^5.2.1",
 		"peerjs": "^1.5.5",
+		"socket.io": "^4.8.3",
 		"socket.io-client": "^4.8.3",
 		"uuid": "^13.0.0"
 	}
