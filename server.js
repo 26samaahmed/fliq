@@ -15,6 +15,8 @@ const rooms = {}
 const roomHosts = {}
 const MAX_USERS = 2
 
+// FORMER CAMERA VIEW LOGIC USING EJS
+
 // app.set('view engine', 'ejs')
 // app.use(express.static('src/lib/backend'))
 
@@ -26,7 +28,7 @@ const MAX_USERS = 2
 //     res.render('room', { roomID: req.params.room })
 // })
 
-import { handler } from './build/handler.js'; // SvelteKit's built output
+import { handler } from './build/handler.js'; //sveltekit
 app.use(handler);
 
 io.on('connection', socket => {

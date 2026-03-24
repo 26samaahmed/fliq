@@ -5,7 +5,7 @@
   import Footer from '$lib/components/footer/Footer.svelte';
 
   const ROOM_ID = $page.params.roomID;
-  const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/'; // ← replace with your Render URL
+  const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
   let videoGrid: HTMLDivElement;
   let canvas: HTMLCanvasElement;
@@ -44,6 +44,7 @@
       call.answer(stream);
       const video = document.createElement('video');
       call.on('stream', (remoteStream: any) => addVideoStream(video, remoteStream));
+      call.on('close', () => video.remove());
     });
 
     // When a new user joins, call them
@@ -52,8 +53,11 @@
     });
 
     // When a user leaves, close their stream
-    socket.on('user-disconnected', (userID: any) => {
-      if (peers[userID]) peers[userID].close();
+    socket.on('user-disconnected', (userID: string) => {
+      if (peers[userID]) {
+        peers[userID].close();
+        peers[userID] = undefined;
+      }
     });
 
     // Join room once peer ID is ready
@@ -97,6 +101,11 @@
     video.setAttribute('playsinline', '');
     video.muted = true;
     video.addEventListener('loadedmetadata', () => video.play());
+
+    stream.getTracks().forEach(track => {
+      track.addEventListener('ended', () => video.remove());
+    });
+
     videoGrid.appendChild(video);
   }
 
