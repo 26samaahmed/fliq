@@ -1,11 +1,53 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
+  import SuccessPopup from '$lib/components/popup/Success.svelte';
+
+  import { user } from '$lib/stores/user';
+  import { supabase } from '$lib/supabase';
+  import { goto } from '$app/navigation';
 
   let showPassword = false;
+  let email = '';
+  let password = '';
+  let error = '';
+  let showSuccess = false;
+  let popupTitle = "";
+  let popupMessage = "";
+  let popupHeader = "";
+
+  async function loadUser() {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+
+    if (!authUser) return;
+    user.set(authUser);
+  }
+
+  async function handleLogin() {
+    const { error: err } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (err) {
+      error = err.message;
+    } else {
+      await loadUser();
+      popupHeader = "Welcome back!";
+      popupTitle = "Login Successful";
+      popupMessage = "You're all set. Let's continue.";
+      showSuccess = true;
+    }
+  }
+
+  function goToStep1() {
+    showSuccess = false;
+    goto('/step1');
+  }
+
 </script>
 
-<div class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<div class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="text-center mt-auto flex-1">
@@ -19,7 +61,7 @@
       </i>
     </p>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white">
+    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleLogin}>
       
       <!-- Email -->
       <input
@@ -28,17 +70,19 @@
         name="email"
         autocomplete="email"
         placeholder="Email"
+        bind:value={email}
         class="w-60 sm:w-64 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
-      <div class="relative w-60 sm:w-64">
+      <div class="relative w-full max-w-xs">
         <input
           type={showPassword ? 'text' : 'password'}
           required
           name="password"
           autocomplete="current-password"
           placeholder="Password"
+          bind:value={password}
           class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
@@ -60,6 +104,11 @@
         Forgot password?
       </a>
 
+      <!-- Error message -->
+      {#if error}
+        <p class="text-red-400 text-sm">{error}</p>
+      {/if}
+
       <!-- Submit Button-->
       <button
         type="submit"
@@ -75,6 +124,13 @@
         Sign Up
       </a>
     </p>
+    <SuccessPopup
+      open={showSuccess}
+      onContinue={goToStep1}
+      header={popupHeader}
+      title={popupTitle}
+      message={popupMessage}
+    />
   </div>
 
   <Footer />

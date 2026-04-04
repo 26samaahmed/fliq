@@ -1,11 +1,56 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
+  import SuccessPopup from '$lib/components/popup/Success.svelte';
+
+  import { user } from '$lib/stores/user';
+  import { supabase } from '$lib/supabase';
+  import { goto } from '$app/navigation';
 
   let showPassword = false;
+  let name = '';
+  let email = '';
+  let password = '';
+  let error = '';
+  let showSuccess = false;
+  let popupTitle = "";
+  let popupMessage = "";
+  let popupHeader = "";
+
+  async function loadUser() {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+
+    if (!authUser) return;
+    user.set(authUser);
+  }
+
+  async function handleSignup() {
+    const { error: err } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    });
+
+    if (err) {
+      error = err.message;
+    } else {
+      await loadUser();
+      popupHeader = "Account Created!";
+      popupTitle = "Signup Successful";
+      popupMessage = "Your account is ready. Let's get you started.";
+      showSuccess = true;
+    }
+  }
+
+  function goToStep1() {
+    showSuccess = false;
+    goto('/step1');
+  }
+
+  
 </script>
 
-<div class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<div class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="text-center m-auto flex-1">
@@ -20,7 +65,7 @@
       </a>.
     </p>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white">
+    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleSignup}>
       
       <!-- Name -->
       <input
@@ -29,6 +74,7 @@
         name="full-name"
         autocomplete="name"
         placeholder="Name"
+        bind:value={name}
         class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
@@ -39,17 +85,19 @@
         name="email"
         autocomplete="email"
         placeholder="Email"
+        bind:value={email}
         class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
-      <div class="relative w-72">
+      <div class="relative w-full max-w-xs">
         <input
           type={showPassword ? 'text' : 'password'}
           required
           name="password"
           autocomplete="current-password"
           placeholder="Password"
+          bind:value={password}
           class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
@@ -80,6 +128,11 @@
         </label>
       </div>
 
+      <!-- Error message -->
+      {#if error}
+        <p class="text-red-400 text-sm">{error}</p>
+      {/if}
+
       <!-- Submit -->
       <button
         type="submit"
@@ -88,6 +141,14 @@
         Sign Up
       </button>
     </form>
+
+    <SuccessPopup
+      open={showSuccess}
+      onContinue={goToStep1}
+      header={popupHeader}
+      title={popupTitle}
+      message={popupMessage}
+    />
   </div>
 
   <Footer />

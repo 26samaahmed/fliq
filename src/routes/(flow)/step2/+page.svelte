@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
@@ -9,14 +9,19 @@
   import layout4 from '$lib/assets/layout4.svg';
 
   const layouts = [
-    { name: 'Layout 1', size: '2 x 6', photos: '3 Photo', image: layout1 },
-    { name: 'Layout 2', size: '2 x 6', photos: '4 Photo', image: layout2 },
-    { name: 'Layout 3', size: '4 x 6', photos: '4 Photo', image: layout3 },
-    { name: 'Layout 4', size: '4 x 6', photos: '4 Photo', image: layout4 }
+    { name: 'Layout 1', size: '2 x 6', photos: '3 Photo', image: layout1, frame: '1x3' },
+    { name: 'Layout 2', size: '2 x 6', photos: '4 Photo', image: layout2, frame: '1x4' },
+    { name: 'Layout 3', size: '4 x 6', photos: '4 Photo', image: layout3, frame: '2x2v' },
+    { name: 'Layout 4', size: '4 x 6', photos: '4 Photo', image: layout4, frame: '2x2h' }
   ];
+
+  function selectLayout(frame: string) {
+    sessionStorage.setItem('frame', frame);
+    window.location.href = '/step3';
+  }
 </script>
 
-<main class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="mt-4">
@@ -37,9 +42,9 @@
   <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
     <div class="flex flex-row flex-wrap justify-center gap-10 sm:gap-16">
 
-      {#each layouts as layout}
-        <a
-          href="/step3"
+      {#each layouts as layout (layout.frame)}
+        <button
+          on:click={() => selectLayout(layout.frame)}
           class="
             group
             flex flex-col items-center
@@ -56,7 +61,6 @@
             cursor-pointer
           "
         >
-          <!-- Image frame -->
           <div class="w-28 h-40 sm:w-36 sm:h-48 mb-2 flex items-center justify-center">
             <img
               src={layout.image}
@@ -65,14 +69,10 @@
             />
           </div>
 
-          <p class="font-aldrich text-base sm:text-xl text-white text-center">
-            {layout.size}
-          </p>
-
           <p class="font-aldrich text-base sm:text-xl text-white/80 text-center">
             {layout.photos}
           </p>
-        </a>
+        </button>
       {/each}
 
     </div>

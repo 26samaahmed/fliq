@@ -11,7 +11,7 @@
 </script>
 
 
-<main class="bg-[#12192F] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
 
   <div class="flex-1">
@@ -28,7 +28,7 @@
       </button>
     </div>
 
-    <img src={landing_frame} alt="Frame 1" class="m-auto h-fit" />
+    <img src={landing_frame} alt="Frame 1" class="m-auto h-fit max-w-full" />
   </div>
 
   <Footer />
