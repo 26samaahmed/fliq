@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: fliq-app
+    runtime: node 
+    plan: free # Ensures you stay on the free tier
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 10000 # Render's default internal port
