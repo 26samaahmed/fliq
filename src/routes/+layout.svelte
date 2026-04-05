@@ -1,8 +1,28 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
+  import { onMount } from 'svelte';
+  import { supabase } from '$lib/supabase';
+  import { user } from '$lib/stores/user';
 
-	let { children } = $props();
+  onMount(() => {
+    // Listen for auth state changes globally
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        user.set(session.user);
+      } else {
+        user.set(null);
+      }
+    });
+
+    // Optional: check immediately if user is logged in
+    const checkUser = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) user.set(authUser);
+    };
+    checkUser();
+  });
+
 </script>
 
 <svelte:head>
@@ -15,4 +35,4 @@
   />
 </svelte:head>
 
-{@render children?.()}
+<slot />

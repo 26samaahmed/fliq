@@ -17,15 +17,9 @@
   let popupMessage = "";
   let popupHeader = "";
 
-  async function loadUser() {
-    const { data: { user: authUser } } = await supabase.auth.getUser();
-
-    if (!authUser) return;
-    user.set(authUser);
-  }
 
   async function handleSignup() {
-    const { error: err } = await supabase.auth.signUp({
+    const { error: err, data } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { full_name: name } }
@@ -34,7 +28,16 @@
     if (err) {
       error = err.message;
     } else {
-      await loadUser();
+      // Get the logged-in user
+      const { data: { user: authUser }, error: getUserErr } = await supabase.auth.getUser();
+      
+      if (getUserErr) {
+        console.error("Error retrieving user after signup:", getUserErr);
+      } else if (authUser) {
+        user.set(authUser);
+      }
+
+      // Show success popup
       popupHeader = "Account Created!";
       popupTitle = "Signup Successful";
       popupMessage = "Your account is ready. Let's get you started.";
@@ -109,23 +112,6 @@
         >
           {showPassword ? 'Hide' : 'Show'}
         </button>
-      </div>
-
-      <!-- Terms -->
-      <div class="flex items-center gap-2">
-        <input
-          type="checkbox"
-          required
-          id="terms"
-          class="w-5 h-5 text-[#DCDFF5] bg-gray-100 rounded border-gray-300 focus:ring-[#DCDFF5] cursor-pointer"
-        />
-        <!--Add terms and conditions later-->
-        <label for="terms" class="text-[#E8F1F2] text-sm">
-          I agree to the
-          <a href="#" class="underline text-[#DCDFF5]">
-            Terms and Conditions
-          </a>
-        </label>
       </div>
 
       <!-- Error message -->

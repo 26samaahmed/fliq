@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
   import profileIcon from '$lib/assets/profile-icon.svg';
+  import { user } from '$lib/stores/user';
+  import { goto } from '$app/navigation';
 
-  // Temporary: replace later with real auth state
-  let isLoggedIn = false;
+  // Reactive reference to the store
+  // $user automatically updates whenever the store changes
+  function goToProfile() {
+    goto('/profile');
+  }
 </script>
 
 <div class="flex items-center justify-between mb-8">
@@ -11,8 +16,8 @@
     fliq.
   </a>
 
-  <!-- Right side -->
-  {#if isLoggedIn}
+  {#if $user}
+    <!-- Logged-in state -->
     <button
       class="
         w-10 h-10 sm:w-11 sm:h-11
@@ -22,9 +27,10 @@
         flex items-center justify-center
         transition-colors
       "
-      aria-label="Open profile menu"
+      aria-label="Open profile"
+      on:click={goToProfile}
     >
-      <img src={profileIcon} alt="" class="w-5 h-5 sm:w-6 sm:h-6" />
+      <img src={profileIcon} alt="Profile" class="w-5 h-5 sm:w-6 sm:h-6" />
     </button>
   {:else}
     <!-- Logged-out state -->
@@ -40,7 +46,7 @@
         transition-colors
       "
     >
-      <img src={profileIcon} alt="" class="w-4 h-4" />
+      <img src={profileIcon} alt="Login" class="w-4 h-4" />
       <span class="hidden sm:inline">Login</span>
     </a>
   {/if}
