@@ -25,10 +25,7 @@
     if (err) {
       error = err.message;
     } else {
-      popupHeader = "Welcome back!";
-      popupTitle = "Login Successful";
-      popupMessage = "You're all set. Let's continue.";
-      showSuccess = true;
+      goto('/');
     }
   }
 

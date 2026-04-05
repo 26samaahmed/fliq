@@ -55,6 +55,7 @@
       document.body.style.overflow = "auto";
     }
   }
+
 </script>
 
 <div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6">
@@ -65,6 +66,7 @@
     <h1 class="text-2xl sm:text-4xl pb-8">
       Your Profile
     </h1>
+
 
     <div class="flex flex-col lg:flex-row gap-6">
 
