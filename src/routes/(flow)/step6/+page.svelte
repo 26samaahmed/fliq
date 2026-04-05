@@ -13,7 +13,7 @@
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
-        Step 4: Take Your Photos
+        Step 6: Customize Background
       </h1>
 
       <div class="w-16"></div>
@@ -21,15 +21,14 @@
 
     <ProgressBar />
 
-    <!-- 👇 Description under progress bar -->
     <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-      Get ready! We’ll take 8 photos. Hit the button when you’re ready.
+      Choose a background to style your photo strip.
     </p>
   </div>
 
   <!-- Main content -->
   <div class="flex-1 flex items-center justify-center">
-    <!-- Camera UI here -->
+    <!-- Background selection UI here -->
   </div>
 
   <Footer />
