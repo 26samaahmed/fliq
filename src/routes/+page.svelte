@@ -1,9 +1,16 @@
 <script>
+  import { goto } from '$app/navigation';
+  import pkg from 'uuid';
   import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
-	import Footer from '$lib/components/footer/Footer.svelte';
-</script>
+  import Footer from '$lib/components/footer/Footer.svelte';
 
+  const { v4 } = pkg; // ✅ destructured v4 from uuid
+
+  function startRoom() {
+    goto(`/room/${v4()}`); // use v4() here
+  }
+</script>
 
 <main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
@@ -15,11 +22,11 @@
         <i>Create and customize photo memories with your friends in real time as fliq. brings the photo booth experience to you wherever you are.</i>
       </p>
       
-      <a
-        href="/step1"
+      <button
+        on:click={startRoom}
         class="font-b612-mono-regular inline-block text-sm sm:text-base m-5 sm:m-7 bg-[#DCDFF5] text-[#333745] font-aldrich px-4 py-2 rounded-full hover:bg-[#949FF2] transition duration-500">
         Start Taking Pictures →
-      </a>
+      </button>
     </div>
 
     <img src={landing_frame} alt="Frame 1" class="m-auto h-fit max-w-full" />
