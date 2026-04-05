@@ -13,7 +13,7 @@
       <BackButton />
 
       <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
-        Step 4: Take Your Photos
+        Here's your final strip!
       </h1>
 
       <div class="w-16"></div>
@@ -21,15 +21,18 @@
 
     <ProgressBar />
 
-    <!-- 👇 Description under progress bar -->
     <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-      Get ready! We’ll take 8 photos. Hit the button when you’re ready.
+      You can export it or share it with your friends. We hope you had fun creating memories with fliq!
     </p>
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-center justify-center">
-    <!-- Camera UI here -->
+  <div class="flex-1 flex flex-col items-center justify-center">
+    <!-- Final preview here -->
+
+    <button class="mt-8 px-6 py-3 bg-[#D38A8A] text-white font-bold rounded-lg hover:bg-[#c77b7b] transition">
+      Add to Album
+    </button>
   </div>
 
   <Footer />
