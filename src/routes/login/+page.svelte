@@ -54,7 +54,10 @@
       </i>
     </p>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleLogin}>
+    <form
+      class="mt-10 flex flex-col items-center gap-6 text-white"
+      on:submit|preventDefault={handleLogin}
+    >
       
       <!-- Email -->
       <input
