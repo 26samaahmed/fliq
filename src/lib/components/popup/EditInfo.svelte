@@ -10,6 +10,7 @@
   let name = "";
   let email = "";
   let password = "";
+  let confirmPassword = "";
 
   // Prefill inputs whenever modal opens
   $: if (open && $user) {
@@ -18,31 +19,50 @@
   }
 
   async function handleSave() {
-    const { data, error } = await supabase.auth.updateUser({
+    // 1. Update name + email first
+    const { data: userData, error: userError } = await supabase.auth.updateUser({
       email,
-      password: password || undefined,
       data: {
         full_name: name
       }
     });
 
-    if (error) {
-      console.error("Error updating user:", error);
+    if (userError) {
+      console.error("Error updating user info:", userError);
       return;
     }
 
-    // Update the store so UI refreshes instantly
-    if (data?.user) {
-      user.set(data.user);
+    // 2. Update password ONLY if user entered one
+    if (password) {
+      // validate first
+      if (password !== confirmPassword) {
+        console.error("Passwords do not match");
+        return;
+      }
+
+      const { error: passwordError } = await supabase.auth.updateUser({
+        password
+      });
+
+      if (passwordError) {
+        console.error("Error updating password:", passwordError);
+        return;
+      }
+    }
+
+    // 3. Update UI instantly
+    if (userData?.user) {
+      user.set(userData.user);
     }
 
     password = "";
-
+  confirmPassword = "";
     SaveChanges();
   }
 
   function handleCancel() {
     password = "";
+    confirmPassword = "";
     Cancel();
   }
 
@@ -101,6 +121,15 @@
         bind:value={password}
         class="w-full mb-6 px-4 py-2 rounded bg-[#2c2f3c] border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#DCDFF5]"
       >
+
+      {#if password}
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          bind:value={confirmPassword}
+          class="w-full mb-6 px-4 py-2 rounded bg-[#2c2f3c] border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#DCDFF5]"
+        />
+      {/if}
 
       <div class="flex gap-4">
 

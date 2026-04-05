@@ -25,10 +25,7 @@
     if (err) {
       error = err.message;
     } else {
-      popupHeader = "Welcome back!";
-      popupTitle = "Login Successful";
-      popupMessage = "You're all set. Let's continue.";
-      showSuccess = true;
+      goto('/');
     }
   }
 
@@ -54,7 +51,10 @@
       </i>
     </p>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleLogin}>
+    <form
+      class="mt-10 flex flex-col items-center gap-6 text-white"
+      on:submit|preventDefault={handleLogin}
+    >
       
       <!-- Email -->
       <input

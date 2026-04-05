@@ -6,21 +6,20 @@
   import { user } from '$lib/stores/user';
 
   onMount(() => {
-    // Listen for auth state changes globally
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        user.set(session.user);
-      } else {
-        user.set(null);
-      }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      user.set(session?.user ?? null);
     });
 
-    // Optional: check immediately if user is logged in
     const checkUser = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
-      if (authUser) user.set(authUser);
+      user.set(authUser ?? null);
     };
+
     checkUser();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   });
 
 </script>
