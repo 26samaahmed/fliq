@@ -1,7 +1,8 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { v4 as uuidV4 } from 'uuid';
+import pkg from 'uuid';
+const { v4 } = pkg;
 
 const app = express();
 const server = createServer(app);

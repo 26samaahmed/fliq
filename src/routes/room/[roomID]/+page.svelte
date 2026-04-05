@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/navigation';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
 
-  const ROOM_ID = $page.params.roomID;
+  $: ROOM_ID = $page.params.roomID;
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
   let videoGrid: HTMLDivElement;
