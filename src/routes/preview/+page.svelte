@@ -9,9 +9,9 @@
 
   <div class="flex-1">
     <div class="text-center mt-8">
-      <h1 class="font-aldrich text-2xl sm:text-3xl text-white">Now, time to take some pictures!</h1>
+      <h1 class="font-aldrich text-2xl sm:text-3xl text-white">Preview Your Shots</h1>
       <p class="font-arimo text-base sm:text-xl text-[#D38A8A] mt-5 max-w-4xl mx-auto">
-        Get ready! We’ll take 8 photos. Hit the button when you’re ready.
+        Select photos to add to your strip!
       </p>
   </div>
   </div>

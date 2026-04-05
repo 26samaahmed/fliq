@@ -9,10 +9,14 @@
 
   <div class="flex-1">
     <div class="text-center mt-8">
-      <h1 class="font-aldrich text-2xl sm:text-3xl text-white">Now, time to take some pictures!</h1>
+      <h1 class="font-aldrich text-2xl sm:text-3xl text-white">Here's your final strip!</h1>
       <p class="font-arimo text-base sm:text-xl text-[#D38A8A] mt-5 max-w-4xl mx-auto">
-        Get ready! We’ll take 8 photos. Hit the button when you’re ready.
+        You can export it or share it with your friends! We hope you had fun creating memories with fliq.!
       </p>
+
+      <button class="mt-6 px-6 py-3 bg-[#D38A8A] text-white font-bold rounded-lg hover:bg-[#c77b7b] transition">
+        Add to Album
+      </button>
   </div>
   </div>
   <Footer />
