@@ -61,7 +61,7 @@
       Sign Up for Fliq.
     </h1>
 
-    <p class="font-b612-mono-regular text-base sm:text-lg text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
+    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
       Create a free account or
       <a href="/login" class="underline text-[#DCDFF5]">
         log in
@@ -78,7 +78,7 @@
         autocomplete="name"
         placeholder="Name"
         bind:value={name}
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="font-aldrich w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Email -->
@@ -89,7 +89,7 @@
         autocomplete="email"
         placeholder="Email"
         bind:value={email}
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="font-aldrich w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
@@ -101,13 +101,13 @@
           autocomplete="current-password"
           placeholder="Password"
           bind:value={password}
-          class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+          class="font-aldrich w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
         <button
           type="button"
           on:click={() => (showPassword = !showPassword)}
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
+          class="font-aldrich absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
           aria-label="Toggle password visibility"
         >
           {showPassword ? 'Hide' : 'Show'}

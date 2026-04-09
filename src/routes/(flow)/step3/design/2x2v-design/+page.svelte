@@ -42,13 +42,15 @@
     </div>
 
     <ProgressBar />
+
+    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+      Select a Design
+    </p>
+    
   </div>
 
   <!-- Main content -->
   <div class="flex-1 flex flex-col items-center justify-start pt-8 sm:pt-12 gap-10">
-    <h1 class="font-aldrich text-lg sm:text-2xl text-white">
-      Select a Design
-    </h1>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
       {#each designs as design (design.id)}
