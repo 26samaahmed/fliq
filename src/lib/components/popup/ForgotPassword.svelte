@@ -9,19 +9,25 @@
   let error = "";
 
   async function handleSend() {
-    error = "";
-    message = "";
+  error = "";
+  message = "";
 
-    const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://fliq-six.vercel.app/reset-password'
-    });
+  const redirectTo =
+    window.location.origin + '/reset-password';
 
-    if (err) {
-      error = err.message;
-    } else {
-      message = "Password reset link sent! Check your email.";
-    }
+  const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo
+  });
+
+  if (err) {
+    error = err.message;
+  } else {
+    message = "Password reset link sent! Check your email.";
+    setTimeout(() => {
+      onClose();
+    }, 2000);
   }
+}
 
   function handleCancel() {
     email = "";
