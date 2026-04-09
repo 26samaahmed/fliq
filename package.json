@@ -37,6 +37,7 @@
 		"vite": "^7.1.7"
 	},
 	"dependencies": {
+		"@google/genai": "^1.49.0",
 		"@supabase/supabase-js": "^2.98.0"
 	}
 }
