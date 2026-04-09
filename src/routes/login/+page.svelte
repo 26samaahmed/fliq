@@ -47,10 +47,8 @@
       Welcome Back!
     </h1>
 
-    <p class="font-b612-mono-regular text-base sm:text-xl text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
-      <i>
+    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
         Enter your credentials to access your account and start creating unforgettable photo memories with fliq.
-      </i>
     </p>
 
     <form
@@ -66,7 +64,7 @@
         autocomplete="email"
         placeholder="Email"
         bind:value={email}
-        class="w-60 sm:w-64 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="font-aldrich w-60 sm:w-64 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
@@ -78,24 +76,23 @@
           autocomplete="current-password"
           placeholder="Password"
           bind:value={password}
-          class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+          class="font-aldrich w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
         <button
           type="button"
           on:click={() => (showPassword = !showPassword)}
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
+          class="font-aldrich absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
           aria-label="Toggle password visibility"
         >
           {showPassword ? 'Hide' : 'Show'}
         </button>
       </div>
 
-      <!-- Forgot password - Implement Later -->
       <a
         href="#"
         on:click|preventDefault={() => (showForgotPassword = true)}
-        class="text-sm text-[#DCDFF5] underline -mt-2"
+        class="font-aldrich text-sm text-[#DCDFF5] underline -mt-2"
       >
         Forgot password?
       </a>
@@ -114,7 +111,7 @@
       </button>
     </form>
 
-    <p class="text-[#E8F1F2] mt-6">
+    <p class="font-aldrich text-[#E8F1F2] mt-6">
       Don't have an account?
       <a href="/signup" class="underline text-[#DCDFF5]">
         Sign Up
