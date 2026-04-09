@@ -1,8 +1,27 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
+  import { onMount } from 'svelte';
+  import { supabase } from '$lib/supabase';
+  import { user } from '$lib/stores/user';
 
-	let { children } = $props();
+  onMount(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      user.set(session?.user ?? null);
+    });
+
+    const checkUser = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      user.set(authUser ?? null);
+    };
+
+    checkUser();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
+
 </script>
 
 <svelte:head>
@@ -15,4 +34,4 @@
   />
 </svelte:head>
 
-{@render children?.()}
+<slot />

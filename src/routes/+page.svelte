@@ -1,14 +1,12 @@
 <script>
   import { goto } from '$app/navigation';
-  import pkg from 'uuid';
+  import { v4 as uuidV4 } from 'uuid';
   import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
 
-  const { v4 } = pkg; // ✅ destructured v4 from uuid
-
   function startRoom() {
-    goto(`/room/${v4()}`); // use v4() here
+    goto(`/room/${uuidV4()}`);
   }
 </script>
 
