@@ -6,6 +6,7 @@
   import { user } from '$lib/stores/user';
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
+  import ForgotPassword from '$lib/components/popup/ForgotPassword.svelte';
 
   let showPassword = false;
   let email = '';
@@ -15,6 +16,7 @@
   let popupTitle = "";
   let popupMessage = "";
   let popupHeader = "";
+  let showForgotPassword = false;
 
   async function handleLogin() {
     const { error: err } = await supabase.auth.signInWithPassword({
@@ -92,6 +94,7 @@
       <!-- Forgot password - Implement Later -->
       <a
         href="#"
+        on:click|preventDefault={() => (showForgotPassword = true)}
         class="text-sm text-[#DCDFF5] underline -mt-2"
       >
         Forgot password?
@@ -117,6 +120,12 @@
         Sign Up
       </a>
     </p>
+
+    <ForgotPassword
+      open={showForgotPassword}
+      onClose={() => (showForgotPassword = false)}
+    />
+    
     <SuccessPopup
       open={showSuccess}
       onContinue={goToStep1}
