@@ -47,7 +47,7 @@
       class="bg-[#333745] rounded-xl border border-white/40 text-white shadow-2xl p-8 w-[420px]"
       on:click|stopPropagation
     >
-      <div class="text-2xl font-aldrich mb-6 text-center">
+      <div class="text-2xl font-aldrich mb-2 text-center">
         Forgot Password
       </div>
 

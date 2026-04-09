@@ -42,7 +42,7 @@
       Reset Your Password
     </h1>
 
-    <p class="text-[#E8F1F2] mt-4">
+    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
       Enter a new password for your account.
     </p>
 
