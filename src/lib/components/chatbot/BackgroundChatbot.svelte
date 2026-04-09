@@ -72,33 +72,33 @@
   }
 </script>
 
-<div class="flex flex-col h-full border-solid border-1 border-[#ccc] bg-white rounded">
+<div class="flex flex-col h-full border border-[#ccc] bg-white rounded">
 
-  <div class="p-4 bg-[#eee] border-solid border-b-1 border-[#ccc]">
+  <div class="p-4 bg-[#eee] border-b border-[#ccc]">
     <b class="font-aldrich sm:text-xl">Background Chatbot</b>
   </div>
 
   <div
     bind:this={chatContainer}
-    class="flex-1 overflow-y-auto p-4 flex; flex-col gap-2"
+    class="flex-1 overflow-y-auto p-4 flex flex-col gap-2"
   >
     {#each messages as msg}
       {#if msg.role === 'user'}
-        <div class="align-right">
-          <span class="bg-[#d38a8a] text-white pt-2 pb-2 pr-4 pl-4 rounded inline">
+        <div class="flex justify-end">
+          <span class="bg-[#d38a8a] text-white py-2 px-4 rounded">
             {msg.text}
           </span>
         </div>
       {:else}
-        <div class="align-left">
+        <div class="flex justify-start">
           {#if 'imageBase64' in msg}
             <img
               src={`data:${msg.mimeType};base64,${msg.imageBase64}`}
               alt="Edited result"
-              class="mx-w-full border-1 border-solid border-[#ccc]"
+              class="max-w-full border border-[#ccc]"
             />
           {:else}
-            <span class="bg-[#f0f0f0] pt-2 pb-2 pr-4 pl-4 rounded inline">
+            <span class="bg-[#f0f0f0] py-2 px-4 rounded">
               {msg.text}
             </span>
           {/if}
@@ -107,24 +107,24 @@
     {/each}
 
     {#if isLoading}
-      <div class="align-left">
-        <span class="bg-[#f0f0f0] pt-2 pb-2 pr-4 pl-4 rounded inline">
+      <div class="flex justify-start">
+        <span class="bg-[#f0f0f0] py-2 px-4 rounded">
           Loading...
         </span>
       </div>
     {/if}
   </div>
 
-  <div class="p-4 border-t-1 border-solid border-[#ccc] flex gap-4;">
+  <div class="p-4 border-t border-[#ccc] flex gap-4">
     <input
       type="text"
       bind:value={inputText}
       onkeydown={handleKeydown}
       placeholder="Describe the background..."
       disabled={isLoading}
-      class="flex-1 padding-3 border-1 border-solid border-[#ccc]"
+      class="flex-1 p-3 border border-[#ccc]"
     />
-    <button onclick={sendMessage} disabled={isLoading} class="pt-4 pb-4 pr-6 pl-6">
+    <button onclick={sendMessage} disabled={isLoading} class="px-6 py-4">
       Send
     </button>
   </div>
