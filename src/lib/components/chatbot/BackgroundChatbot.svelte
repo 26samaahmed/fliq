@@ -72,33 +72,33 @@
   }
 </script>
 
-<div style="display: flex; flex-direction: column; height: 100%; border: 1px solid #ccc; background: white;">
+<div class="flex flex-col h-full border-solid border-1 border-[#ccc] bg-white rounded">
 
-  <div style="padding: 10px; background: #eee; border-bottom: 1px solid #ccc;">
-    <b>Background Chatbot</b>
+  <div class="p-4 bg-[#eee] border-solid border-b-1 border-[#ccc]">
+    <b class="font-aldrich sm:text-xl">Background Chatbot</b>
   </div>
 
   <div
     bind:this={chatContainer}
-    style="flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;"
+    class="flex-1 overflow-y-auto p-4 flex; flex-col gap-2"
   >
     {#each messages as msg}
       {#if msg.role === 'user'}
-        <div style="text-align: right;">
-          <span style="background: #d38a8a; color: white; padding: 6px 10px; border-radius: 8px; display: inline-block;">
+        <div class="align-right">
+          <span class="bg-[#d38a8a] text-white pt-2 pb-2 pr-4 pl-4 rounded inline">
             {msg.text}
           </span>
         </div>
       {:else}
-        <div style="text-align: left;">
+        <div class="align-left">
           {#if 'imageBase64' in msg}
             <img
               src={`data:${msg.mimeType};base64,${msg.imageBase64}`}
               alt="Edited result"
-              style="max-width: 100%; border: 1px solid #ccc;"
+              class="mx-w-full border-1 border-solid border-[#ccc]"
             />
           {:else}
-            <span style="background: #f0f0f0; padding: 6px 10px; border-radius: 8px; display: inline-block;">
+            <span class="bg-[#f0f0f0] pt-2 pb-2 pr-4 pl-4 rounded inline">
               {msg.text}
             </span>
           {/if}
@@ -107,24 +107,24 @@
     {/each}
 
     {#if isLoading}
-      <div style="text-align: left;">
-        <span style="background: #f0f0f0; padding: 6px 10px; border-radius: 8px; display: inline-block;">
+      <div class="align-left">
+        <span class="bg-[#f0f0f0] pt-2 pb-2 pr-4 pl-4 rounded inline">
           Loading...
         </span>
       </div>
     {/if}
   </div>
 
-  <div style="padding: 10px; border-top: 1px solid #ccc; display: flex; gap: 8px;">
+  <div class="p-4 border-t-1 border-solid border-[#ccc] flex gap-4;">
     <input
       type="text"
       bind:value={inputText}
       onkeydown={handleKeydown}
       placeholder="Describe the background..."
       disabled={isLoading}
-      style="flex: 1; padding: 6px; border: 1px solid #ccc;"
+      class="flex-1 padding-3 border-1 border-solid border-[#ccc]"
     />
-    <button onclick={sendMessage} disabled={isLoading} style="padding: 6px 12px;">
+    <button onclick={sendMessage} disabled={isLoading} class="pt-4 pb-4 pr-6 pl-6">
       Send
     </button>
   </div>
