@@ -13,7 +13,7 @@
     message = "";
 
     const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:5173/reset-password'
+      redirectTo: 'https://fliq-six.vercel.app/reset-password'
     });
 
     if (err) {
