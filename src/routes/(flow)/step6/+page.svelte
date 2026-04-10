@@ -50,24 +50,22 @@
     <ProgressBar />
 
     <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-      Use the AI assistant to customise the background of your photo strip.
+      Use the AI assistant to customize the background of your photo strip.
     </p>
   </div>
 
-  <!-- Main content: photo strip preview + chatbot side panel -->
-  <div class="flex-1 flex flex-col lg:flex-row gap-6 mt-8 min-h-0">
+  <div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-3 mt-8 min-h-0">
 
     <!-- Photo strip preview -->
-    <div class="flex flex-col items-center gap-4 lg:w-[55%]">
+    <div class="flex flex-col items-center gap-3 lg:w-[52%]">
       <div class="w-full max-w-sm flex-1 flex items-center justify-center">
         {#if currentImageBase64}
           <img
             src={`data:${currentMimeType};base64,${currentImageBase64}`}
             alt="Photo strip"
-            class="max-h-[60vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
+            class="max-h-[45vh]] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
           />
         {:else}
-          <!-- Placeholder when no image is available -->
           <div class="w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-8 text-center">
             <div class="grid grid-cols-1 gap-2 w-full">
               {#each [1, 2, 3] as _}
@@ -82,19 +80,11 @@
           </div>
         {/if}
       </div>
-
-      <!-- Next step button -->
-      <button
-        onclick={handleNext}
-        class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white font-aldrich
-               px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
-      >
-        Next Step →
-      </button>
+  
     </div>
-
+  
     <!-- Chatbot side panel -->
-    <div class="lg:w-[45%] h-[60vh] lg:h-auto">
+    <div class="lg:w-[48%] h-auto lg:-ml-2">
       <BackgroundChatbot
         currentImageBase64={currentImageBase64}
         currentMimeType={currentMimeType}
@@ -102,6 +92,16 @@
       />
     </div>
   </div>
+
+  <!-- Redesign later to match the back button (also think of user experience in terms of if the user doesn't interact with the chatbot and just wants to click next - maybe we can have a "skip chatbot and go to next step" button?) 
+    <button
+    onclick={handleNext}
+    class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white font-aldrich
+          px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
+  >
+    Next Step →
+  </button>
+  -->
 
   <Footer />
 </main>

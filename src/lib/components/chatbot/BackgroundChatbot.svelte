@@ -72,7 +72,7 @@
   }
 </script>
 
-<div class="flex flex-col h-full max-w-xl mx-auto w-full bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+<div class="flex flex-col h-full max-w-lg mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
 
   <!-- Header -->
   <div class="p-4 bg-gray-50 border-b border-gray-200">
