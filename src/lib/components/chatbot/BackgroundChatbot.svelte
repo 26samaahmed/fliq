@@ -72,20 +72,22 @@
   }
 </script>
 
-<div class="flex flex-col h-full border border-[#ccc] bg-white rounded">
+<div class="flex flex-col h-full max-w-xl mx-auto w-full bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
 
-  <div class="p-4 bg-[#eee] border-b border-[#ccc]">
-    <b class="font-aldrich sm:text-xl">Background Chatbot</b>
+  <!-- Header -->
+  <div class="p-4 bg-gray-50 border-b border-gray-200">
+    <b class="font-aldrich text-lg">Background Chatbot</b>
   </div>
 
+  <!-- Chat -->
   <div
     bind:this={chatContainer}
-    class="flex-1 overflow-y-auto p-4 flex flex-col gap-2"
+    class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50"
   >
     {#each messages as msg}
       {#if msg.role === 'user'}
         <div class="flex justify-end">
-          <span class="bg-[#d38a8a] text-white py-2 px-4 rounded">
+          <span class="font-aldrich bg-[#d38a8a] text-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm">
             {msg.text}
           </span>
         </div>
@@ -95,10 +97,10 @@
             <img
               src={`data:${msg.mimeType};base64,${msg.imageBase64}`}
               alt="Edited result"
-              class="max-w-full border border-[#ccc]"
+              class="max-w-[75%] rounded-xl border border-gray-200 shadow-sm"
             />
           {:else}
-            <span class="bg-[#f0f0f0] py-2 px-4 rounded">
+            <span class="font-aldrich bg-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-gray-200">
               {msg.text}
             </span>
           {/if}
@@ -108,23 +110,29 @@
 
     {#if isLoading}
       <div class="flex justify-start">
-        <span class="bg-[#f0f0f0] py-2 px-4 rounded">
+        <span class="bg-white font-aldrich py-2 px-4 rounded-2xl text-sm shadow-sm border border-gray-200">
           Loading...
         </span>
       </div>
     {/if}
   </div>
 
-  <div class="p-4 border-t border-[#ccc] flex gap-4">
+  <!-- Input -->
+  <div class="p-4 border-t border-gray-200 bg-white flex gap-3 items-center">
     <input
       type="text"
       bind:value={inputText}
       onkeydown={handleKeydown}
       placeholder="Describe the background..."
       disabled={isLoading}
-      class="flex-1 p-3 border border-[#ccc]"
+      class="flex-1 px-4 py-2 rounded-full border border-gray-300 font-aldrich text-sm focus:outline-none focus:ring-2 focus:ring-[#d38a8a]"
     />
-    <button onclick={sendMessage} disabled={isLoading} class="px-6 py-4">
+
+    <button
+      onclick={sendMessage}
+      disabled={isLoading}
+      class="px-5 py-2 rounded-full bg-[#d38a8a] text-white font-aldrich text-sm hover:opacity-90 transition"
+    >
       Send
     </button>
   </div>
