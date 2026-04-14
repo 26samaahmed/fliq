@@ -31,28 +31,6 @@
     goto('/step7');
   }
 
-  function removeImage() {
-    currentImageBase64 = null;
-    currentMimeType = 'image/png';
-    sessionStorage.removeItem('photoStripBase64');
-    sessionStorage.removeItem('photoStripMimeType');
-  }
-
-  function handleTestUpload(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      const [meta, base64] = dataUrl.split(',');
-      const mimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
-      currentImageBase64 = base64;
-      currentMimeType = mimeType;
-      sessionStorage.setItem('photoStripBase64', base64);
-      sessionStorage.setItem('photoStripMimeType', mimeType);
-    };
-    reader.readAsDataURL(file);
-  }
 </script>
 
 <main class="bg-[#333745] h-screen flex flex-col p-6 overflow-hidden">
@@ -83,19 +61,11 @@
     <div class="flex flex-col items-center gap-3 lg:w-[52%]">
       <div class="w-full max-w-sm flex-1 flex items-center justify-center">
         {#if currentImageBase64}
-          <div class="flex flex-col items-center gap-3">
-            <img
-              src={`data:${currentMimeType};base64,${currentImageBase64}`}
-              alt="Photo strip"
-              class="max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
-            />
-            <button
-              onclick={removeImage}
-              class="text-white/40 hover:text-white/80 font-b612 text-xs underline transition-colors"
-            >
-              Remove image
-            </button>
-          </div>
+          <img
+            src={`data:${currentMimeType};base64,${currentImageBase64}`}
+            alt="Photo strip"
+            class="max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
+          />
         {:else}
           <div class="w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-8 text-center">
             <div class="grid grid-cols-1 gap-2 w-full">
@@ -108,10 +78,6 @@
             <p class="font-b612 text-white/40 text-xs mt-2">
               Your photo strip will appear here after the photo capture steps.
             </p>
-            <label class="mt-2 cursor-pointer bg-white/10 hover:bg-white/20 text-white font-b612 text-xs px-4 py-2 rounded-full transition-colors">
-              Upload test image
-              <input type="file" accept="image/*" onchange={handleTestUpload} class="hidden" />
-            </label>
           </div>
         {/if}
       </div>
