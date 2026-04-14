@@ -152,7 +152,7 @@
       <!-- Video grid -->
       <div
         bind:this={videoGrid}
-        class="grid grid-cols-2 gap-3 w-full max-w-2xl"
+        class="grid gap-3 w-full max-w-2xl {isTwoUsers ? 'grid-cols-2' : 'grid-cols-1 justify-items-center'}"
         style="grid-auto-rows: 300px;"
       ></div>
 
