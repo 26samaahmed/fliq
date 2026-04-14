@@ -90,18 +90,9 @@
     <!-- Logged-out state -->
     <a
       href="/login"
-      class="
-        flex items-center gap-2
-        px-3 py-2
-        rounded-full
-        bg-white/10
-        hover:bg-white/20
-        text-white font-aldrich text-md
-        transition-colors
-      "
+      class="bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-[#B87070] hover:bg-[#C07070] transition duration-300"
     >
-      <img src={profileIcon} alt="Login" class="w-4 h-4" />
-      <span class="hidden sm:inline">Login</span>
+      Login
     </a>
 
   {/if}
