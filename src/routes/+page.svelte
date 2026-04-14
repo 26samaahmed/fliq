@@ -11,7 +11,7 @@
   <div class="flex-1">
     <div class="text-center mt-8">
       <h1 class="font-aldrich text-2xl sm:text-4xl text-white">Welcome!</h1>
-      <p class="font-b612-mono-regular text-base sm:text-lg text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
+      <p class="font-b612-mono-regular tracking-tight text-base sm:text-lg text-[#E8F1F2] mt-5 max-w-4xl mx-auto">
         <i>Create and customize photo memories with your friends in real time as fliq. brings the photo booth experience to you wherever you are.</i>
       </p>
       
