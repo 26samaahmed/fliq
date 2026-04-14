@@ -17,7 +17,7 @@
       
       <a
         href="/step1"
-        class="inline-block m-5 sm:m-7 bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-[#B87070] hover:bg-[#C07070] transition duration-300">
+        class="inline-block m-5 sm:m-7 bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
         Start Taking Pictures →
       </a>
     </div>
