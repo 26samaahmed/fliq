@@ -12,7 +12,7 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 async function isBackgroundEditRequest(prompt: string): Promise<boolean> {
   const result = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     contents: [
       {
         text:
@@ -30,6 +30,17 @@ async function isBackgroundEditRequest(prompt: string): Promise<boolean> {
   return answer === 'yes';
 }
 
+const TIMEOUT_MS = 60_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out. The model is taking too long — please try again.')), ms)
+    )
+  ]);
+}
+
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const { prompt, imageBase64, mimeType } = await request.json();
@@ -42,7 +53,7 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const allowed = await isBackgroundEditRequest(prompt.trim());
+    const allowed = await withTimeout(isBackgroundEditRequest(prompt.trim()), TIMEOUT_MS);
     if (!allowed) {
       return json(
         { error: 'I can only edit photo backgrounds. Try something like "a beach at sunset" or "outer space".' },
@@ -66,13 +77,14 @@ export const POST: RequestHandler = async ({ request }) => {
       }
     ];
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.1-flash-image-preview',
-      contents,
-      config: {
-        responseModalities: ['TEXT', 'IMAGE']
-      }
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-2.5-flash-image',
+        contents,
+        config: { responseModalities: ['TEXT', 'IMAGE'] }
+      }),
+      TIMEOUT_MS
+    );
 
     for (const part of response.candidates?.[0]?.content?.parts ?? []) {
       if (part.inlineData) {
