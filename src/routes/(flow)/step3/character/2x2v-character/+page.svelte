@@ -11,7 +11,12 @@
   import RilakkumaChar from '$lib/assets/Character-Frames/2x2v-characters/2x2v-rilakkuma.svg';
   import SanrioChar from '$lib/assets/Character-Frames/2x2v-characters/2x2v-sanrio.svg';
 
-  const href = '/step4';
+  import { browser } from '$app/environment';
+
+  const roomID = browser ? sessionStorage.getItem('roomID') : null;
+  const userCount = browser ? sessionStorage.getItem('userCount') : null;
+  const href = userCount === '2' && roomID ? `/step4/${roomID}` : '/step4';
+  
   const characters = [
     { src: AvatarChar, alt: 'Avatar' },
     { src: MiffyChar, alt: 'Miffy' },

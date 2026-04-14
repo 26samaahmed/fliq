@@ -18,7 +18,13 @@
 
   function selectLayout(frame: string) {
     sessionStorage.setItem('frame', frame);
-    window.location.href = '/step3';
+    const userCount = sessionStorage.getItem('userCount');
+    if (userCount === '2') {
+      const roomID = sessionStorage.getItem('roomID');
+      window.location.href = `/step3`;
+    } else {
+      window.location.href = '/step3';
+    }
   }
 
 // user room creation (based on selection)

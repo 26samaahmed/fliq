@@ -4,6 +4,9 @@
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
+  import { page } from '$app/stores';
+
+  $: roomID = $page.params.roomID || sessionStorage.getItem('roomID');
 
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
@@ -19,30 +22,22 @@
   const peers: Record<string, any> = {};
   
   onMount(async () => {
-    isTwoUsers = sessionStorage.getItem('userCount') === '2';
-
+    isTwoUsers = sessionStorage.getItem('userCount') === '2' || !!$page.params.roomID;
     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-
-    // Always show your own video
+    
     const myVideo = document.createElement('video');
     myVideo.muted = true;
     addVideoStream(myVideo, stream);
 
-    // Only do peer/socket logic for 2-user sessions
     if (isTwoUsers) {
-      const roomID = sessionStorage.getItem('roomID');
       const { io } = await import('socket.io-client');
       const { default: Peer } = await import('peerjs');
 
       socket = io(SERVER_URL);
-      myPeer = new Peer({
-        config: {
-          iceServers: [
-            { urls: 'stun:stun1.l.google.com:19302' },
-            { urls: 'stun:stun2.l.google.com:19302' }
-          ]
-        }
-      });
+      myPeer = new Peer({ config: { iceServers: [
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' }
+      ]}});
 
       myPeer.on('call', (call: any) => {
         call.answer(stream);
@@ -56,10 +51,7 @@
       });
 
       socket.on('user-disconnected', (userID: string) => {
-        if (peers[userID]) {
-          peers[userID].close();
-          peers[userID] = undefined;
-        }
+        if (peers[userID]) { peers[userID].close(); peers[userID] = undefined; }
       });
 
       myPeer.on('open', (id: string) => {
@@ -68,7 +60,6 @@
 
       socket.on('is-host', () => { isHost = true; });
       socket.on('room-full', () => { roomFull = true; });
-
       socket.on('take-photo', () => capturePhotos());
     }
   });
@@ -109,9 +100,9 @@
 
   function takePhoto() {
     if (isTwoUsers) {
-      socket.emit('take-photo'); // server broadcasts to both users
+      socket.emit('take-photo');
     } else {
-      capturePhotos(); // solo, just capture locally
+      capturePhotos();
     }
   }
 
