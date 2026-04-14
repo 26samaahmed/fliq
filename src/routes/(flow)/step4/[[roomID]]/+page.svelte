@@ -152,8 +152,8 @@
       <!-- Video grid -->
       <div
         bind:this={videoGrid}
-        class="grid gap-3 justify-center"
-        style="grid-template-columns: repeat(auto-fill, 300px); grid-auto-rows: 300px;"
+        class="grid grid-cols-2 gap-3 w-full max-w-2xl"
+        style="grid-auto-rows: 300px;"
       ></div>
 
       <!-- Controls -->

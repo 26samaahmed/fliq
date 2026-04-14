@@ -36,7 +36,7 @@
     isTwoUsers = sessionStorage.getItem('userCount') === '2';
     if (isTwoUsers) {
       const roomID = sessionStorage.getItem('roomID');
-      roomLink = `${window.location.origin}/room/${roomID}`;
+      roomLink = `${window.location.origin}/step4/${roomID}`;
     }
   });
 
