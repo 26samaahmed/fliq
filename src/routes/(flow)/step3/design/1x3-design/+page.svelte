@@ -16,7 +16,12 @@
   import Overlay5 from '$lib/assets/Design-Frames/1x3-design-overlay/1x3-design-overlay5.svg';
   import Overlay6 from '$lib/assets/Design-Frames/1x3-design-overlay/1x3-design-overlay6.svg';
 
-  const href = '/step4';
+  import { browser } from '$app/environment';
+
+  const roomID = browser ? sessionStorage.getItem('roomID') : null;
+  const userCount = browser ? sessionStorage.getItem('userCount') : null;
+  const href = userCount === '2' && roomID ? `/step4/${roomID}` : '/step4';
+  
   const designs = [
     { base: Base1, overlay: Overlay1, id: 1 },
     { base: Base2, overlay: Overlay2, id: 2 },
