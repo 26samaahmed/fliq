@@ -15,16 +15,21 @@ const rooms = {}
 const roomHosts = {}
 const MAX_USERS = 2
 
-app.set('view engine', 'ejs')
-app.use(express.static('src/lib/backend'))
+// FORMER CAMERA VIEW LOGIC USING EJS
 
-app.get('/', (req, res) => {
-    res.redirect(`/${uuidV4()}`)
-})
+// app.set('view engine', 'ejs')
+// app.use(express.static('src/lib/backend'))
 
-app.get('/:room', (req, res) => {
-    res.render('room', { roomID: req.params.room })
-})
+// app.get('/', (req, res) => {
+//     res.redirect(`/${uuidV4()}`)
+// })
+
+// app.get('/:room', (req, res) => {
+//     res.render('room', { roomID: req.params.room })
+// })
+
+import { handler } from './build/handler.js'; //sveltekit
+app.use(handler);
 
 io.on('connection', socket => {
     socket.on('join-room', (roomID, userID) => {
@@ -58,6 +63,10 @@ io.on('connection', socket => {
                 io.to(nextHost).emit('is-host')
             }
             socket.to(roomID).emit('user-disconnected', userID)
+        })
+
+        socket.on('take-photo', () => {
+            io.to(roomID).emit('take-photo')
         })
     })
 })

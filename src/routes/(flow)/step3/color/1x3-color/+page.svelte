@@ -13,7 +13,12 @@
   import BlackFrame from '$lib/assets/color-frames/1x3/1x3-frames/1x3black.png';
 
 
-  const href = '/step4';
+  import { browser } from '$app/environment';
+
+  const roomID = browser ? sessionStorage.getItem('roomID') : null;
+  const userCount = browser ? sessionStorage.getItem('userCount') : null;
+  const href = userCount === '2' && roomID ? `/step4/${roomID}` : '/step4';
+  
   const frames = [
     { src: YellowFrame, alt: 'Yellow' },
     { src: GreenFrame, alt: 'Green' },

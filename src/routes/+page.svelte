@@ -1,9 +1,8 @@
 <script>
   import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
-	import Footer from '$lib/components/footer/Footer.svelte';
+  import Footer from '$lib/components/footer/Footer.svelte';
 </script>
-
 
 <main class="bg-[#333745] min-h-screen flex flex-col p-6">
   <Header />
@@ -19,7 +18,7 @@
         href="/step1"
         class="font-aldrich inline-block text-sm sm:text-base m-5 sm:m-7 bg-[#DCDFF5] text-[#333745] font-aldrich px-4 py-2 rounded-full hover:bg-[#949FF2] transition duration-500">
         Start Taking Pictures →
-      </a>
+    </a>
     </div>
 
     <img src={landing_frame} alt="Frame 1" class="m-auto h-fit max-w-full" />
