@@ -72,11 +72,11 @@
   }
 </script>
 
-<div class="flex flex-col h-full max-w-lg mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+<div class="flex flex-col h-full max-w-lg mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden font-aldrich">
 
   <!-- Header -->
   <div class="p-4 bg-gray-50 border-b border-gray-200">
-    <b class="font-aldrich text-lg">Background Chatbot</b>
+    <b class="text-lg">Background Chatbot</b>
   </div>
 
   <!-- Chat -->
@@ -87,7 +87,7 @@
     {#each messages as msg}
       {#if msg.role === 'user'}
         <div class="flex justify-end">
-          <span class="font-aldrich bg-[#d38a8a] text-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm">
+          <span class="bg-[#d38a8a] text-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm">
             {msg.text}
           </span>
         </div>
@@ -100,7 +100,7 @@
               class="max-w-[75%] rounded-xl border border-gray-200 shadow-sm"
             />
           {:else}
-            <span class="font-aldrich bg-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-gray-200">
+            <span class="bg-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-gray-200">
               {msg.text}
             </span>
           {/if}
@@ -110,7 +110,7 @@
 
     {#if isLoading}
       <div class="flex justify-start">
-        <span class="bg-white font-aldrich py-2 px-4 rounded-2xl text-sm shadow-sm border border-gray-200">
+        <span class="bg-white py-2 px-4 rounded-2xl text-sm shadow-sm border border-gray-200">
           Loading...
         </span>
       </div>
@@ -125,13 +125,13 @@
       onkeydown={handleKeydown}
       placeholder="Describe the background..."
       disabled={isLoading}
-      class="flex-1 px-4 py-2 rounded-full border border-gray-300 font-aldrich text-sm focus:outline-none focus:ring-2 focus:ring-[#d38a8a]"
+      class="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#d38a8a]"
     />
 
     <button
       onclick={sendMessage}
       disabled={isLoading}
-      class="px-5 py-2 rounded-full bg-[#d38a8a] text-white font-aldrich text-sm hover:opacity-90 transition"
+      class="px-5 py-2 rounded-full bg-[#d38a8a] text-white text-sm hover:opacity-90 transition"
     >
       Send
     </button>

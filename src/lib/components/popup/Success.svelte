@@ -8,11 +8,11 @@
 </script>
 
 {#if open}
-  <div class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+  <div class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50 font-aldrich">
 
     <div class="bg-[#333745] rounded-xl border-white text-white shadow-2xl p-8 w-[380px] text-center animate-popup">
 
-      <div class="text-3xl mb-4 font-aldrich">{header}</div>
+      <div class="text-3xl mb-4">{header}</div>
 
       <h2 class="text-2xl font-semibold mb-2">
         {title}
