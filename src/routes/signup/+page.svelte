@@ -18,6 +18,8 @@
 	let popupHeader = '';
 
 	async function handleSignup() {
+		error = '';
+
 		const { error: err, data } = await supabase.auth.signUp({
 			email,
 			password,
@@ -27,19 +29,10 @@
 		if (err) {
 			error = err.message;
 		} else {
-			// Get the logged-in user
-			const {
-				data: { user: authUser },
-				error: getUserErr
-			} = await supabase.auth.getUser();
-
-			if (getUserErr) {
-				console.error('Error retrieving user after signup:', getUserErr);
-			} else if (authUser) {
-				user.set(authUser);
+			if (data.user) {
+				user.set(data.user);
 			}
 
-			// Show success popup
 			popupHeader = 'Account Created!';
 			popupTitle = 'Signup Successful';
 			popupMessage = "Your account is ready. Let's get you started.";
@@ -56,75 +49,83 @@
 <div class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
 	<Header />
 
-	<div class="text-center mt-8 flex-1">
-		<h1 class="text-2xl sm:text-4xl text-white">Sign up for Fliq!</h1>
+	<div class="flex-1 flex flex-col items-center justify-center text-center">
 
-    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
-      Create a free account or
-      <a href="/login" class="underline text-[#DCDFF5]">
-        log in
-      </a>.
-    </p>
+		<!-- Title -->
+		<h1 class="text-3xl sm:text-4xl text-white font-semibold">
+			Sign up for Fliq
+		</h1>
 
-    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleSignup}>
-      
-      <!-- Name -->
-      <input
-        type="text"
-        required
+		<p class="text-white/70 text-base sm:text-lg mt-3 max-w-md">
+			Create a free account or
+			<a href="/login" class="underline text-[#DCDFF5]">
+				log in
+			</a>.
+		</p>
+
+		<!-- Card -->
+		<form
+			class="mt-10 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-lg flex flex-col gap-5 text-white"
+			on:submit|preventDefault={handleSignup}
+		>
+
+			<!-- Name -->
+			<input
+				type="text"
+				required
 				name="full-name"
 				autocomplete="name"
 				placeholder="Full Name"
-        bind:value={name}
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
-      />
+				bind:value={name}
+				class="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-white/50 ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+			/>
 
-      <!-- Email -->
-      <input
-        type="email"
-        required
-        name="email"
-        autocomplete="email"
-        placeholder="Email"
-        bind:value={email}
-        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
-      />
+			<!-- Email -->
+			<input
+				type="email"
+				required
+				name="email"
+				autocomplete="email"
+				placeholder="Email"
+				bind:value={email}
+				class="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-white/50 ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+			/>
 
-      <!-- Password -->
-			<div class="relative w-72">
+			<!-- Password -->
+			<div class="relative w-full">
 				<input
 					type={showPassword ? 'text' : 'password'}
 					required
 					name="password"
-					autocomplete="current-password"
+					autocomplete="new-password"
 					placeholder="Password"
 					bind:value={password}
-					class="w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+					class="w-full px-4 py-2 pr-12 rounded-md bg-white/10 text-white placeholder-white/50 ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
 				/>
 
 				<button
 					type="button"
 					on:click={() => (showPassword = !showPassword)}
-					class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
+					class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/60 hover:text-white"
 					aria-label="Toggle password visibility"
 				>
 					{showPassword ? 'Hide' : 'Show'}
 				</button>
 			</div>
 
-
-			<!-- Error message -->
+			<!-- Error -->
 			{#if error}
 				<p class="text-red-400 text-sm">{error}</p>
 			{/if}
 
-			<!-- Submit -->
+			<!-- Submit Button -->
 			<button
 				type="submit"
-				class="bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
+				class="mt-2 self-center w-fit min-w-[180px] inline-flex items-center justify-center bg-[#D38A8A] text-white px-6 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
 			>
 				Sign Up
 			</button>
+
 		</form>
 
 		<SuccessPopup

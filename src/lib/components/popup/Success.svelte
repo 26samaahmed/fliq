@@ -23,7 +23,7 @@
       </p>
 
       <button
-        class="w-full font-medium bg-[#DCDFF5] text-[#333745] font-aldrich px-4 py-2 rounded-full hover:bg-[#949FF2] transition duration-500"
+        class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
         on:click={onContinue}
       >
         Continue

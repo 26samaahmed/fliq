@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Header from '$lib/components/header/Header.svelte';
-	import Footer from '$lib/components/footer/Footer.svelte';
-	import SuccessPopup from '$lib/components/popup/Success.svelte';
+  import Header from '$lib/components/header/Header.svelte';
+  import Footer from '$lib/components/footer/Footer.svelte';
+  import SuccessPopup from '$lib/components/popup/Success.svelte';
 
   import { user } from '$lib/stores/user';
   import { supabase } from '$lib/supabase';
@@ -18,37 +18,47 @@
   let popupHeader = "";
   let showForgotPassword = false;
 
-	async function handleLogin() {
-		const { error: err } = await supabase.auth.signInWithPassword({
-			email,
-			password
-		});
+  async function handleLogin() {
+    error = '';
 
-		if (err) {
-			error = err.message;
-		} else {
-			goto('/');
-		}
-	}
+    const { error: err } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-	function goToStep1() {
-		showSuccess = false;
-		goto('/step1');
-	}
+    if (err) {
+      error = err.message;
+    } else {
+      popupHeader = "Success!";
+      popupTitle = "Login Successful";
+      popupMessage = "You're now logged in.";
+      showSuccess = true;
+    }
+  }
+
+  function goToStep1() {
+    showSuccess = false;
+    goto('/step1');
+  }
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col p-6">
-	<Header />
+<div class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+  <Header />
 
-	<div class="text-center mt-8 flex-1">
-		<h1 class="font-aldrich text-2xl sm:text-4xl text-white">Welcome Back!</h1>
+  <div class="flex-1 flex flex-col items-center justify-center text-center">
 
-    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
-        Enter your credentials to access your account and start creating unforgettable photo memories with fliq.
+    <!-- Title -->
+    <h1 class="text-3xl sm:text-4xl text-white font-semibold">
+      Welcome Back!
+    </h1>
+
+    <p class="text-white/70 text-base sm:text-lg mt-3 max-w-xl">
+      Enter your credentials to access your account and start creating unforgettable photo memories with fliq.
     </p>
 
+    <!-- Card -->
     <form
-      class="mt-10 flex flex-col items-center gap-6 text-white"
+      class="mt-10 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-lg flex flex-col gap-5 text-white"
       on:submit|preventDefault={handleLogin}
     >
       
@@ -60,11 +70,11 @@
         autocomplete="email"
         placeholder="Email"
         bind:value={email}
-        class="font-aldrich w-60 sm:w-64 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+        class="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-white/50 ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
       />
 
       <!-- Password -->
-      <div class="relative w-full max-w-xs">
+      <div class="relative w-full">
         <input
           type={showPassword ? 'text' : 'password'}
           required
@@ -72,23 +82,24 @@
           autocomplete="current-password"
           placeholder="Password"
           bind:value={password}
-          class="font-aldrich w-full px-4 py-2 pr-10 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+          class="w-full px-4 py-2 pr-12 rounded-md bg-white/10 text-white placeholder-white/50 ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
         />
       
         <button
           type="button"
           on:click={() => (showPassword = !showPassword)}
-          class="font-aldrich absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/60 hover:text-white"
           aria-label="Toggle password visibility"
         >
           {showPassword ? 'Hide' : 'Show'}
         </button>
       </div>
 
+      <!-- Forgot password -->
       <a
         href="#"
         on:click|preventDefault={() => (showForgotPassword = true)}
-        class="font-aldrich text-sm text-[#DCDFF5] underline -mt-2"
+        class="text-sm text-[#DCDFF5] underline"
       >
         Forgot password?
       </a>
@@ -98,21 +109,22 @@
         <p class="text-red-400 text-sm">{error}</p>
       {/if}
 
-      <!-- Submit Button-->
+      <!-- Submit Button -->
       <button
         type="submit"
-        class="bg-[#DCDFF5] text-[#333745] font-aldrich px-8 py-2 rounded-lg hover:bg-[#949FF2] transition duration-300"
+        class="mt-2 self-center w-fit min-w-[180px] inline-flex items-center justify-center bg-[#D38A8A] text-white px-6 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
       >
         Login
       </button>
-    </form>
 
-    <p class="font-aldrich text-[#E8F1F2] mt-6">
-      Don't have an account?
-      <a href="/signup" class="underline text-[#DCDFF5]">
-        Sign Up
-      </a>
-    </p>
+      <!-- Sign up -->
+      <p class="text-[#E8F1F2] text-sm text-center mt-2">
+        Don't have an account?
+        <a href="/signup" class="underline text-[#DCDFF5]">
+          Sign Up
+        </a>
+      </p>
+    </form>
 
     <ForgotPassword
       open={showForgotPassword}
@@ -128,5 +140,5 @@
     />
   </div>
 
-	<Footer />
+  <Footer />
 </div>
