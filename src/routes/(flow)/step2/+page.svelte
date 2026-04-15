@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
@@ -17,18 +18,44 @@
 
   function selectLayout(frame: string) {
     sessionStorage.setItem('frame', frame);
-    window.location.href = '/step3';
+    const userCount = sessionStorage.getItem('userCount');
+    if (userCount === '2') {
+      const roomID = sessionStorage.getItem('roomID');
+      window.location.href = `/step3`;
+    } else {
+      window.location.href = '/step3';
+    }
   }
+
+// user room creation (based on selection)
+  let isTwoUsers = false;
+  let roomLink = '';
+  let copied = false;
+
+  onMount(() => {
+    isTwoUsers = sessionStorage.getItem('userCount') === '2';
+    if (isTwoUsers) {
+      const roomID = sessionStorage.getItem('roomID');
+      roomLink = `${window.location.origin}/step4/${roomID}`;
+    }
+  });
+
+  function copyLink() {
+    navigator.clipboard.writeText(roomLink);
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
+  }
+
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 2: Choose the Layout
       </h1>
 
@@ -36,6 +63,23 @@
     </div>
 
     <ProgressBar />
+
+    {#if isTwoUsers}
+    <div class="flex flex-col items-center gap-2 mt-4">
+      <p class="text-white/70 text-sm">
+        Share this link with your partner to start your photo session together:
+      </p>
+      <button
+        on:click={copyLink}
+        class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full transition duration-200">
+        {#if copied}
+          ✓ Copied!
+        {:else}
+          🧷 {roomLink}
+        {/if}
+      </button>
+    </div>
+  {/if}
   </div>
 
   <!-- Main content -->
@@ -69,7 +113,7 @@
             />
           </div>
 
-          <p class="font-aldrich text-base sm:text-xl text-white/80 text-center">
+          <p class="text-base sm:text-xl text-white/80 text-center">
             {layout.photos}
           </p>
         </button>

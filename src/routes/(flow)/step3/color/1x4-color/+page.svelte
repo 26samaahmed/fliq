@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
@@ -12,7 +12,12 @@
   import WhiteFrame from '$lib/assets/color-frames/1x4-frames/1x4/1x4white.png';
   import BlackFrame from '$lib/assets/color-frames/1x4-frames/1x4/1x4black.png';
 
-  const href = '/step4';
+  import { browser } from '$app/environment';
+
+  const roomID = browser ? sessionStorage.getItem('roomID') : null;
+  const userCount = browser ? sessionStorage.getItem('userCount') : null;
+  const href = userCount === '2' && roomID ? `/step4/${roomID}` : '/step4';
+  
   const frames = [
     { src: YellowFrame, alt: 'Yellow' },
     { src: GreenFrame, alt: 'Green' },

@@ -53,46 +53,44 @@
 	}
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col p-6">
+<div class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
 	<Header />
 
 	<div class="text-center mt-8 flex-1">
-		<h1 class="font-aldrich text-2xl sm:text-4xl text-white">Sign up for Fliq!</h1>
+		<h1 class="text-2xl sm:text-4xl text-white">Sign up for Fliq!</h1>
 
-		<p
-			class="font-b612-mono-regular tracking-tight text-base sm:text-lg text-[#E8F1F2] mt-5 max-w-3xl mx-auto"
-		>
-			Create a free account or
-			<a href="/login" class="underline text-[#DCDFF5]"> log in </a>.
-		</p>
+    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-3xl mx-auto">
+      Create a free account or
+      <a href="/login" class="underline text-[#DCDFF5]">
+        log in
+      </a>.
+    </p>
 
-		<form
-			class="mt-10 flex flex-col items-center gap-6 text-white"
-			on:submit|preventDefault={handleSignup}
-		>
-			<!-- Name -->
-			<input
-				type="text"
-				required
+    <form class="mt-10 flex flex-col items-center gap-6 text-white" on:submit|preventDefault={handleSignup}>
+      
+      <!-- Name -->
+      <input
+        type="text"
+        required
 				name="full-name"
 				autocomplete="name"
 				placeholder="Full Name"
-				bind:value={name}
-				class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
-			/>
+        bind:value={name}
+        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+      />
 
-			<!-- Email -->
-			<input
-				type="email"
-				required
-				name="email"
-				autocomplete="email"
-				placeholder="Email"
-				bind:value={email}
-				class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
-			/>
+      <!-- Email -->
+      <input
+        type="email"
+        required
+        name="email"
+        autocomplete="email"
+        placeholder="Email"
+        bind:value={email}
+        class="w-72 px-4 py-2 rounded-md ring-2 ring-[#DCDFF5] focus:ring-2 focus:ring-[#949FF2] focus:outline-none"
+      />
 
-			<!-- Password -->
+      <!-- Password -->
 			<div class="relative w-72">
 				<input
 					type={showPassword ? 'text' : 'password'}
@@ -114,6 +112,7 @@
 				</button>
 			</div>
 
+
 			<!-- Error message -->
 			{#if error}
 				<p class="text-red-400 text-sm">{error}</p>
@@ -122,7 +121,7 @@
 			<!-- Submit -->
 			<button
 				type="submit"
-				class="bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
+				class="bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
 			>
 				Sign Up
 			</button>

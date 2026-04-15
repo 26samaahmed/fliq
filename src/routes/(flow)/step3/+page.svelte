@@ -15,14 +15,14 @@
   ];
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 3: Pick Strip Style
       </h1>
 
@@ -57,7 +57,7 @@
             "
             style="background-color: {frame.color};"
           >
-            <p class="font-aldrich text-lg sm:text-2xl text-white text-center">
+            <p class="text-lg sm:text-2xl text-white text-center">
               {frame.name}
             </p>
           </div>

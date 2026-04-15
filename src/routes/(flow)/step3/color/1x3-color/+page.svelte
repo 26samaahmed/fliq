@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
@@ -13,7 +13,12 @@
   import BlackFrame from '$lib/assets/color-frames/1x3/1x3-frames/1x3black.png';
 
 
-  const href = '/step4';
+  import { browser } from '$app/environment';
+
+  const roomID = browser ? sessionStorage.getItem('roomID') : null;
+  const userCount = browser ? sessionStorage.getItem('userCount') : null;
+  const href = userCount === '2' && roomID ? `/step4/${roomID}` : '/step4';
+  
   const frames = [
     { src: YellowFrame, alt: 'Yellow' },
     { src: GreenFrame, alt: 'Green' },
@@ -26,14 +31,14 @@
   ];
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 3: Pick Strip Style
       </h1>
 
@@ -42,7 +47,7 @@
 
     <ProgressBar />
 
-    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
       Select a Color
     </p>
   </div>

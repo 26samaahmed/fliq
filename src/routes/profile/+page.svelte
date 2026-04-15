@@ -58,10 +58,10 @@
 
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6">
+<div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6 font-aldrich">
   <Header />
 
-  <div class="flex-1 font-aldrich text-white max-w-7xl mx-auto w-full">
+  <div class="flex-1 text-white max-w-7xl mx-auto w-full">
     
     <h1 class="text-2xl sm:text-4xl pb-8">
       Your Profile
