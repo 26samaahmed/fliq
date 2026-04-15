@@ -48,14 +48,14 @@
 
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 2: Choose the Layout
       </h1>
 
@@ -66,12 +66,12 @@
 
     {#if isTwoUsers}
     <div class="flex flex-col items-center gap-2 mt-4">
-      <p class="font-aldrich text-white/70 text-sm">
+      <p class="text-white/70 text-sm">
         Share this link with your partner to start your photo session together:
       </p>
       <button
         on:click={copyLink}
-        class="font-aldrich text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full transition duration-200">
+        class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full transition duration-200">
         {#if copied}
           ✓ Copied!
         {:else}
@@ -113,7 +113,7 @@
             />
           </div>
 
-          <p class="font-aldrich text-base sm:text-xl text-white/80 text-center">
+          <p class="text-base sm:text-xl text-white/80 text-center">
             {layout.photos}
           </p>
         </button>

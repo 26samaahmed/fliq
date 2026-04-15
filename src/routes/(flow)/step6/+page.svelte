@@ -33,7 +33,7 @@
 
 </script>
 
-<main class="bg-[#333745] h-screen flex flex-col p-6 overflow-hidden">
+<main class="bg-[#333745] h-screen flex flex-col p-6 overflow-hidden font-aldrich">
   <Header />
 
   <!-- Top bar -->
@@ -41,7 +41,7 @@
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 6: Customize Background
       </h1>
 
@@ -50,7 +50,7 @@
 
     <ProgressBar />
 
-    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
       Use the AI assistant to customize the background of your photo strip.
     </p>
   </div>
@@ -97,8 +97,7 @@
   <!-- Redesign later to match the back button (also think of user experience in terms of if the user doesn't interact with the chatbot and just wants to click next - maybe we can have a "skip chatbot and go to next step" button?) 
     <button
     onclick={handleNext}
-    class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white font-aldrich
-          px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
+    class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white           px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
   >
     Next Step →
   </button>

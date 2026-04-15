@@ -78,14 +78,14 @@
 
       <div class="flex gap-4 mt-4">
         <button
-          class="flex-1 bg-[#DCDFF5] text-[#333745] font-aldrich px-4 py-2 rounded-full hover:bg-[#949FF2]"
+          class="flex-1 items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
           on:click={handleSend}
         >
           Send Link
         </button>
 
         <button
-          class="flex-1 border border-white text-white font-aldrich px-4 py-2 rounded-full hover:bg-white/20"
+          class="flex-1 inline-flex items-center justify-center bg-white/10 text-white px-8 py-2 rounded-lg border-2 border-white/50 hover:bg-white/20 transition duration-300"
           on:click={handleCancel}
         >
           Cancel

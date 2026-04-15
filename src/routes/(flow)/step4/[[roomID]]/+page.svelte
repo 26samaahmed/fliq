@@ -116,14 +116,14 @@
   });
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 4: Take Your Photos
       </h1>
 
@@ -133,7 +133,7 @@
     <ProgressBar />
 
     <!-- 👇 Description under progress bar -->
-    <p class="text-center font-aldrich text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
       Get ready! We’ll take 8 photos. Hit the button when you’re ready.
     </p>
   </div>
@@ -141,8 +141,8 @@
   <!-- Main content -->
   {#if roomFull}
     <div class="flex-1 flex flex-col items-center justify-center text-center">
-      <p class="font-b612-mono-regular text-white text-lg">This room is full.</p>
-      <a href="/" class="font-b612-mono-regular mt-4 bg-[#DCDFF5] text-[#333745] px-4 py-2 rounded-full hover:bg-[#949FF2] transition duration-500">
+      <p class="text-white text-lg">This room is full.</p>
+      <a href="/" class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-4 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
         ← Go Home
       </a>
     </div>
@@ -163,13 +163,13 @@
         {#if !isTwoUsers || isHost}
           <button
             onclick={takePhoto}
-            class="font-b612-mono-regular bg-[#e94560] text-white font-semibold px-6 py-2 rounded-lg hover:opacity-85 transition duration-200">
+            class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
             Take Photo
           </button>
         {/if}
         <button
           onclick={clearPhotos}
-          class="font-b612-mono-regular bg-[#333745] text-white font-semibold px-6 py-2 rounded-lg border border-[#e94560] hover:opacity-85 transition duration-200">
+          class="bg-[#333745] text-white font-semibold px-6 py-2 rounded-lg border border-[#D38A8A] hover:opacity-85 transition duration-200">
           Clear
         </button>
       </div>

@@ -8,11 +8,11 @@
 </script>
 
 {#if open}
-  <div class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+  <div class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50 font-aldrich">
 
     <div class="bg-[#333745] rounded-xl border-white text-white shadow-2xl p-8 w-[380px] text-center animate-popup">
 
-      <div class="text-3xl mb-4 font-aldrich">{header}</div>
+      <div class="text-3xl mb-4">{header}</div>
 
       <h2 class="text-2xl font-semibold mb-2">
         {title}
@@ -23,7 +23,7 @@
       </p>
 
       <button
-        class="w-full font-medium bg-[#DCDFF5] text-[#333745] font-aldrich px-4 py-2 rounded-full hover:bg-[#949FF2] transition duration-500"
+        class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
         on:click={onContinue}
       >
         Continue

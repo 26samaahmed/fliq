@@ -43,7 +43,7 @@
   });
 </script>
 
-<div class="flex items-center justify-between mb-8">
+<div class="flex items-center justify-between mb-8 font-aldrich">
   
   <a href="/" class="font-aclonica text-xl sm:text-2xl text-[#FE5F56]">
     fliq.
@@ -90,15 +90,7 @@
     <!-- Logged-out state -->
     <a
       href="/login"
-      class="
-        flex items-center gap-2
-        px-3 py-2
-        rounded-full
-        bg-white/10
-        hover:bg-white/20
-        text-white font-aldrich text-md
-        transition-colors
-      "
+      class="flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-md transition-colors"
     >
       <img src={profileIcon} alt="Login" class="w-4 h-4" />
       <span class="hidden sm:inline">Login</span>

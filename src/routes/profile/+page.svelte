@@ -58,10 +58,10 @@
 
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6">
+<div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6 font-aldrich">
   <Header />
 
-  <div class="flex-1 font-aldrich text-white max-w-7xl mx-auto w-full">
+  <div class="flex-1 text-white max-w-7xl mx-auto w-full">
     
     <h1 class="text-2xl sm:text-4xl pb-8">
       Your Profile
@@ -134,7 +134,7 @@
                 No albums yet!
               </p>
 
-              <button class="bg-[#949FF2] px-5 py-2 rounded hover:bg-[#7A86D9] transition">
+              <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
                 Create your first album
               </button>
 
@@ -167,7 +167,7 @@
 
             <!-- Create Album -->
             <div class="flex justify-center mt-10">
-              <button class="bg-[#949FF2] px-5 py-2 rounded hover:bg-[#7A86D9] transition">
+              <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
                 Create Album
               </button>
             </div>

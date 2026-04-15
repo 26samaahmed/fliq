@@ -5,7 +5,6 @@
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
-  import Choice from '$lib/components/buttons/Choice.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
 
   import one_user_icon from '$lib/assets/one-user-icon.svg';
@@ -27,14 +26,14 @@
 
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
   <Header />
 
   <div class="mt-4">
     <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
       <BackButton />
 
-      <h1 class="font-aldrich text-lg sm:text-2xl text-white text-center flex-1">
+      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
         Step 1: Number of Users
       </h1>
 
@@ -60,7 +59,7 @@
 
         <button
           on:click={() => selectUsers(1)}
-          class="inline-flex items-center justify-center bg-[#D38A8A] hover:bg-[#F9D0D0] active:scale-95 text-white text-sm sm:text-lg font-aldrich hover:text-[#333745] py-2 px-5 sm:px-6 border border-white hover:border-transparent rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+          class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
           1 User
         </button>
       </div>
@@ -77,7 +76,7 @@
 
         <button
           on:click={() => selectUsers(2)}
-          class="inline-flex items-center justify-center bg-[#D38A8A] hover:bg-[#F9D0D0] active:scale-95 text-white text-sm sm:text-lg font-aldrich hover:text-[#333745] py-2 px-5 sm:px-6 border border-white hover:border-transparent rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+          class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
           2 Users
         </button>
       </div>
