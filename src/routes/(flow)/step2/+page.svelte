@@ -65,21 +65,25 @@
     <ProgressBar />
 
     {#if isTwoUsers}
-    <div class="flex flex-col items-center gap-2 mt-4">
-      <p class="text-white/70 text-sm">
-        Share this link with your partner to start your photo session together:
-      </p>
-      <button
-        on:click={copyLink}
-        class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full transition duration-200">
-        {#if copied}
-          ✓ Copied!
-        {:else}
-          🧷 {roomLink}
-        {/if}
-      </button>
-    </div>
-  {/if}
+      <div class="flex flex-col items-center gap-3 mt-4">
+    
+        <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+          Invite your partner to join
+        </p>
+    
+        <button
+          on:click={copyLink}
+          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2 rounded-full transition duration-200"
+        >
+          {#if copied}
+            ✓ Link copied!
+          {:else}
+            🧷 Copy Invite Link
+          {/if}
+        </button>
+    
+      </div>
+    {/if}
   </div>
 
   <!-- Main content -->

@@ -54,7 +54,7 @@
 
       <!-- Profile Button -->
       <button
-        class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+        class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
         on:click={() => (showDropdown = !showDropdown)}
       >
         <img src={profileIcon} alt="Profile" class="w-5 h-5 sm:w-6 sm:h-6" />
@@ -90,7 +90,7 @@
     <!-- Logged-out state -->
     <a
       href="/login"
-      class="flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-md transition-colors"
+      class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-md transition-colors"
     >
       <img src={profileIcon} alt="Login" class="w-4 h-4" />
       <span class="hidden sm:inline">Login</span>

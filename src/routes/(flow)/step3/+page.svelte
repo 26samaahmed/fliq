@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
 
   import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
 
   const frame = browser ? (sessionStorage.getItem('frame') ?? '1x3') : '1x3';
 
@@ -13,6 +14,25 @@
     { name: 'Color', color: '#89CDEF', page_ref: `/step3/color/${frame}-color` },
     { name: 'Character', color: '#ABCF93', page_ref: `/step3/character/${frame}-character` }
   ];
+
+  let isTwoUsers = false;
+  let roomLink = '';
+  let copied = false;
+
+  onMount(() => {
+    isTwoUsers = sessionStorage.getItem('userCount') === '2';
+
+    if (isTwoUsers) {
+      const roomID = sessionStorage.getItem('roomID');
+      roomLink = `${window.location.origin}/step4/${roomID}`;
+    }
+  });
+
+  function copyLink() {
+    navigator.clipboard.writeText(roomLink);
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
+  }
 </script>
 
 <main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
@@ -30,10 +50,32 @@
     </div>
 
     <ProgressBar />
+   
+    {#if isTwoUsers}
+      <div class="flex flex-col items-center gap-3 mt-4">
+    
+        <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+          Invite your partner to join
+        </p>
+    
+        <button
+          on:click={copyLink}
+          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2 rounded-full transition duration-200"
+        >
+          {#if copied}
+            ✓ Link copied!
+          {:else}
+            🧷 Copy Invite Link
+          {/if}
+        </button>
+    
+      </div>
+    {/if}
+
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
+  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-16">
     <div class="flex flex-wrap justify-center gap-6 sm:gap-10">
 
       {#each frame_styles as frame}
