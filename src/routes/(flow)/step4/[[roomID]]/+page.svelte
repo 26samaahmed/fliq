@@ -77,10 +77,18 @@
     video.setAttribute('autoplay', '');
     video.setAttribute('playsinline', '');
     video.muted = true;
+
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.objectFit = 'cover';
+    video.style.borderRadius = '8px';
+
     video.addEventListener('loadedmetadata', () => video.play());
+
     stream.getTracks().forEach(track => {
       track.addEventListener('ended', () => video.remove());
     });
+
     videoGrid.appendChild(video);
   }
 
