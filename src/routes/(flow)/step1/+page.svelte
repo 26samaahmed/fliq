@@ -46,7 +46,7 @@
 
   <!-- Main content -->
   <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
-    <div class="flex justify-center gap-24 sm:gap-64">
+    <div class="flex justify-center gap-12 sm:gap-32 lg:gap-64">
 
       <!-- 1 User -->
       <div

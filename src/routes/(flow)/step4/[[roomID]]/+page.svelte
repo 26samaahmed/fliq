@@ -160,8 +160,8 @@
       <!-- Video grid -->
       <div
         bind:this={videoGrid}
-        class="grid gap-3 mx-auto {isTwoUsers ? 'w-full max-w-2xl grid-cols-2' : 'grid-cols-1'}"
-        style="grid-auto-rows: 300px; grid-template-columns: {isTwoUsers ? '' : '300px'};"
+        class="grid gap-3 mx-auto w-full {isTwoUsers ? 'max-w-3xl grid-cols-2' : 'max-w-xl grid-cols-1'}"
+        style="grid-auto-rows: {isTwoUsers ? 'clamp(200px, 38vh, 420px)' : 'clamp(260px, 52vh, 560px)'};"
       ></div>
 
       <!-- Controls -->
@@ -187,8 +187,8 @@
       <!-- Captured photos -->
       <div
         bind:this={photosDiv}
-        class="grid gap-3 justify-center w-full max-w-3xl"
-        style="grid-template-columns: repeat(auto-fill, 200px); grid-auto-rows: 200px;"
+        class="grid gap-3 w-full max-w-3xl"
+        style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); grid-auto-rows: clamp(140px, 22vh, 220px);"
       ></div>
 
     </div>

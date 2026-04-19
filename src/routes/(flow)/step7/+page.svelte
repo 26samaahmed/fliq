@@ -30,7 +30,7 @@
   <div class="flex-1 flex flex-col items-center justify-center">
     <!-- Final preview here -->
 
-    <button class="mt-8 px-6 py-3 bg-[#D38A8A] text-white font-bold rounded-lg hover:bg-[#c77b7b] transition">
+    <button class="mt-8 bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
       Add to Album
     </button>
   </div>
