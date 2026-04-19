@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
@@ -16,7 +16,7 @@
       
       <a
         href="/step1"
-        class="font-aldrich inline-block m-5 sm:m-7 bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
+        class="font-aldrich text-sm md:text-base inline-block m-5 sm:m-7 bg-[#D38A8A] text-white font-aldrich px-6 py-1 md:px-8 md:py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
         Start Taking Pictures →
     </a>
     </div>
