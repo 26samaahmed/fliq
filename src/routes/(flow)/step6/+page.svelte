@@ -11,20 +11,19 @@
   let currentMimeType = $state('image/png');
 
   $effect(() => {
-    const stored = sessionStorage.getItem('photoStripBase64');
-    const storedMime = sessionStorage.getItem('photoStripMimeType');
-    if (stored) {
-      currentImageBase64 = stored;
-      currentMimeType = storedMime ?? 'image/png';
+    const indices: number[] = JSON.parse(sessionStorage.getItem('selectedIndices') ?? '[]');
+    const photos: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
+    const first = indices.length > 0 ? photos[indices[0]] : null;
+    if (first) {
+      const [meta, base64] = first.split(',');
+      currentImageBase64 = base64;
+      currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
     }
   });
 
   function handleImageUpdate(imageBase64: string, mimeType: string) {
     currentImageBase64 = imageBase64;
     currentMimeType = mimeType;
-    // Persist the latest edited version so step 7 can pick it up
-    sessionStorage.setItem('photoStripBase64', imageBase64);
-    sessionStorage.setItem('photoStripMimeType', mimeType);
   }
 
   function handleNext() {
