@@ -15,7 +15,7 @@
 
   let videoGrid: HTMLDivElement;
   let canvas: HTMLCanvasElement;
-  let photosDiv: HTMLDivElement;
+  //let photosDiv: HTMLDivElement;
   let isHost = false;
   let roomFull = false;
   let isTwoUsers = false;
@@ -136,9 +136,9 @@
     }
   }
 
-  function clearPhotos() {
-    photosDiv.innerHTML = '';
-  }
+  // function clearPhotos() {
+  //   photosDiv.innerHTML = '';
+  // }
 
   onDestroy(() => {
     socket?.disconnect();
