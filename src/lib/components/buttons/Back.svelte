@@ -12,7 +12,7 @@
 
 <button
   on:click={goBack}
-  class="text-white text-base sm:text-lg font-aldrich px-3 py-2 rounded-full hover:bg-white/10 transition-colors duration-300"
+  class="self-start sm:self-auto -mt-2 sm:mt-0 mb-4 sm:mb-0 font-aldrich text-sm bg-white/10 text-white px-3 py-2 rounded-lg hover:bg-white/20 transition-colors duration-300"
 >
   ← Back
 </button>
