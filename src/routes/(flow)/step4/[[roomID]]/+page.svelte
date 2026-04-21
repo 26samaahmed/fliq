@@ -5,10 +5,13 @@
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
   import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
 
   $: roomID = $page.params.roomID || sessionStorage.getItem('roomID');
 
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
+  const TOTAL_PHOTOS = 8;
+  const DELAY_MS = 800;
 
   let videoGrid: HTMLDivElement;
   let canvas: HTMLCanvasElement;
@@ -16,6 +19,8 @@
   let isHost = false;
   let roomFull = false;
   let isTwoUsers = false;
+  let isCapturing = false;
+  let photosTaken = 0;
 
   let socket: any;
   let myPeer: any;
@@ -60,7 +65,7 @@
 
       socket.on('is-host', () => { isHost = true; });
       socket.on('room-full', () => { roomFull = true; });
-      socket.on('take-photo', () => capturePhotos());
+      socket.on('take-photo', () => startCapture());
     }
   });
 
@@ -92,25 +97,42 @@
     videoGrid.appendChild(video);
   }
 
-  function capturePhotos() {
+  function captureFrame(): string[] {
     const videos = videoGrid.querySelectorAll('video');
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return [];
+    const frames: string[] = [];
     videos.forEach(video => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0);
-      const img = document.createElement('img');
-      img.src = canvas.toDataURL('image/png');
-      photosDiv.appendChild(img);
+      frames.push(canvas.toDataURL('image/png'));
     });
+    return frames;
   }
 
-  function takePhoto() {
+  async function startCapture() {
+    if (isCapturing) return;
+    isCapturing = true;
+    photosTaken = 0;
+    const allPhotos: string[] = [];
+
+    for (let i = 0; i < TOTAL_PHOTOS; i++) {
+      allPhotos.push(...captureFrame());
+      photosTaken = i + 1;
+      if (i < TOTAL_PHOTOS - 1) await new Promise(r => setTimeout(r, 800));
+    }
+
+    sessionStorage.setItem('capturedPhotos', JSON.stringify(allPhotos));
+    goto('/step5');
+  }
+
+  function handleTakePhoto() {
     if (isTwoUsers) {
       socket.emit('take-photo');
+      startCapture();
     } else {
-      capturePhotos();
+      startCapture();
     }
   }
 
@@ -142,7 +164,11 @@
 
     <!-- 👇 Description under progress bar -->
     <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-      Get ready! We’ll take 8 photos. Hit the button when you’re ready.
+      {#if isCapturing}
+        Taking photo {photosTaken} of {TOTAL_PHOTOS}...
+      {:else}
+        Get ready! We'll take {TOTAL_PHOTOS} photos. Hit the button when you're ready.
+      {/if}
     </p>
   </div>
 
@@ -165,31 +191,36 @@
       ></div>
 
       <!-- Controls -->
-      <div class="flex gap-3">
-        <!-- 2-user: only host can take photo -->
-        <!-- 1-user: always show button -->
-        {#if !isTwoUsers || isHost}
-          <button
-            onclick={takePhoto}
-            class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
-            Take Photo
-          </button>
-        {/if}
+      {#if isCapturing}
+        <div class="flex gap-2">
+          {#each Array(TOTAL_PHOTOS) as _, i}
+            <div class="w-3 h-3 rounded-full border-2 border-white transition-all duration-300
+              {i < photosTaken ? 'bg-[#D38A8A]' : 'bg-transparent'}">
+            </div>
+          {/each}
+        </div>
+      {/if}
+
+      {#if !isCapturing && (!isTwoUsers || isHost)}
         <button
-          onclick={clearPhotos}
-          class="bg-[#333745] text-white font-semibold px-6 py-2 rounded-lg border border-[#D38A8A] hover:opacity-85 transition duration-200">
-          Clear
+          onclick={handleTakePhoto}
+          class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
+          Take Photos
         </button>
-      </div>
+      {/if}
+
+      {#if !isCapturing && isTwoUsers && !isHost}
+        <p class="text-white/60 text-sm">Waiting for host to start...</p>
+      {/if}
 
       <canvas bind:this={canvas} class="hidden"></canvas>
 
       <!-- Captured photos -->
-      <div
+      <!-- <div
         bind:this={photosDiv}
         class="grid gap-3 justify-center w-full max-w-3xl"
         style="grid-template-columns: repeat(auto-fill, 200px); grid-auto-rows: 200px;"
-      ></div>
+      ></div> -->
 
     </div>
   {/if}
