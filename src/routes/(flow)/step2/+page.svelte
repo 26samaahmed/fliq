@@ -87,8 +87,8 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
-    <div class="flex flex-row flex-wrap justify-center gap-10 sm:gap-16">
+  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-24">
+    <div class="grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-16 justify-items-center">
 
       {#each layouts as layout (layout.frame)}
         <button

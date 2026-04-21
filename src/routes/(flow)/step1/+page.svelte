@@ -46,42 +46,32 @@
 
   <!-- Main content -->
   <div class="flex-1 flex items-start justify-center pt-16 sm:pt-24">
-    <div class="flex justify-center gap-24 sm:gap-64">
+    <div class="flex justify-center gap-6 sm:gap-20 lg:gap-40">
 
       <!-- 1 User -->
-      <div
-        on:click={() => selectUsers(1)}
-        class="flex flex-col items-center gap-4 group cursor-pointer p-4 rounded-xl border-2 border-transparent hover:border-[#DCDFF5] transition"
-      >
+      <div class="flex flex-col items-center gap-4">
         <div class="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
-          <img
-            src={one_user_icon}
-            alt="One User Icon"
-            class="max-w-full max-h-full object-contain transition-transform duration-200 group-hover:scale-110"
-          />
+          <img src={one_user_icon} alt="One User Icon" class="max-w-full max-h-full object-contain" />
         </div>
-
-        <span class="text-white text-sm sm:text-base">
+        <button
+          on:click={() => selectUsers(1)}
+          class="font-aldrich text-sm md:text-base bg-[#D38A8A] text-white px-6 py-1 md:px-8 md:py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
+        >
           1 User
-        </span>
+        </button>
       </div>
 
       <!-- 2 Users -->
-      <div
-        on:click={() => selectUsers(2)}
-        class="flex flex-col items-center gap-4 group cursor-pointer p-4 rounded-xl border-2 border-transparent hover:border-[#DCDFF5] transition"
-      >
+      <div class="flex flex-col items-center gap-4">
         <div class="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
-          <img
-            src={two_users_icon}
-            alt="Two Users Icon"
-            class="max-w-full max-h-full object-contain transition-transform duration-200 group-hover:scale-110"
-          />
+          <img src={two_users_icon} alt="Two Users Icon" class="max-w-full max-h-full object-contain" />
         </div>
-
-        <span class="text-white text-sm sm:text-base">
+        <button
+          on:click={() => selectUsers(2)}
+          class="font-aldrich text-sm md:text-base bg-[#D38A8A] text-white px-6 py-1 md:px-8 md:py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
+        >
           2 Users
-        </span>
+        </button>
       </div>
 
     </div>

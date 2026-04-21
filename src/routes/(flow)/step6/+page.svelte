@@ -55,22 +55,22 @@
     </p>
   </div>
 
-  <div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-3 mt-8 min-h-0">
+  <div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-3 mt-4 sm:mt-8 min-h-0">
 
     <!-- Photo strip preview -->
-    <div class="flex flex-col items-center gap-3 lg:w-[52%]">
-      <div class="w-full max-w-sm flex-1 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-3 lg:w-[52%] shrink-0">
+      <div class="w-full max-w-sm flex items-center justify-center">
         {#if currentImageBase64}
           <img
             src={`data:${currentMimeType};base64,${currentImageBase64}`}
             alt="Photo strip"
-            class="max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
+            class="max-h-[28vh] lg:max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
           />
         {:else}
-          <div class="w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-8 text-center">
+          <div class="w-40 sm:w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-6 text-center">
             <div class="grid grid-cols-1 gap-2 w-full">
               {#each [1, 2, 3] as _}
-                <div class="w-full h-20 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center">
+                <div class="w-full h-14 sm:h-20 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center">
                   <span class="text-white/20 text-2xl">⬜</span>
                 </div>
               {/each}
@@ -81,11 +81,10 @@
           </div>
         {/if}
       </div>
-  
     </div>
-  
+
     <!-- Chatbot side panel -->
-    <div class="lg:w-[48%] h-[60vh] lg:h-full lg:-ml-2">
+    <div class="lg:w-[48%] h-[48vh] lg:h-full lg:-ml-2">
       <BackgroundChatbot
         currentImageBase64={currentImageBase64}
         currentMimeType={currentMimeType}

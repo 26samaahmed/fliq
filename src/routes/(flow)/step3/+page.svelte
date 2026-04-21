@@ -75,31 +75,20 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-16">
-    <div class="flex flex-wrap justify-center gap-6 sm:gap-10">
+  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-16">
+    <div class="flex justify-center gap-4 sm:gap-10">
 
       {#each frame_styles as frame}
         <a
           href={frame.page_ref}
-          class="
-            group
-            flex flex-col items-center
-            cursor-pointer
-          "
+          class="group flex flex-col items-center cursor-pointer"
         >
           <!-- Color preview box -->
           <div
-            class="
-              w-32 h-40
-              sm:w-56 sm:h-64
-              rounded-lg
-              flex items-center justify-center
-              transition-transform duration-200
-              group-hover:scale-105
-            "
+            class="w-24 h-32 sm:w-56 sm:h-64 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
             style="background-color: {frame.color};"
           >
-            <p class="text-lg sm:text-2xl text-white text-center">
+            <p class="text-sm sm:text-2xl text-white text-center">
               {frame.name}
             </p>
           </div>
