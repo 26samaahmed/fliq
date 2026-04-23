@@ -51,7 +51,7 @@
       <!-- 1 User -->
       <div class="flex flex-col items-center gap-4">
         <div class="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
-          <img src={one_user_icon} alt="One User Icon" class="max-w-full max-h-full object-contain" />
+          <img src={one_user_icon} alt="One User Icon" class="w-2/3 max-h-full object-contain" />
         </div>
         <button
           on:click={() => selectUsers(1)}
@@ -64,7 +64,7 @@
       <!-- 2 Users -->
       <div class="flex flex-col items-center gap-4">
         <div class="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
-          <img src={two_users_icon} alt="Two Users Icon" class="max-w-full max-h-full object-contain" />
+          <img src={two_users_icon} alt="Two Users Icon" class="w-full max-h-full object-contain" />
         </div>
         <button
           on:click={() => selectUsers(2)}

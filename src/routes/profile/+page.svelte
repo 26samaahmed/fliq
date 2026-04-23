@@ -8,11 +8,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
 
-  // Dummy albums data
-  let albums = [
-    { name: "Recents" },
-    { name: "Favorites" },
-    { name: "Shared with me" }
+  // Dummy strips data (replace with real data later)
+  let strips = [
+    { id: 1, created_at: '2 hours ago' },
+    { id: 2, created_at: 'Yesterday' },
+    { id: 3, created_at: '2 days ago' }
   ];
 
   let showEditModal = false;
@@ -55,7 +55,6 @@
       document.body.style.overflow = "auto";
     }
   }
-
 </script>
 
 <div class="bg-[#333745] min-h-screen flex flex-col px-4 sm:px-6 py-6 font-aldrich">
@@ -67,12 +66,11 @@
       Your Profile
     </h1>
 
-
-    <div class="flex flex-col lg:flex-row gap-6">
+    <div class="flex flex-col lg:flex-row gap-6 items-stretch">
 
       <!-- Personal information -->
       <div class="w-full lg:w-1/3 mb-5">
-        <div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 min-h-[18rem] sm:min-h-[24rem] h-full bg-[#2c2f3c]">
+        <div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 h- bg-[#2c2f3c]">
 
           <div class="absolute -top-4 left-4">
             <h2 class="text-lg sm:text-xl bg-[#333745] px-3">
@@ -115,48 +113,52 @@
         </div>
       </div>
 
-      <!-- Albums -->
+      <!-- Recently taken strips -->
       <div class="w-full lg:w-2/3">
-        <div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 sm:min-h-[24rem] bg-[#2c2f3c]">
+        <div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 h-full bg-[#2c2f3c]">
 
           <div class="absolute -top-4 left-4">
             <h2 class="text-lg sm:text-xl bg-[#333745] px-3">
-              Albums
+              Recently taken strips
             </h2>
           </div>
 
-          {#if albums.length === 0}
+          {#if strips.length === 0}
 
-            <!-- If no albums have been created (note: a recents album should be added by default right after the user takes their first photobooth strip) -->
+            <!-- Empty state -->
             <div class="flex flex-col items-center justify-center flex-1 gap-6 text-[#DCDFF5]">
 
               <p class="text-lg sm:text-xl text-center">
-                No albums yet!
+                No Strips 
               </p>
 
-              <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
-                Create your first album
-              </button>
+              <a href="/photobooth">
+                <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
+                  Take your first strip
+                </button>
+              </a>
 
             </div>
 
           {:else}
 
-            <!-- Album grid -->
+            <!-- Strips grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
 
-              {#each albums as album}
+              {#each strips as strip}
 
                 <div class="bg-white p-3 rounded shadow-lg 
                            hover:rotate-[1deg] hover:scale-105
                            transition duration-200 cursor-pointer">
 
-                  <!-- Photo preview -->
-                  <div class="bg-gray-300 aspect-square w-full rounded-sm"></div>
+                  <!-- Strip preview -->
+                  <div class="bg-gray-300 aspect-[2/3] w-full rounded-sm flex items-center justify-center text-xs text-gray-500">
+                    Preview
+                  </div>
 
-                  <!-- Album name -->
-                  <p class="text-center text-[#333745] mt-3 font-semibold text-sm sm:text-base">
-                    {album.name}
+                  <!-- Timestamp -->
+                  <p class="text-center text-[#333745] mt-2 text-xs">
+                    {strip.created_at}
                   </p>
 
                 </div>
@@ -165,11 +167,12 @@
 
             </div>
 
-            <!-- Create Album -->
             <div class="flex justify-center mt-10">
-              <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
-                Create Album
-              </button>
+              <a href="/step1">
+                <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
+                  Take another strip
+                </button>
+              </a>
             </div>
 
           {/if}
@@ -178,6 +181,7 @@
       </div>
 
     </div>
+
     <EditInfo
       open={showEditModal}
       SaveChanges={closeEditModal}

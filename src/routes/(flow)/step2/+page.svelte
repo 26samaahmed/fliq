@@ -65,7 +65,7 @@
     <ProgressBar />
 
     {#if isTwoUsers}
-      <div class="flex flex-col items-center gap-3 mt-4">
+      <div class="flex flex-col items-center gap-3">
     
         <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
           Invite your partner to join
