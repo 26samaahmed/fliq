@@ -20,23 +20,17 @@
         Start Taking Pictures →
     </a>
 
-    <!-- Image + Glow -->
-    <div class="relative w-full flex justify-center mt-4 sm:mt-2">
-
-      <!-- Glow -->
-      <div class="absolute w-[60vw] aspect-square max-w-3xl bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 opacity-15 blur-3xl rounded-full"></div>
 
         <img
           src={landing_frame}
           alt="Frame preview"
           class="relative w-full animate-[float_8s_ease-in-out_infinite]"
         />
-      </div>
-
     </div>
   </div>
 
   <Footer />
+
 </main>
 
 <style>

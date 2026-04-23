@@ -52,7 +52,7 @@
     <ProgressBar />
    
     {#if isTwoUsers}
-      <div class="flex flex-col items-center gap-3 mt-4">
+      <div class="flex flex-col items-center gap-3">
     
         <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
           Invite your partner to join
@@ -75,8 +75,8 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-16">
-    <div class="flex justify-center gap-4 sm:gap-10">
+  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-24">
+    <div class="grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-10 justify-items-center">
 
       {#each frame_styles as frame}
         <a
@@ -85,13 +85,23 @@
         >
           <!-- Color preview box -->
           <div
-            class="w-24 h-32 sm:w-56 sm:h-64 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
-            style="background-color: {frame.color};"
-          >
-            <p class="text-sm sm:text-2xl text-white text-center">
-              {frame.name}
-            </p>
-          </div>
+          class="relative w-24 h-32 sm:w-56 sm:h-64 rounded-xl overflow-hidden
+                 flex items-center justify-center 
+                 transition-all duration-300 
+                 group-hover:scale-105 
+                 group-hover:-translate-y-1 
+                 group-hover:shadow-xl
+                 shadow-lg shadow-black/30 
+                 border border-white/10"
+          style="background-color: {frame.color};"
+        >
+          <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+          <div class="absolute inset-0 rounded-xl ring-1 ring-white/10"></div>
+        
+          <p class="relative text-sm sm:text-2xl text-white text-center font-semibold">
+            {frame.name}
+          </p>
+        </div>
         </a>
       {/each}
 
