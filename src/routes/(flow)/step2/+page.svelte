@@ -56,7 +56,7 @@
       <BackButton />
 
       <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Step 2: Choose the Layout
+        Choose the Layout
       </h1>
 
       <div class="w-16"></div>
@@ -119,6 +119,9 @@
 
           <p class="text-base sm:text-xl text-white/80 text-center">
             {layout.photos}
+          </p>
+          <p class="text-sm sm:text-lg text-white/60 text-center">
+            {layout.size}
           </p>
         </button>
       {/each}
