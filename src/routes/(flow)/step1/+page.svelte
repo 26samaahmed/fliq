@@ -31,7 +31,7 @@
       <BackButton />
 
       <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Step 1: Choose Number of Users
+        Choose Number of Users
       </h1>
 
       <div class="w-16"></div>

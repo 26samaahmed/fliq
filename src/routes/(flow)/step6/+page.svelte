@@ -42,7 +42,7 @@
       <BackButton />
 
       <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Step 6: Customize Background
+        Customize Background
       </h1>
 
       <div class="w-16"></div>
