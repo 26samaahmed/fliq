@@ -40,7 +40,6 @@
 
   <!-- Main content -->
   <div class="flex-1 flex flex-col items-center justify-center">
-    <!-- Final preview here -->
 
     <div class="relative mt-8">
       <!-- Main button -->

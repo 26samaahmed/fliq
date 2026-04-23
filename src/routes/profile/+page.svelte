@@ -167,7 +167,6 @@
 
             </div>
 
-            <!-- CTA -->
             <div class="flex justify-center mt-10">
               <a href="/step1">
                 <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
