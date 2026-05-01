@@ -35,7 +35,7 @@
   }
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
   <Header />
 
   <div class="mt-4">
@@ -52,15 +52,16 @@
     <ProgressBar />
    
     {#if isTwoUsers}
-      <div class="flex flex-col items-center gap-3">
-    
-        <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+      <div class="flex flex-col items-center gap-3 mt-4">
+        
+        <p class="text-center text-white/80 text-base sm:text-lg max-w-2xl">
           Invite your partner to join
         </p>
     
         <button
           on:click={copyLink}
-          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2 rounded-full transition duration-200"
+          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20
+                text-white px-5 py-2 rounded-full transition duration-200"
         >
           {#if copied}
             ✓ Link copied!
@@ -75,7 +76,7 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-24">
+  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-14">
     <div class="grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-10 justify-items-center">
 
       {#each frame_styles as frame}

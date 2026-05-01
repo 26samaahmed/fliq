@@ -22,7 +22,7 @@
   }
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
   <Header />
 
   <div class="mt-4">
@@ -104,7 +104,6 @@
         {/if}
       </div>
 
-      <!-- OPTIONAL MICROCOPY -->
       <p class="text-white/50 text-sm mt-2 text-center max-w-xs">
         Your strip is saved in your profile anytime.
       </p>
