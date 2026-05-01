@@ -30,7 +30,7 @@
   ];
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6">
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
   <Header />
 
   <div class="mt-4">
