@@ -3,6 +3,7 @@
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
   import BackButton from '$lib/components/buttons/Back.svelte';
+  import { goto } from '$app/navigation';
 
   let showDropdown = false;
 
@@ -14,6 +15,10 @@
     showDropdown = false;
     console.log(`Download as ${format}`);
     // TODO: Plug actual export logic here later
+  }
+
+  function goToProfile() {
+    goto('/profile');
   }
 </script>
 
@@ -41,61 +46,69 @@
   <!-- Main content -->
   <div class="flex-1 flex flex-col items-center justify-center">
 
-    <div class="relative mt-8">
-      <!-- Main button -->
+    <!-- CTA group -->
+    <div class="flex flex-col items-center gap-4 mt-8">
+
+      <!-- PRIMARY BUTTON -->
       <button
-      on:click={toggleDropdown}
-      class="bg-[#D38A8A] text-white font-aldrich px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300 flex items-center gap-2"
-    >
-      Save as
-    
-      <svg
-        class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        viewBox="0 0 24 24"
+        on:click={goToProfile}
+        class="bg-[#D38A8A] text-white font-aldrich px-10 py-3 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    
-      <!-- Dropdown -->
-      {#if showDropdown}
-        <div
-          class="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10"
+        Go to Profile
+      </button>
+
+      <!-- SECONDARY: SAVE DROPDOWN -->
+      <div class="relative">
+        <button
+          on:click={toggleDropdown}
+          class="bg-transparent text-white font-aldrich px-6 py-2 rounded-lg border border-white/40 hover:bg-white/10 transition duration-300 flex items-center gap-2"
         >
-          <button
-            on:click={() => download('png')}
-            class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+          Save your strip
+
+          <svg
+            class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
           >
-            PNG
-          </button>
-    
-          <button
-            on:click={() => download('jpg')}
-            class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {#if showDropdown}
+          <div
+            class="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10"
           >
-            JPG
-          </button>
-    
-          <button
-            on:click={() => download('pdf')}
-            class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
-          >
-            PDF
-          </button>
-    
-          <!-- Not sure if doable yet
-          <button
-            on:click={() => download('gif')}
-            class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
-          >
-            GIF
-          </button>
-          -->
-        </div>
-      {/if}
+            <button
+              on:click={() => download('png')}
+              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+            >
+              PNG
+            </button>
+
+            <button
+              on:click={() => download('jpg')}
+              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+            >
+              JPG
+            </button>
+
+            <button
+              on:click={() => download('pdf')}
+              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+            >
+              PDF
+            </button>
+          </div>
+        {/if}
+      </div>
+
+      <!-- OPTIONAL MICROCOPY -->
+      <p class="text-white/50 text-sm mt-2 text-center max-w-xs">
+        Your strip is saved in your profile anytime.
+      </p>
+
     </div>
   </div>
 
