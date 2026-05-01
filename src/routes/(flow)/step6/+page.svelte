@@ -5,20 +5,39 @@
   import BackButton from '$lib/components/buttons/Back.svelte';
   import BackgroundChatbot from '$lib/components/chatbot/BackgroundChatbot.svelte';
   import { goto } from '$app/navigation';
+  import { compositeStrip } from '$lib/utils/compositor';
 
-  // The photo strip image passed from step 5 (stored as base64 in sessionStorage)
   let currentImageBase64 = $state<string | null>(null);
   let currentMimeType = $state('image/png');
+  let compositing = $state(false);
 
   $effect(() => {
     const indices: number[] = JSON.parse(sessionStorage.getItem('selectedIndices') ?? '[]');
     const photos: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
-    const first = indices.length > 0 ? photos[indices[0]] : null;
-    if (first) {
-      const [meta, base64] = first.split(',');
-      currentImageBase64 = base64;
-      currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
-    }
+    const layout = sessionStorage.getItem('frame') ?? '1x3';
+    const frameBase = sessionStorage.getItem('frameBase') ?? '';
+    const frameOverlay = sessionStorage.getItem('frameOverlay') ?? '';
+
+    if (indices.length === 0 || photos.length === 0) return;
+
+    const selectedPhotos = indices.map((i: number) => photos[i]).filter(Boolean);
+    compositing = true;
+    compositeStrip(layout, selectedPhotos, frameBase, frameOverlay)
+      .then(dataUrl => {
+        const [meta, base64] = dataUrl.split(',');
+        currentImageBase64 = base64;
+        currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+      })
+      .catch(err => {
+        console.error('Compositing failed:', err);
+        const first = photos[indices[0]];
+        if (first) {
+          const [meta, base64] = first.split(',');
+          currentImageBase64 = base64;
+          currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+        }
+      })
+      .finally(() => { compositing = false; });
   });
 
   function handleImageUpdate(imageBase64: string, mimeType: string) {
@@ -59,7 +78,12 @@
     <!-- Photo strip preview -->
     <div class="flex flex-col items-center gap-3 lg:w-[52%]">
       <div class="w-full max-w-sm flex-1 flex items-center justify-center">
-        {#if currentImageBase64}
+        {#if compositing}
+          <div class="flex flex-col items-center gap-3 text-white/60">
+            <div class="w-10 h-10 border-4 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+            <p class="text-sm">Building your strip...</p>
+          </div>
+        {:else if currentImageBase64}
           <img
             src={`data:${currentMimeType};base64,${currentImageBase64}`}
             alt="Photo strip"
