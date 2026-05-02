@@ -28,16 +28,36 @@ const MAX_USERS = 2
 //     res.render('room', { roomID: req.params.room })
 // })
 
-import { handler } from './build/handler.js'; //sveltekit
-app.use(handler);
 
 io.on('connection', socket => {
-    socket.on('join-room', (roomID, userID) => {
+    // Step 5 photo selection sync — lightweight, no PeerJS needed
+    socket.on('join-selection-room', (roomID) => {
+        socket.join(`select-${roomID}`);
+        socket.to(`select-${roomID}`).emit('peer-joined-selection');
+    });
+
+    socket.on('broadcast-selection', (roomID, indices) => {
+        socket.to(`select-${roomID}`).emit('photos-selected', indices);
+    });
+
+    socket.on('selection-update', (roomID, indices, required) => {
+        socket.to(`select-${roomID}`).emit('selection-update', indices, required);
+    });
+
+    socket.on('request-state', (roomID) => {
+        socket.to(`select-${roomID}`).emit('request-state');
+    });
+
+    socket.on('join-room', (roomID, userID, isCreator) => {
         if (!rooms[roomID]){
             rooms[roomID] = new Set()
+            roomHosts[roomID] = null
+        }
+
+        if (isCreator) {
             roomHosts[roomID] = socket.id
         }
-        
+
         if (rooms[roomID].size >= MAX_USERS) {
             socket.emit('room-full')
             return
@@ -65,9 +85,21 @@ io.on('connection', socket => {
             socket.to(roomID).emit('user-disconnected', userID)
         })
 
-        socket.on('take-photo', () => {
-            io.to(roomID).emit('take-photo')
+        socket.on('start-sequence', () => {
+            socket.to(roomID).emit('start-sequence');
         })
+
+        socket.on('countdown', (t) => {
+            socket.to(roomID).emit('countdown', t);
+        })
+
+        socket.on('take-photo', () => {
+            socket.to(roomID).emit('take-photo')
+        })
+
+        socket.on('photos-done', () => {
+            socket.to(roomID).emit('photos-done');
+        });
     })
 })
 
