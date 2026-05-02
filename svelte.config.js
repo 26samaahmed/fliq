@@ -5,7 +5,7 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
-      fallback: 'server.js'
+      fallback: 'handler.js'
     })
   }
 };
