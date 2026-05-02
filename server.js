@@ -103,6 +103,8 @@ io.on('connection', socket => {
     })
 })
 
+app.use(handler);
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
 server.listen(PORT, '0.0.0.0', () => {
