@@ -65,8 +65,10 @@
       socket.on('peer-joined-selection', () => {
         socket.emit('request-state', roomID);
       });
-      socket.on('photos-selected', (indices: number[]) => {
-        sessionStorage.setItem('selectedIndices', JSON.stringify(indices));
+      socket.on('photos-selected', async (indices: number[]) => {
+        const sorted = [...indices].sort((a: number, b: number) => a - b);
+        const combined = await Promise.all(sorted.map((i: number) => combinePhotos(shots[i].self, shots[i].remote)));
+        sessionStorage.setItem('selectedPhotos', JSON.stringify(combined));
         goto('/step6');
       });
       socket.on('selection-update', (indices: number[], reqCount: number) => {
@@ -94,15 +96,39 @@
     }
   }
 
-  function handleNext() {
+  function combinePhotos(self: string, remote: string): Promise<string> {
+    return new Promise((resolve) => {
+      const img1 = new Image();
+      const img2 = new Image();
+      let loaded = 0;
+      const onLoad = () => {
+        if (++loaded < 2) return;
+        const c = document.createElement('canvas');
+        c.width = img1.width + img2.width;
+        c.height = Math.max(img1.height, img2.height);
+        const ctx = c.getContext('2d')!;
+        ctx.drawImage(img1, 0, 0);
+        ctx.drawImage(img2, img1.width, 0);
+        resolve(c.toDataURL('image/jpeg', 0.8));
+      };
+      img1.onload = onLoad;
+      img2.onload = onLoad;
+      img1.src = self;
+      img2.src = remote;
+    });
+  }
+
+  async function handleNext() {
     const sorted = [...selectedIndices].sort((a, b) => a - b);
-    // Convert display indices to actual capturedPhotos indices:
-    // in 2-user mode shot index N → capturedPhotos index N*2 (self-photo)
-    const photoIndices = sorted.map(i => isTwoUsers ? i * 2 : i);
-    sessionStorage.setItem('selectedIndices', JSON.stringify(photoIndices));
-    if (isTwoUsers && socket) {
-      socket.emit('broadcast-selection', sessionStorage.getItem('roomID'), photoIndices);
+    let photosToStore: string[];
+    if (isTwoUsers) {
+      photosToStore = await Promise.all(sorted.map(i => combinePhotos(shots[i].self, shots[i].remote)));
+      if (socket) socket.emit('broadcast-selection', sessionStorage.getItem('roomID'), sorted);
+    } else {
+      const allPhotos: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
+      photosToStore = sorted.map(i => allPhotos[i]);
     }
+    sessionStorage.setItem('selectedPhotos', JSON.stringify(photosToStore));
     goto('/step6');
   }
 </script>

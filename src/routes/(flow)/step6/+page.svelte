@@ -11,9 +11,8 @@
   let currentMimeType = $state('image/png');
 
   $effect(() => {
-    const indices: number[] = JSON.parse(sessionStorage.getItem('selectedIndices') ?? '[]');
-    const photos: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
-    const first = indices.length > 0 ? photos[indices[0]] : null;
+    const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
+    const first = photos.length > 0 ? photos[0] : null;
     if (first) {
       const [meta, base64] = first.split(',');
       currentImageBase64 = base64;
