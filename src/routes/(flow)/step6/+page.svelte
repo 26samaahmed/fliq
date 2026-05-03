@@ -114,14 +114,14 @@
     </div>
   </div>
 
-  <!-- Redesign later to match the back button (also think of user experience in terms of if the user doesn't interact with the chatbot and just wants to click next - maybe we can have a "skip chatbot and go to next step" button?) 
+  <div class="flex justify-end mt-4">
     <button
-    onclick={handleNext}
-    class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white           px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
-  >
-    Next Step →
-  </button>
-  -->
+      onclick={handleNext}
+      disabled={compositing || !currentImageBase64}
+      class="bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white px-8 py-3 rounded-lg border-2 border-white transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+      Next →
+    </button>
+  </div>
 
   <Footer />
 </main>
