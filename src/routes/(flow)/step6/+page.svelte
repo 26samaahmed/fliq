@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
@@ -6,11 +7,18 @@
   import BackgroundChatbot from '$lib/components/chatbot/BackgroundChatbot.svelte';
   import { goto } from '$app/navigation';
 
-  // The photo strip image passed from step 5 (stored as base64 in sessionStorage)
+  const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
+
   let currentImageBase64 = $state<string | null>(null);
   let currentMimeType = $state('image/png');
+  let isHostSession = $state(false);
+  let isTwoUsers = $state(false);
+  let externalMessages = $state<any[]>([]);
+  let socket: any;
 
   $effect(() => {
+    isHostSession = sessionStorage.getItem('isHost') === '1';
+    isTwoUsers = sessionStorage.getItem('userCount') === '2';
     const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
     const first = photos.length > 0 ? photos[0] : null;
     if (first) {
@@ -20,9 +28,34 @@
     }
   });
 
+  onMount(async () => {
+    const roomID = sessionStorage.getItem('roomID');
+    if (!roomID || sessionStorage.getItem('userCount') !== '2') return;
+
+    const { io } = await import('socket.io-client');
+    socket = io(SERVER_URL);
+    socket.on('connect', () => {
+      socket.emit('join-background-room', roomID);
+    });
+
+    if (sessionStorage.getItem('isHost') !== '1') {
+      socket.on('background-chat', (msg: any) => {
+        externalMessages = [...externalMessages, msg];
+      });
+    }
+  });
+
+  onDestroy(() => socket?.disconnect());
+
   function handleImageUpdate(imageBase64: string, mimeType: string) {
     currentImageBase64 = imageBase64;
     currentMimeType = mimeType;
+  }
+
+  function handleNewMessage(msg: any) {
+    if (!socket || sessionStorage.getItem('isHost') !== '1') return;
+    const roomID = sessionStorage.getItem('roomID');
+    if (roomID) socket.emit('background-chat', roomID, msg);
   }
 
   function handleNext() {
@@ -88,6 +121,9 @@
         currentImageBase64={currentImageBase64}
         currentMimeType={currentMimeType}
         onImageUpdate={handleImageUpdate}
+        disabled={isTwoUsers && !isHostSession}
+        onNewMessage={handleNewMessage}
+        externalMessages={externalMessages}
       />
     </div>
   </div>

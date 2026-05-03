@@ -32,7 +32,14 @@ const roomSockets = {}
 
 
 io.on('connection', socket => {
-    // Step 5 photo selection sync — lightweight, no PeerJS needed
+    socket.on('join-background-room', (roomID) => {
+        socket.join(`bg-${roomID}`);
+    });
+
+    socket.on('background-chat', (roomID, message) => {
+        socket.to(`bg-${roomID}`).emit('background-chat', message);
+    });
+
     socket.on('join-selection-room', (roomID) => {
         socket.join(`select-${roomID}`);
         socket.to(`select-${roomID}`).emit('peer-joined-selection');

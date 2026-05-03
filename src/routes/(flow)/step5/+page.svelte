@@ -9,12 +9,12 @@
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
   const frameMap: Record<string, number> = { '1x3': 3, '1x4': 4, '2x2v': 4, '2x2h': 4 };
 
-  // 2-user mode: array of {self, remote} pairs (one entry per shot)
+  // 2-user mode
   let shots = $state<{ self: string; remote: string }[]>([]);
-  // 1-user mode: flat photo array
+  // 1-user mode
   let soloPhotos = $state<string[]>([]);
 
-  let selectedIndices = $state<number[]>([]); // indices into shots[] or soloPhotos[]
+  let selectedIndices = $state<number[]>([]);
   let required = $state(3);
   let canProceed = $derived(selectedIndices.length === required && required > 0);
 
@@ -30,7 +30,7 @@
     required = frameMap[frame] ?? 3;
 
     if (isTwoUsers) {
-      // capturedPhotos is interleaved [self0, remote0, self1, remote1, ...]
+      
       const pairs: { self: string; remote: string }[] = [];
       for (let i = 0; i + 1 < photos.length; i += 2) {
         pairs.push({ self: photos[i], remote: photos[i + 1] });
@@ -52,16 +52,16 @@
     });
 
     if (sessionStorage.getItem('isHost') === '1') {
-      // Guest joined before us — they'll ask for state via request-state
+      
       socket.on('peer-joined-selection', () => {
         socket.emit('selection-update', roomID, [...selectedIndices], required);
       });
-      // Guest joined first, we joined after — they noticed and asked for state
+      
       socket.on('request-state', () => {
         socket.emit('selection-update', roomID, [...selectedIndices], required);
       });
     } else {
-      // Host joined after us — ask for their current state
+      
       socket.on('peer-joined-selection', () => {
         socket.emit('request-state', roomID);
       });

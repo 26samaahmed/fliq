@@ -97,7 +97,7 @@
       socket.on('countdown', (t: number) => {
         countdown = t;
         console.log('Guest countdown:', t)
-        // Start a local interval so ticks are smooth between server events
+        
         if (!isHost && t === COUNTDOWN_SECS) {
           if (countdownTimer) clearInterval(countdownTimer);
           let val = t;
@@ -115,7 +115,7 @@
         countdown = null;
         if (photoCount === 0) sessionStorage.removeItem('capturedPhotos');
         captureSinglePhoto();
-        // Fallback: navigate after all photos taken without waiting for photos-done
+        
         if (photoCount >= TOTAL_PHOTOS) {
           sessionStorage.setItem('isHost', '0');
           goto('/step5');
@@ -169,7 +169,7 @@
 
     if (isTwoUsers && isHost) {
       socket.emit('start-sequence');
-      await sleep(600); // buffer so guest receives start-sequence before first countdown tick
+      await sleep(600);
     }
 
     for (let i = 0; i < TOTAL_PHOTOS; i++) {
@@ -187,7 +187,7 @@
     isCapturing = false;
     if (isTwoUsers && isHost) {
       socket.emit('photos-done');
-      await sleep(300); // let photos-done reach the guest before socket closes
+      await sleep(300);
     }
     sessionStorage.setItem('isHost', '1');
     goto('/step5');
@@ -284,7 +284,7 @@
         {/if}
       </div>
 
-      <!-- Controls: Simplified logic -->
+      <!-- Controls -->
       <div class="flex flex-col items-center gap-2 mt-4">
         {#if !isTwoUsers || isHost}
           {#if isTwoUsers && !guestJoined}
@@ -297,7 +297,7 @@
             {isCapturing ? 'Capturing...' : 'Start'}
           </button>
         {:else}
-          <!-- GUEST VIEW: Only show status text when NOT counting down -->
+          <!-- GUEST VIEW -->
           {#if countdown === null}
             <p class="text-white/60 text-sm">
               {photoCount > 0 ? 'Smile! Taking the next one...' : 'Waiting for host to start...'}
