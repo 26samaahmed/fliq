@@ -76,20 +76,6 @@
     }
   });
 
-  $effect(() => {
-    if (isTwoUsers && isHostSession && socket) {
-      const roomID = sessionStorage.getItem('roomID');
-      const indices = [...selectedIndices];
-      const req = required;
-      if (roomID) {
-        const timer = setTimeout(() => {
-          socket.emit('selection-update', roomID, indices, req);
-        }, 200);
-        return () => clearTimeout(timer);
-      }
-    }
-  });
-
   onDestroy(() => socket?.disconnect());
 
   function isSelected(i: number) {
@@ -101,6 +87,10 @@
       selectedIndices = selectedIndices.filter(n => n !== i);
     } else if (selectedIndices.length < required) {
       selectedIndices = [...selectedIndices, i];
+    }
+    if (isTwoUsers && isHostSession && socket) {
+      const roomID = sessionStorage.getItem('roomID');
+      if (roomID) socket.emit('selection-update', roomID, [...selectedIndices], required);
     }
   }
 
