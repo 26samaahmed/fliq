@@ -58,7 +58,7 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 justify-items-center">
       {#each designs as design (design.id)}
-        <a {href} class="hover:scale-105 transition-transform duration-200">
+        <a {href} onclick={() => { sessionStorage.setItem('frameBase', design.base); sessionStorage.setItem('frameOverlay', design.overlay); }} class="hover:scale-105 transition-transform duration-200">
           <div class="relative w-28 sm:w-36">
             <img src={design.base} alt="Design Frame" class="w-full object-contain" />
             <img src={design.overlay} alt="Design Overlay" class="absolute inset-0 w-full h-full object-contain" />

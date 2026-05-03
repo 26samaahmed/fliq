@@ -6,11 +6,13 @@
   import BackButton from '$lib/components/buttons/Back.svelte';
   import BackgroundChatbot from '$lib/components/chatbot/BackgroundChatbot.svelte';
   import { goto } from '$app/navigation';
+  import { compositeStrip } from '$lib/utils/compositor';
 
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
   let currentImageBase64 = $state<string | null>(null);
   let currentMimeType = $state('image/png');
+  let compositing = $state(false);
   let isHostSession = $state(false);
   let isTwoUsers = $state(false);
   let selfImageBase64 = $state<string | null>(null);
@@ -21,20 +23,32 @@
   $effect(() => {
     isHostSession = sessionStorage.getItem('isHost') === '1';
     isTwoUsers = sessionStorage.getItem('userCount') === '2';
-    const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
-    const first = photos.length > 0 ? photos[0] : null;
-    if (first) {
-      const [meta, base64] = first.split(',');
-      currentImageBase64 = base64;
-      currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
-    }
+
+    const layout = sessionStorage.getItem('frame') ?? '1x3';
+    const frameBase = sessionStorage.getItem('frameBase') ?? '';
+    const frameOverlay = sessionStorage.getItem('frameOverlay') ?? '';
+
     if (isTwoUsers) {
       const pairs: { self: string; remote: string }[] = JSON.parse(sessionStorage.getItem('selectedPairs') ?? '[]');
-      if (pairs[0]) {
-        selfImageBase64 = pairs[0].self.split(',')[1] ?? null;
-        remoteImageBase64 = pairs[0].remote.split(',')[1] ?? null;
-      }
+      if (pairs.length === 0) return;
+      selfImageBase64 = pairs[0].self.split(',')[1] ?? null;
+      remoteImageBase64 = pairs[0].remote.split(',')[1] ?? null;
     }
+
+    const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
+    if (photos.length === 0) return;
+
+    compositing = true;
+    compositeStrip(layout, photos, frameBase, frameOverlay)
+      .then((dataUrl: string) => {
+        const [meta, base64] = dataUrl.split(',');
+        currentImageBase64 = base64;
+        currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+        sessionStorage.setItem('photoStripBase64', base64);
+        sessionStorage.setItem('photoStripMimeType', currentMimeType);
+      })
+      .catch((err: unknown) => console.error('Compositing failed:', err))
+      .finally(() => { compositing = false; });
   });
 
   onMount(async () => {
@@ -63,6 +77,8 @@
   function handleImageUpdate(imageBase64: string, mimeType: string) {
     currentImageBase64 = imageBase64;
     currentMimeType = mimeType;
+    sessionStorage.setItem('photoStripBase64', imageBase64);
+    sessionStorage.setItem('photoStripMimeType', mimeType);
   }
 
   function handleNewMessage(msg: any) {
@@ -104,7 +120,12 @@
     <!-- Photo strip preview -->
     <div class="flex flex-col items-center gap-3 lg:w-[52%]">
       <div class="w-full max-w-sm flex-1 flex items-center justify-center">
-        {#if currentImageBase64}
+        {#if compositing}
+          <div class="flex flex-col items-center gap-3 text-white/60">
+            <div class="w-10 h-10 border-4 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+            <p class="text-sm">Building your strip...</p>
+          </div>
+        {:else if currentImageBase64}
           <img
             src={`data:${currentMimeType};base64,${currentImageBase64}`}
             alt="Photo strip"
@@ -144,14 +165,14 @@
     </div>
   </div>
 
-  <!-- Redesign later to match the back button (also think of user experience in terms of if the user doesn't interact with the chatbot and just wants to click next - maybe we can have a "skip chatbot and go to next step" button?) 
+  <div class="flex justify-end mt-4">
     <button
-    onclick={handleNext}
-    class="mt-2 bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white           px-8 py-3 rounded-full transition-colors duration-200 text-sm sm:text-base"
-  >
-    Next Step →
-  </button>
-  -->
+      onclick={handleNext}
+      disabled={compositing || !currentImageBase64}
+      class="bg-[#D38A8A] hover:bg-[#D38A8A]/80 text-white px-8 py-3 rounded-lg border-2 border-white transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+      Next →
+    </button>
+  </div>
 
   <Footer />
 </main>

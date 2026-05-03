@@ -137,7 +137,7 @@
   function captureSinglePhoto() {
     if (!canvas || !myVideo) return;
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx || !myVideo) return;
     const existing: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
 
     const lw = myVideo.videoWidth || 640;
