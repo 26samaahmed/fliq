@@ -55,7 +55,9 @@ io.on('connection', socket => {
             rooms[roomID] = new Set()
         }
 
-        if (isCreator && !roomHosts[roomID]) {
+        if (isCreator) {
+            roomHosts[roomID] = userID
+        } else if (!roomHosts[roomID]) {
             roomHosts[roomID] = userID
         }
         
