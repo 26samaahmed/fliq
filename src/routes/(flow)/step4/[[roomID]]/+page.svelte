@@ -14,7 +14,7 @@
 
   let videoGrid: HTMLDivElement;
   let canvas: HTMLCanvasElement;
-  let photosDiv: HTMLDivElement;
+  let myVideo: HTMLVideoElement;
   let isHost = false;
   let roomFull = false;
   let isTwoUsers = false;
@@ -30,7 +30,7 @@
     isTwoUsers = sessionStorage.getItem('userCount') === '2' || !!$page.params.roomID;
     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 
-    const myVideo = document.createElement('video');
+    myVideo = document.createElement('video');
     myVideo.muted = true;
     addVideoStream(myVideo, stream);
 
@@ -78,23 +78,13 @@
   }
 
   function captureSinglePhoto() {
-    const videos = videoGrid.querySelectorAll('video');
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx || !myVideo) return;
     const existing: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
-    videos.forEach(video => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
-      const dataUrl = canvas.toDataURL('image/png');
-      existing.push(dataUrl);
-      const img = document.createElement('img');
-      img.src = dataUrl;
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'cover';
-      photosDiv.appendChild(img);
-    });
+    canvas.width = myVideo.videoWidth;
+    canvas.height = myVideo.videoHeight;
+    ctx.drawImage(myVideo, 0, 0);
+    existing.push(canvas.toDataURL('image/jpeg', 0.85));
     sessionStorage.setItem('capturedPhotos', JSON.stringify(existing));
     photoCount++;
   }
@@ -104,7 +94,6 @@
     isCapturing = true;
     sessionStorage.removeItem('capturedPhotos');
     photoCount = 0;
-    photosDiv.innerHTML = '';
 
     for (let i = 0; i < TOTAL_PHOTOS; i++) {
       for (let t = 3; t >= 1; t--) {
@@ -148,7 +137,6 @@
   }
 
   function clearPhotos() {
-    photosDiv.innerHTML = '';
     photoCount = 0;
     sessionStorage.removeItem('capturedPhotos');
   }
@@ -229,13 +217,6 @@
       </div>
 
       <canvas bind:this={canvas} class="hidden"></canvas>
-
-      <!-- Captured photos -->
-      <div
-        bind:this={photosDiv}
-        class="grid gap-3 justify-center w-full max-w-3xl"
-        style="grid-template-columns: repeat(auto-fill, 150px); grid-auto-rows: 150px;"
-      ></div>
 
     </div>
   {/if}
