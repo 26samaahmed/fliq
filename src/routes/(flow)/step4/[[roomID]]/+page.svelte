@@ -37,6 +37,8 @@
   let countdownTimer: ReturnType<typeof setInterval> | null = null;
 
   onMount(async () => {
+    const isCreator = !page.params.roomID;
+
     isTwoUsers = sessionStorage.getItem('userCount') === '2' || !!page.params.roomID;
     if (page.params.roomID) {
       sessionStorage.setItem('roomID', page.params.roomID);
@@ -81,7 +83,7 @@
       });
 
       myPeer.on('open', (id: string) => {
-        socket.emit('join-room', roomID, id, !page.params.roomID);
+        socket.emit('join-room', roomID, id, isCreator);
       });
 
       socket.on('is-host', () => { isHost = true; });
