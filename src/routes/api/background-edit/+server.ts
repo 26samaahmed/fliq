@@ -43,7 +43,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { prompt, imageBase64, mimeType } = await request.json();
+    const { prompt, imageBase64, mimeType, selfImageBase64, remoteImageBase64 } = await request.json();
 
     if (!imageBase64) {
       return json({ error: 'No image provided' }, { status: 400 });
@@ -61,32 +61,34 @@ export const POST: RequestHandler = async ({ request }) => {
       );
     }
 
-    const isTwoUsers = mimeType?.startsWith('two:');
-    const actualMimeType = isTwoUsers ? mimeType.slice(4) : (mimeType || 'image/png');
+    const isTwoUsers = !!(selfImageBase64 && remoteImageBase64);
+    const actualMimeType = mimeType || 'image/png';
 
     const systemPrompt = isTwoUsers
       ? `You are an image compositor for a two-person photobooth app. ` +
-        `The input image shows two people photographed separately, placed side by side. ` +
+        `You are given two separate portrait photos — one person per image. ` +
         `Your task: create a single natural-looking photograph where both people appear together in the same scene. ` +
-        `Remove both original backgrounds entirely. ` +
-        `Place both people naturally into the scene the user describes — ensure consistent lighting, color grading, and perspective across the whole image. ` +
-        `Do NOT include any border, dividing line, or seam between the two people. ` +
-        `The result should look like a real photo of both people taken together in that setting. ` +
+        `Remove both original backgrounds entirely and replace with the scene the user describes. ` +
+        `CRITICAL: preserve every person's face, facial features, expression, skin tone, hair, clothing, and body pose EXACTLY as they appear in the input photos — do not alter, smooth, stylize, or reinterpret any of these in any way. ` +
+        `Only the background changes. Do NOT include any border, dividing line, or seam between the two people. ` +
+        `Ensure consistent lighting and color grading so the result looks like a real photo taken together. ` +
         `User's requested scene: ${prompt.trim()}`
       : `You are a photo background editor for a photobooth app. ` +
         `Edit only the background of this photo based on the user's request. ` +
-        `Keep all people and subjects in the foreground intact and unmodified. ` +
+        `CRITICAL: preserve every person's face, facial features, expression, skin tone, hair, clothing, and body pose EXACTLY as they appear — do not alter, smooth, stylize, or reinterpret any of these in any way. ` +
+        `Only the background changes. ` +
         `User request: ${prompt.trim()}`;
 
-    const contents = [
-      { text: systemPrompt },
-      {
-        inlineData: {
-          mimeType: actualMimeType,
-          data: imageBase64
-        }
-      }
-    ];
+    const contents = isTwoUsers
+      ? [
+          { text: systemPrompt },
+          { inlineData: { mimeType: 'image/jpeg', data: selfImageBase64 } },
+          { inlineData: { mimeType: 'image/jpeg', data: remoteImageBase64 } }
+        ]
+      : [
+          { text: systemPrompt },
+          { inlineData: { mimeType: actualMimeType, data: imageBase64 } }
+        ];
 
     const response = await withTimeout(
       ai.models.generateContent({

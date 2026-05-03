@@ -13,6 +13,8 @@
   let currentMimeType = $state('image/png');
   let isHostSession = $state(false);
   let isTwoUsers = $state(false);
+  let selfImageBase64 = $state<string | null>(null);
+  let remoteImageBase64 = $state<string | null>(null);
   let externalMessages = $state<any[]>([]);
   let socket: any;
 
@@ -25,6 +27,13 @@
       const [meta, base64] = first.split(',');
       currentImageBase64 = base64;
       currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+    }
+    if (isTwoUsers) {
+      const pairs: { self: string; remote: string }[] = JSON.parse(sessionStorage.getItem('selectedPairs') ?? '[]');
+      if (pairs[0]) {
+        selfImageBase64 = pairs[0].self.split(',')[1] ?? null;
+        remoteImageBase64 = pairs[0].remote.split(',')[1] ?? null;
+      }
     }
   });
 
@@ -123,6 +132,8 @@
         onImageUpdate={handleImageUpdate}
         disabled={isTwoUsers && !isHostSession}
         twoUsers={isTwoUsers}
+        selfImageBase64={selfImageBase64}
+        remoteImageBase64={remoteImageBase64}
         onNewMessage={handleNewMessage}
         externalMessages={externalMessages}
       />

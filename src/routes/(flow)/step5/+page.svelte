@@ -67,6 +67,7 @@
       });
       socket.on('photos-selected', async (indices: number[]) => {
         const sorted = [...indices].sort((a: number, b: number) => a - b);
+        sessionStorage.setItem('selectedPairs', JSON.stringify(sorted.map((i: number) => ({ self: shots[i].self, remote: shots[i].remote }))));
         const combined = await Promise.all(sorted.map((i: number) => combinePhotos(shots[i].self, shots[i].remote)));
         sessionStorage.setItem('selectedPhotos', JSON.stringify(combined));
         goto('/step6');
@@ -103,12 +104,26 @@
       let loaded = 0;
       const onLoad = () => {
         if (++loaded < 2) return;
+        // Keep output at the same dimensions
+        const outW = img1.width;
+        const outH = img1.height;
+        // Scale both photos
+        const srcW = img1.width + img2.width;
+        const srcH = Math.max(img1.height, img2.height);
+        const scale = Math.min(outW / srcW, outH / srcH);
+        const scaledW = srcW * scale;
+        const scaledH = srcH * scale;
+        // Center horizontally
+        const xOffset = (outW - scaledW) / 2;
+        const yOffset = outH - scaledH;
         const c = document.createElement('canvas');
-        c.width = img1.width + img2.width;
-        c.height = Math.max(img1.height, img2.height);
+        c.width = outW;
+        c.height = outH;
         const ctx = c.getContext('2d')!;
-        ctx.drawImage(img1, 0, 0);
-        ctx.drawImage(img2, img1.width, 0);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, outW, outH);
+        ctx.drawImage(img1, xOffset, yOffset, img1.width * scale, img1.height * scale);
+        ctx.drawImage(img2, xOffset + img1.width * scale, yOffset, img2.width * scale, img2.height * scale);
         resolve(c.toDataURL('image/jpeg', 0.8));
       };
       img1.onload = onLoad;
@@ -122,6 +137,7 @@
     const sorted = [...selectedIndices].sort((a, b) => a - b);
     let photosToStore: string[];
     if (isTwoUsers) {
+      sessionStorage.setItem('selectedPairs', JSON.stringify(sorted.map(i => ({ self: shots[i].self, remote: shots[i].remote }))));
       photosToStore = await Promise.all(sorted.map(i => combinePhotos(shots[i].self, shots[i].remote)));
       if (socket) socket.emit('broadcast-selection', sessionStorage.getItem('roomID'), sorted);
     } else {
