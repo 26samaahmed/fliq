@@ -135,8 +135,8 @@
 
     <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
       {#if isTwoUsers && !isHostSession}
-        Host is selecting <span class="text-white font-bold">{required}</span> shots —
-        <span class="text-white/60 text-sm">({selectedIndices.length} / {required} chosen)</span>
+        Host is selecting photos —
+        <span class="text-white font-bold text-xl">{selectedIndices.length} / {required}</span> chosen
       {:else}
         Select <span class="text-white font-bold">{required}</span> shots for your strip.
         <span class="text-white/60 text-sm ml-1">({selectedIndices.length} / {required} selected)</span>
@@ -154,56 +154,35 @@
         <div class="grid gap-4 w-full max-w-3xl justify-center"
           style="grid-template-columns: repeat(auto-fill, 240px);">
           {#each shots as shot, i}
-            {#if isHostSession}
-              <button
-                onclick={() => toggleSelect(i)}
-                class="relative rounded-lg overflow-hidden border-4 transition-all duration-150 focus:outline-none
-                  {isSelected(i) ? 'border-[#9AFFB0] scale-105' : 'border-transparent hover:border-white/30'}"
-                style="width: 240px; height: 130px;"
-              >
-                <div class="flex h-full">
-                  <img src={shot.self} alt="You" class="w-1/2 h-full object-cover" />
-                  <img src={shot.remote} alt="Guest" class="w-1/2 h-full object-cover border-l-2 border-white/20" />
-                </div>
-                {#if isSelected(i)}
-                  <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#9AFFB0] flex items-center justify-center">
-                    <span class="text-[#333745] text-xs font-bold">
-                      {[...selectedIndices].sort((a, b) => a - b).indexOf(i) + 1}
-                    </span>
-                  </div>
-                {/if}
-              </button>
-            {:else}
-              <div
-                class="relative rounded-lg overflow-hidden border-4 transition-all duration-150
-                  {isSelected(i) ? 'border-[#9AFFB0] scale-105' : 'border-transparent'}"
-                style="width: 240px; height: 130px;"
-              >
-                <div class="flex h-full">
-                  <img src={shot.self} alt="You" class="w-1/2 h-full object-cover" />
-                  <img src={shot.remote} alt="Host" class="w-1/2 h-full object-cover border-l-2 border-white/20" />
-                </div>
-                {#if isSelected(i)}
-                  <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#9AFFB0] flex items-center justify-center">
-                    <span class="text-[#333745] text-xs font-bold">
-                      {[...selectedIndices].sort((a, b) => a - b).indexOf(i) + 1}
-                    </span>
-                  </div>
-                {/if}
+            <button
+              onclick={() => toggleSelect(i)}
+              class="relative rounded-lg overflow-hidden border-4 transition-all duration-150 focus:outline-none
+                {isSelected(i) ? 'border-[#9AFFB0] scale-105' : 'border-transparent hover:border-white/30'}
+                {!isHostSession ? 'pointer-events-none cursor-default' : ''}"
+              style="width: 240px; height: 130px;"
+            >
+              <div class="flex h-full">
+                <img src={shot.self} alt="You" class="w-1/2 h-full object-cover" />
+                <img src={shot.remote} alt={isHostSession ? 'Guest' : 'Host'} class="w-1/2 h-full object-cover border-l-2 border-white/20" />
               </div>
-            {/if}
+              {#if isSelected(i)}
+                <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#9AFFB0] flex items-center justify-center">
+                  <span class="text-[#333745] text-xs font-bold">
+                    {[...selectedIndices].sort((a, b) => a - b).indexOf(i) + 1}
+                  </span>
+                </div>
+              {/if}
+            </button>
           {/each}
         </div>
 
-        {#if isHostSession}
-          <button
-            onclick={handleNext}
-            disabled={!canProceed}
-            class="mt-4 bg-[#D38A8A] hover:bg-[#C07070] text-white px-10 py-3 rounded-lg border-2 border-white
-                   transition duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
-            Next →
-          </button>
-        {/if}
+        <button
+          onclick={handleNext}
+          disabled={!canProceed || !isHostSession}
+          class="mt-4 bg-[#D38A8A] hover:bg-[#C07070] text-white px-10 py-3 rounded-lg border-2 border-white
+                 transition duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
+          Next →
+        </button>
       {/if}
 
     {:else}
