@@ -104,16 +104,16 @@
       let loaded = 0;
       const onLoad = () => {
         if (++loaded < 2) return;
-        // Keep output at the same dimensions
+        // Keep output at the same dimensions as a single photo (W × H)
         const outW = img1.width;
         const outH = img1.height;
-        // Scale both photos
+        // Scale both photos side-by-side to fit within outW × outH
         const srcW = img1.width + img2.width;
         const srcH = Math.max(img1.height, img2.height);
         const scale = Math.min(outW / srcW, outH / srcH);
         const scaledW = srcW * scale;
         const scaledH = srcH * scale;
-        // Center horizontally
+        // Center horizontally; push to bottom so black bar lands on top
         const xOffset = (outW - scaledW) / 2;
         const yOffset = outH - scaledH;
         const c = document.createElement('canvas');
