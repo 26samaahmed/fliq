@@ -122,6 +122,7 @@
         currentMimeType={currentMimeType}
         onImageUpdate={handleImageUpdate}
         disabled={isTwoUsers && !isHostSession}
+        twoUsers={isTwoUsers}
         onNewMessage={handleNewMessage}
         externalMessages={externalMessages}
       />

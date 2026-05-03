@@ -11,6 +11,7 @@
     currentMimeType = 'image/png',
     onImageUpdate,
     disabled = false,
+    twoUsers = false,
     onNewMessage,
     externalMessages = []
   }: {
@@ -18,6 +19,7 @@
     currentMimeType?: string;
     onImageUpdate?: (imageBase64: string, mimeType: string) => void;
     disabled?: boolean;
+    twoUsers?: boolean;
     onNewMessage?: (msg: Message) => void;
     externalMessages?: Message[];
   } = $props();
@@ -67,7 +69,7 @@
       const res = await fetch('/api/background-edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: currentMimeType })
+        body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: twoUsers ? `two:${currentMimeType}` : currentMimeType })
       });
 
       const data = await res.json();
