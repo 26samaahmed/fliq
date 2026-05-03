@@ -8,9 +8,10 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allows any device to connect
+    origin: "*",
     methods: ["GET", "POST"]
-  }
+  },
+  maxHttpBufferSize: 10e6
 })
 const rooms = {}
 const roomHosts = {}

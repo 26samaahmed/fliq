@@ -50,6 +50,10 @@
     if (sessionStorage.getItem('isHost') !== '1') {
       socket.on('background-chat', (msg: any) => {
         externalMessages = [...externalMessages, msg];
+        if (msg?.imageBase64) {
+          currentImageBase64 = msg.imageBase64;
+          currentMimeType = msg.mimeType ?? 'image/png';
+        }
       });
     }
   });
