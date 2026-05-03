@@ -43,7 +43,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { prompt, imageBase64, mimeType } = await request.json();
+    const { prompt, imageBase64, mimeType, selfImageBase64, remoteImageBase64 } = await request.json();
 
     if (!imageBase64) {
       return json({ error: 'No image provided' }, { status: 400 });
@@ -61,21 +61,33 @@ export const POST: RequestHandler = async ({ request }) => {
       );
     }
 
-    const contents = [
-      {
-        text:
-          `You are a photo background editor for a photobooth app. ` +
-          `Edit only the background of this photo strip image based on the user's request. ` +
-          `Keep all people and subjects in the foreground intact and unmodified. ` +
-          `User request: ${prompt.trim()}`
-      },
-      {
-        inlineData: {
-          mimeType: mimeType || 'image/png',
-          data: imageBase64
-        }
-      }
-    ];
+    const isTwoUsers = !!(selfImageBase64 && remoteImageBase64);
+    const actualMimeType = mimeType || 'image/png';
+
+    const systemPrompt = isTwoUsers
+      ? `You are an image compositor for a two-person photobooth app. ` +
+        `You are given two separate portrait photos — one person per image. ` +
+        `Your task: create a single natural-looking photograph where both people appear together in the same scene. ` +
+        `Remove both original backgrounds entirely. ` +
+        `Keep all people and subjects in the foreground intact and unmodified. ` +
+        `Place a new background based on the user's request.` +
+        `Do NOT include any border, dividing line, or seam between the two people. ` +
+        `User's requested scene: ${prompt.trim()}`
+      : `You are a photo background editor for a photobooth app. ` +
+        `Edit only the background of this photo based on the user's request. ` +
+        `Keep all people and subjects in the foreground intact and unmodified. ` +
+        `User request: ${prompt.trim()}`;
+
+    const contents = isTwoUsers
+      ? [
+          { text: systemPrompt },
+          { inlineData: { mimeType: 'image/jpeg', data: selfImageBase64 } },
+          { inlineData: { mimeType: 'image/jpeg', data: remoteImageBase64 } }
+        ]
+      : [
+          { text: systemPrompt },
+          { inlineData: { mimeType: actualMimeType, data: imageBase64 } }
+        ];
 
     const response = await withTimeout(
       ai.models.generateContent({

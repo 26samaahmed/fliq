@@ -9,12 +9,39 @@
   let {
     currentImageBase64 = null,
     currentMimeType = 'image/png',
-    onImageUpdate
+    onImageUpdate,
+    disabled = false,
+    twoUsers = false,
+    selfImageBase64 = null,
+    remoteImageBase64 = null,
+    onNewMessage,
+    externalMessages = []
   }: {
     currentImageBase64?: string | null;
     currentMimeType?: string;
     onImageUpdate?: (imageBase64: string, mimeType: string) => void;
+    disabled?: boolean;
+    twoUsers?: boolean;
+    selfImageBase64?: string | null;
+    remoteImageBase64?: string | null;
+    onNewMessage?: (msg: Message) => void;
+    externalMessages?: Message[];
   } = $props();
+
+  let processedExternal = $state(0);
+
+  $effect(() => {
+    const len = externalMessages.length;
+    if (len > processedExternal) {
+      for (let i = processedExternal; i < len; i++) {
+        const msg = externalMessages[i];
+        messages.push(msg);
+        if ('imageBase64' in msg) onImageUpdate?.(msg.imageBase64, msg.mimeType);
+      }
+      processedExternal = len;
+      tick().then(() => { if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight; });
+    }
+  });
 
   let messages = $state<Message[]>([
     { role: 'bot', text: 'Hi! Tell me what background you want and I will edit it for you.' }
@@ -34,7 +61,9 @@
       return;
     }
 
-    messages.push({ role: 'user', text: prompt });
+    const userMsg: Message = { role: 'user', text: prompt };
+    messages.push(userMsg);
+    onNewMessage?.(userMsg);
     inputText = '';
     isLoading = true;
     await tick();
@@ -44,19 +73,25 @@
       const res = await fetch('/api/background-edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: currentMimeType })
+        body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: currentMimeType, selfImageBase64, remoteImageBase64 })
       });
 
       const data = await res.json();
 
       if (data.error) {
-        messages.push({ role: 'bot', text: data.error });
+        const errMsg: Message = { role: 'bot', text: data.error };
+        messages.push(errMsg);
+        onNewMessage?.(errMsg);
       } else {
-        messages.push({ role: 'bot', imageBase64: data.imageBase64, mimeType: data.mimeType });
+        const botMsg: Message = { role: 'bot', imageBase64: data.imageBase64, mimeType: data.mimeType };
+        messages.push(botMsg);
+        onNewMessage?.(botMsg);
         onImageUpdate?.(data.imageBase64, data.mimeType);
       }
     } catch {
-      messages.push({ role: 'bot', text: 'Something went wrong. Please try again.' });
+      const errMsg: Message = { role: 'bot', text: 'Something went wrong. Please try again.' };
+      messages.push(errMsg);
+      onNewMessage?.(errMsg);
     }
 
     isLoading = false;
@@ -123,15 +158,15 @@
       type="text"
       bind:value={inputText}
       onkeydown={handleKeydown}
-      placeholder="Describe the background..."
-      disabled={isLoading}
-      class="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#d38a8a]"
+      placeholder={disabled ? 'Host is customizing the background...' : 'Describe the background...'}
+      disabled={isLoading || disabled}
+      class="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#d38a8a] disabled:opacity-50 disabled:cursor-not-allowed"
     />
 
     <button
       onclick={sendMessage}
-      disabled={isLoading}
-      class="px-5 py-2 rounded-full bg-[#d38a8a] text-white text-sm hover:opacity-90 transition"
+      disabled={isLoading || disabled}
+      class="px-5 py-2 rounded-full bg-[#d38a8a] text-white text-sm hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
     >
       Send
     </button>

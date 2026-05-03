@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
   import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
@@ -7,23 +8,38 @@
   import { goto } from '$app/navigation';
   import { compositeStrip } from '$lib/utils/compositor';
 
+  const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
+
   let currentImageBase64 = $state<string | null>(null);
   let currentMimeType = $state('image/png');
   let compositing = $state(false);
+  let isHostSession = $state(false);
+  let isTwoUsers = $state(false);
+  let selfImageBase64 = $state<string | null>(null);
+  let remoteImageBase64 = $state<string | null>(null);
+  let externalMessages = $state<any[]>([]);
+  let socket: any;
 
   $effect(() => {
-    const indices: number[] = JSON.parse(sessionStorage.getItem('selectedIndices') ?? '[]');
-    const photos: string[] = JSON.parse(sessionStorage.getItem('capturedPhotos') ?? '[]');
+    isHostSession = sessionStorage.getItem('isHost') === '1';
+    isTwoUsers = sessionStorage.getItem('userCount') === '2';
 
-    if (indices.length === 0 || photos.length === 0) return;
-
-    const selectedPhotos = indices.map((i: number) => photos[i]).filter(Boolean);
     const layout = sessionStorage.getItem('frame') ?? '1x3';
     const frameBase = sessionStorage.getItem('frameBase') ?? '';
     const frameOverlay = sessionStorage.getItem('frameOverlay') ?? '';
 
+    if (isTwoUsers) {
+      const pairs: { self: string; remote: string }[] = JSON.parse(sessionStorage.getItem('selectedPairs') ?? '[]');
+      if (pairs.length === 0) return;
+      selfImageBase64 = pairs[0].self.split(',')[1] ?? null;
+      remoteImageBase64 = pairs[0].remote.split(',')[1] ?? null;
+    }
+
+    const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
+    if (photos.length === 0) return;
+
     compositing = true;
-    compositeStrip(layout, selectedPhotos, frameBase, frameOverlay)
+    compositeStrip(layout, photos, frameBase, frameOverlay)
       .then((dataUrl: string) => {
         const [meta, base64] = dataUrl.split(',');
         currentImageBase64 = base64;
@@ -35,11 +51,40 @@
       .finally(() => { compositing = false; });
   });
 
+  onMount(async () => {
+    const roomID = sessionStorage.getItem('roomID');
+    if (!roomID || sessionStorage.getItem('userCount') !== '2') return;
+
+    const { io } = await import('socket.io-client');
+    socket = io(SERVER_URL);
+    socket.on('connect', () => {
+      socket.emit('join-background-room', roomID);
+    });
+
+    if (sessionStorage.getItem('isHost') !== '1') {
+      socket.on('background-chat', (msg: any) => {
+        externalMessages = [...externalMessages, msg];
+        if (msg?.imageBase64) {
+          currentImageBase64 = msg.imageBase64;
+          currentMimeType = msg.mimeType ?? 'image/png';
+        }
+      });
+    }
+  });
+
+  onDestroy(() => socket?.disconnect());
+
   function handleImageUpdate(imageBase64: string, mimeType: string) {
     currentImageBase64 = imageBase64;
     currentMimeType = mimeType;
     sessionStorage.setItem('photoStripBase64', imageBase64);
     sessionStorage.setItem('photoStripMimeType', mimeType);
+  }
+
+  function handleNewMessage(msg: any) {
+    if (!socket || sessionStorage.getItem('isHost') !== '1') return;
+    const roomID = sessionStorage.getItem('roomID');
+    if (roomID) socket.emit('background-chat', roomID, msg);
   }
 
   function handleNext() {
@@ -110,6 +155,12 @@
         currentImageBase64={currentImageBase64}
         currentMimeType={currentMimeType}
         onImageUpdate={handleImageUpdate}
+        disabled={isTwoUsers && !isHostSession}
+        twoUsers={isTwoUsers}
+        selfImageBase64={selfImageBase64}
+        remoteImageBase64={remoteImageBase64}
+        onNewMessage={handleNewMessage}
+        externalMessages={externalMessages}
       />
     </div>
   </div>
