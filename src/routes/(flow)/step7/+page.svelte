@@ -1,115 +1,196 @@
 <script lang="ts">
-  import Header from '$lib/components/header/Header.svelte';
-  import Footer from '$lib/components/footer/Footer.svelte';
-  import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
-  import BackButton from '$lib/components/buttons/Back.svelte';
-  import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import Header from '$lib/components/header/Header.svelte';
+	import Footer from '$lib/components/footer/Footer.svelte';
+	import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
+	import BackButton from '$lib/components/buttons/Back.svelte';
+	import { goto } from '$app/navigation';
+	import { supabase } from '$lib/supabase';
+	import { user } from '$lib/stores/user';
+	import { stripStore } from '$lib/stores/strip';
+	import { get } from 'svelte/store';
 
-  let showDropdown = false;
+	let stripBase64 = $state<string | null>(null);
+	let mimeType = $state('image/png');
+	let showDropdown = $state(false);
+	let saving = $state(false);
+	let saved = $state(false);
 
-  function toggleDropdown() {
-    showDropdown = !showDropdown;
-  }
+	onMount(async () => {
+		const stored = get(stripStore);
+		if (stored) {
+			stripBase64 = stored.base64;
+			mimeType = stored.mimeType;
+		} else {
+			stripBase64 = sessionStorage.getItem('photoStripBase64');
+			mimeType = sessionStorage.getItem('photoStripMimeType') ?? 'image/png';
+		}
+		if (stripBase64) {
+			await saveStrip();
+		}
+	});
 
-  function download(format: string) {
-    showDropdown = false;
-    console.log(`Download as ${format}`);
-    // TODO: Plug actual export logic here later
-  }
+	async function saveStrip() {
+		const currentUser = get(user);
+		if (!currentUser || saved || saving) return;
+		saving = true;
+		try {
+			const ext = mimeType.includes('jpeg') ? 'jpg' : 'png';
+			const byteString = atob(stripBase64!);
+			const arr = new Uint8Array(byteString.length);
+			for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
+			const blob = new Blob([arr], { type: mimeType });
 
-  function goToProfile() {
-    goto('/profile');
-  }
+			const path = `${currentUser.id}/${Date.now()}.${ext}`;
+			const { error: uploadError } = await supabase.storage.from('strips').upload(path, blob);
+			if (uploadError) throw uploadError;
+
+			const { error: insertError } = await supabase.from('strips').insert({
+				user_id: currentUser.id,
+				storage_path: path,
+				mime_type: mimeType
+			});
+			if (insertError) throw insertError;
+
+			saved = true;
+		} catch (err) {
+			console.error('Failed to save strip:', err);
+		} finally {
+			saving = false;
+		}
+	}
+
+	function toggleDropdown() {
+		showDropdown = !showDropdown;
+	}
+
+	function downloadAs(format: 'png' | 'jpg' | 'pdf') {
+		showDropdown = false;
+		if (!stripBase64) return;
+
+		if (format === 'pdf') {
+			const win = window.open('', '_blank', 'width=600,height=900');
+			if (!win) return;
+			win.document.write(
+				`<!DOCTYPE html><html><head><title>fliq strip</title>` +
+					`<style>body{margin:0;display:flex;justify-content:center;}img{max-width:100%;height:auto;}` +
+					`@media print{body{margin:0;}}</style></head><body>` +
+					`<img src="data:${mimeType};base64,${stripBase64}" onload="window.print();window.close();" />` +
+					`</body></html>`
+			);
+			win.document.close();
+			return;
+		}
+
+		if (format === 'jpg') {
+			const img = new Image();
+			img.onload = () => {
+				const canvas = document.createElement('canvas');
+				canvas.width = img.width;
+				canvas.height = img.height;
+				const ctx = canvas.getContext('2d')!;
+				ctx.fillStyle = '#ffffff';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				ctx.drawImage(img, 0, 0);
+				const a = document.createElement('a');
+				a.download = 'fliq-strip.jpg';
+				a.href = canvas.toDataURL('image/jpeg', 0.92);
+				a.click();
+			};
+			img.src = `data:${mimeType};base64,${stripBase64}`;
+			return;
+		}
+
+		const a = document.createElement('a');
+		a.download = 'fliq-strip.png';
+		a.href = `data:image/png;base64,${stripBase64}`;
+		a.click();
+	}
+
+	function goToProfile() {
+		goto('/profile');
+	}
 </script>
 
 <main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
-  <Header />
+	<Header />
 
-  <div class="mt-4">
-    <div class="flex flex-col sm:flex-row items-center justify-between mb-2">
-      <BackButton />
+	<div class="mt-4">
+		<div class="flex flex-col sm:flex-row items-center justify-between mb-2">
+			<BackButton />
+			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">Here's your final strip!</h1>
+			<div class="w-16"></div>
+		</div>
+		<ProgressBar />
+		<p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+			We hope you had fun creating memories with fliq!
+		</p>
+	</div>
 
-      <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Here's your final strip!
-      </h1>
+	<div class="flex-1 flex flex-col items-center justify-center gap-6 mt-6">
+		{#if stripBase64}
+			<img
+				src={`data:${mimeType};base64,${stripBase64}`}
+				alt="Your photo strip"
+				class="max-h-[50vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg"
+			/>
+		{:else}
+			<p class="text-white/40 text-sm">No strip found — please complete the previous steps first.</p>
+		{/if}
 
-      <div class="w-16"></div>
-    </div>
+		<div class="flex flex-col items-center gap-4">
+			<button
+				onclick={goToProfile}
+				class="bg-[#D38A8A] text-white px-10 py-3 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg"
+			>
+				Go to Profile
+			</button>
 
-    <ProgressBar />
+			<div class="relative">
+				<button
+					onclick={toggleDropdown}
+					disabled={!stripBase64}
+					class="bg-transparent text-white px-6 py-2 rounded-lg border border-white/40 hover:bg-white/10 transition duration-300 flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+				>
+					Export strip
+					<svg
+						class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						viewBox="0 0 24 24"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+					</svg>
+				</button>
 
-    <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-      You can export it or share it with your friends. We hope you had fun creating memories with fliq!
-    </p>
-  </div>
+				{#if showDropdown}
+					<div
+						class="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10"
+					>
+						<button
+							onclick={() => downloadAs('png')}
+							class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+						>PNG</button>
+						<button
+							onclick={() => downloadAs('jpg')}
+							class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+						>JPG</button>
+						<button
+							onclick={() => downloadAs('pdf')}
+							class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
+						>PDF</button>
+					</div>
+				{/if}
+			</div>
 
-  <!-- Main content -->
-  <div class="flex-1 flex flex-col items-center justify-center">
+			{#if saving}
+				<p class="text-white/40 text-xs">Saving to profile...</p>
+			{:else if saved}
+				<p class="text-white/40 text-xs">Saved to your profile.</p>
+			{/if}
+		</div>
+	</div>
 
-    <!-- CTA group -->
-    <div class="flex flex-col items-center gap-4 mt-8">
-
-      <!-- PRIMARY BUTTON -->
-      <button
-        on:click={goToProfile}
-        class="bg-[#D38A8A] text-white font-aldrich px-10 py-3 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg"
-      >
-        Go to Profile
-      </button>
-
-      <!-- SECONDARY: SAVE DROPDOWN -->
-      <div class="relative">
-        <button
-          on:click={toggleDropdown}
-          class="bg-transparent text-white font-aldrich px-6 py-2 rounded-lg border border-white/40 hover:bg-white/10 transition duration-300 flex items-center gap-2"
-        >
-          Save your strip
-
-          <svg
-            class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-
-        {#if showDropdown}
-          <div
-            class="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10"
-          >
-            <button
-              on:click={() => download('png')}
-              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
-            >
-              PNG
-            </button>
-
-            <button
-              on:click={() => download('jpg')}
-              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
-            >
-              JPG
-            </button>
-
-            <button
-              on:click={() => download('pdf')}
-              class="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition"
-            >
-              PDF
-            </button>
-          </div>
-        {/if}
-      </div>
-
-      <p class="text-white/50 text-sm mt-2 text-center max-w-xs">
-        Your strip is saved in your profile anytime.
-      </p>
-
-    </div>
-  </div>
-
-  <Footer />
+	<Footer />
 </main>

@@ -7,6 +7,7 @@
 	import BackgroundChatbot from '$lib/components/chatbot/BackgroundChatbot.svelte';
 	import { goto } from '$app/navigation';
 	import { compositeStrip } from '$lib/utils/compositor';
+	import { stripStore } from '$lib/stores/strip';
 
 	const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
@@ -52,6 +53,8 @@
 			const [meta, base64] = dataUrl.split(',');
 			currentImageBase64 = base64;
 			currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+			stripStore.set({ base64, mimeType: currentMimeType });
+			sessionStorage.removeItem('capturedPhotos');
 			sessionStorage.setItem('photoStripBase64', base64);
 			sessionStorage.setItem('photoStripMimeType', currentMimeType);
 		} catch (err) {
@@ -92,6 +95,8 @@
 	function handleImageUpdate(imageBase64: string, mimeType: string) {
 		currentImageBase64 = imageBase64;
 		currentMimeType = mimeType;
+		stripStore.set({ base64: imageBase64, mimeType });
+		sessionStorage.removeItem('capturedPhotos');
 		sessionStorage.setItem('photoStripBase64', imageBase64);
 		sessionStorage.setItem('photoStripMimeType', mimeType);
 	}

@@ -34,6 +34,7 @@
 	const peers: Record<string, any> = {};
 	let remoteVideo: HTMLVideoElement | null = null;
 	let countdownTimer: ReturnType<typeof setInterval> | null = null;
+	let photosDiv: HTMLDivElement | undefined;
 
 	onMount(async () => {
 		const isCreator = !page.params.roomID;
@@ -283,9 +284,15 @@
 
 		<ProgressBar />
 
-		<p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
-			Get ready! We'll take {TOTAL_PHOTOS} photos. Hit Start when you're ready.
-		</p>
+		{#if isCapturing}
+			<p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+				Photo {photoCount + 1} of {TOTAL_PHOTOS}
+			</p>
+		{:else}
+			<p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+				Get ready! We'll take {TOTAL_PHOTOS} photos. Hit Start when you're ready.
+			</p>
+		{/if}
 	</div>
 
 	{#if roomFull}
@@ -313,6 +320,9 @@
 					{#if isTwoUsers && !guestJoined}
 						<p class="text-white/60 text-sm">Waiting for guest to join...</p>
 					{/if}
+					{#if countdown !== null}
+						<p class="text-white text-4xl font-bold">{countdown}</p>
+					{/if}
 					<button
 						onclick={startPhotoSequence}
 						disabled={isCapturing || (isTwoUsers && isHost && !guestJoined)}
@@ -322,7 +332,9 @@
 					</button>
 				{:else}
 					<!-- GUEST VIEW -->
-					{#if countdown === null}
+					{#if countdown !== null}
+						<p class="text-white text-4xl font-bold">{countdown}</p>
+					{:else}
 						<p class="text-white/60 text-sm">
 							{photoCount > 0 ? 'Smile! Taking the next one...' : 'Waiting for host to start...'}
 						</p>

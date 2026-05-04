@@ -5,17 +5,28 @@
 
   import { supabase } from '$lib/supabase';
   import { user } from '$lib/stores/user';
+  import { get } from 'svelte/store';
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
 
-  // Dummy strips data (replace with real data later)
-  let strips = [
-    { id: 1, created_at: '2 hours ago' },
-    { id: 2, created_at: 'Yesterday' },
-    { id: 3, created_at: '2 days ago' }
-  ];
+  type Strip = { id: string; storage_path: string; mime_type: string; created_at: string; publicUrl: string };
 
+  let strips: Strip[] = [];
+  let stripsLoading = true;
   let showEditModal = false;
+
+  function formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const diffMs = Date.now() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    return date.toLocaleDateString();
+  }
 
   async function retrieveData() {
     const { data, error } = await supabase.auth.getUser();
@@ -30,8 +41,28 @@
     }
   }
 
-  onMount(() => {
-    retrieveData();
+  async function loadStrips() {
+    const currentUser = get(user);
+    if (!currentUser) { stripsLoading = false; return; }
+
+    const { data, error } = await supabase
+      .from('strips')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (error || !data) { stripsLoading = false; return; }
+
+    strips = data.map((s: Omit<Strip, 'publicUrl'>) => {
+      const { data: urlData } = supabase.storage.from('strips').getPublicUrl(s.storage_path);
+      return { ...s, publicUrl: urlData.publicUrl };
+    });
+    stripsLoading = false;
+  }
+
+  onMount(async () => {
+    await retrieveData();
+    await loadStrips();
   });
 
   onDestroy(() => {
@@ -123,16 +154,22 @@
             </h2>
           </div>
 
-          {#if strips.length === 0}
+          {#if stripsLoading}
+
+            <div class="flex flex-col items-center justify-center flex-1 gap-4 text-[#DCDFF5]">
+              <p class="text-sm text-white/50">Loading strips...</p>
+            </div>
+
+          {:else if strips.length === 0}
 
             <!-- Empty state -->
             <div class="flex flex-col items-center justify-center flex-1 gap-6 text-[#DCDFF5]">
 
               <p class="text-lg sm:text-xl text-center">
-                No Strips 
+                No Strips
               </p>
 
-              <a href="/photobooth">
+              <a href="/step1">
                 <button class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300">
                   Take your first strip
                 </button>
@@ -147,18 +184,20 @@
 
               {#each strips as strip}
 
-                <div class="bg-white p-3 rounded shadow-lg 
+                <div class="bg-white p-3 rounded shadow-lg
                            hover:rotate-[1deg] hover:scale-105
                            transition duration-200 cursor-pointer">
 
                   <!-- Strip preview -->
-                  <div class="bg-gray-300 aspect-[2/3] w-full rounded-sm flex items-center justify-center text-xs text-gray-500">
-                    Preview
-                  </div>
+                  <img
+                    src={strip.publicUrl}
+                    alt="Photo strip"
+                    class="w-full h-auto object-contain rounded-sm"
+                  />
 
                   <!-- Timestamp -->
                   <p class="text-center text-[#333745] mt-2 text-xs">
-                    {strip.created_at}
+                    {formatDate(strip.created_at)}
                   </p>
 
                 </div>
