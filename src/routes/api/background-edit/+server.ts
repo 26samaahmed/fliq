@@ -43,7 +43,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { prompt, imageBase64, mimeType } = await request.json();
+    const { prompt, imageBase64, mimeType, selfImageBase64, remoteImageBase64, photoIndex = 0 } = await request.json();
 
     if (!imageBase64) {
       return json({ error: 'No image provided' }, { status: 400 });
@@ -53,29 +53,53 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const allowed = await withTimeout(isBackgroundEditRequest(prompt.trim()), TIMEOUT_MS);
-    if (!allowed) {
-      return json(
-        { error: 'I can only edit photo backgrounds. Try something like "a beach at sunset" or "outer space".' },
-        { status: 422 }
-      );
+    // Only classify on the first photo — same prompt applies to the whole batch
+    if (photoIndex === 0) {
+      const allowed = await withTimeout(isBackgroundEditRequest(prompt.trim()), TIMEOUT_MS);
+      if (!allowed) {
+        return json(
+          { error: 'I can only edit photo backgrounds. Try something like "a beach at sunset" or "outer space".' },
+          { status: 422 }
+        );
+      }
     }
 
-    const contents = [
-      {
-        text:
-          `You are a photo background editor for a photobooth app. ` +
-          `Edit only the background of this photo strip image based on the user's request. ` +
-          `Keep all people and subjects in the foreground intact and unmodified. ` +
-          `User request: ${prompt.trim()}`
-      },
-      {
-        inlineData: {
-          mimeType: mimeType || 'image/png',
-          data: imageBase64
-        }
-      }
-    ];
+    const isTwoUsers = !!(selfImageBase64 && remoteImageBase64);
+    const actualMimeType = mimeType || 'image/png';
+
+    const systemPrompt = isTwoUsers
+      ? `You are an image compositor for a two-person photobooth app. ` +
+        `You are given two separate portrait photos — one person per image. ` +
+        `Your task: create a single natural-looking photograph where both people appear together in the same scene. ` +
+        `STRICT RULES — you must follow these exactly: ` +
+        `1. Detect both people using precise subject segmentation. ` +
+        `2. Remove ONLY the background pixels — every pixel that is not part of a person must be replaced. ` +
+        `3. Do NOT alter any person in any way — no changes to face, hair, skin, clothing, body shape, or pose. ` +
+        `4. Do NOT add borders, dividers, frames, or seams between the two people. ` +
+        `5. Apply consistent lighting and shadows across both people to match the new scene. ` +
+        `6. The final result must look like a single natural photo taken in the requested scene. ` +
+        `New background scene: ${prompt.trim()}`
+      : `You are a background replacement editor for a photobooth app. ` +
+        `Your task is to replace the background of this photo with the scene the user describes. ` +
+        `STRICT RULES — you must follow these exactly: ` +
+        `1. Use precise subject segmentation to identify every person in the photo. ` +
+        `2. Replace ONLY the background pixels — every pixel not part of a person must be replaced with the new scene. ` +
+        `3. Do NOT change any person in any way — their face, hair, skin tone, clothing, body, and pose must be pixel-perfect identical to the original. ` +
+        `4. Do NOT add any overlays, borders, vignettes, or filters on top of the people. ` +
+        `5. Blend the edges between the people and the new background naturally, with no harsh cutout lines. ` +
+        `6. Apply lighting and shadows on the people that match the new background scene. ` +
+        `New background scene: ${prompt.trim()}`;
+
+    const contents = isTwoUsers
+      ? [
+          { text: systemPrompt },
+          { inlineData: { mimeType: 'image/jpeg', data: selfImageBase64 } },
+          { inlineData: { mimeType: 'image/jpeg', data: remoteImageBase64 } }
+        ]
+      : [
+          { text: systemPrompt },
+          { inlineData: { mimeType: actualMimeType, data: imageBase64 } }
+        ];
 
     const response = await withTimeout(
       ai.models.generateContent({

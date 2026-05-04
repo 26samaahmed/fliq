@@ -56,7 +56,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
       {#each frames as frame (frame.alt)}
-        <a {href} class="hover:scale-105 transition-transform duration-200">
+        <a {href} onclick={() => { sessionStorage.setItem('frameBase', frame.src); sessionStorage.setItem('frameOverlay', ''); }} class="hover:scale-105 transition-transform duration-200">
           <img src={frame.src} alt="{frame.alt} Frame" class="w-64 sm:w-72 lg:w-80 object-contain rounded" />
         </a>
       {/each}
