@@ -35,7 +35,7 @@
   }
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
   <Header />
 
   <div class="mt-4">
@@ -43,7 +43,7 @@
       <BackButton />
 
       <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Step 3: Pick Strip Style
+        Pick Strip Style
       </h1>
 
       <div class="w-16"></div>
@@ -53,14 +53,15 @@
    
     {#if isTwoUsers}
       <div class="flex flex-col items-center gap-3 mt-4">
-    
-        <p class="text-center text-white/80 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+        
+        <p class="text-center text-white/80 text-base sm:text-lg max-w-2xl">
           Invite your partner to join
         </p>
     
         <button
           on:click={copyLink}
-          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2 rounded-full transition duration-200"
+          class="text-sm bg-white/10 hover:bg-white/20 border border-white/20
+                text-white px-5 py-2 rounded-full transition duration-200"
         >
           {#if copied}
             ✓ Link copied!
@@ -75,34 +76,33 @@
   </div>
 
   <!-- Main content -->
-  <div class="flex-1 flex items-start justify-center pt-16 sm:pt-16">
-    <div class="flex flex-wrap justify-center gap-6 sm:gap-10">
+  <div class="flex-1 flex items-start justify-center pt-8 sm:pt-14">
+    <div class="grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-10 justify-items-center">
 
       {#each frame_styles as frame}
         <a
           href={frame.page_ref}
-          class="
-            group
-            flex flex-col items-center
-            cursor-pointer
-          "
+          class="group flex flex-col items-center cursor-pointer"
         >
           <!-- Color preview box -->
           <div
-            class="
-              w-32 h-40
-              sm:w-56 sm:h-64
-              rounded-lg
-              flex items-center justify-center
-              transition-transform duration-200
-              group-hover:scale-105
-            "
-            style="background-color: {frame.color};"
-          >
-            <p class="text-lg sm:text-2xl text-white text-center">
-              {frame.name}
-            </p>
-          </div>
+          class="relative w-24 h-32 sm:w-56 sm:h-64 rounded-xl overflow-hidden
+                 flex items-center justify-center 
+                 transition-all duration-300 
+                 group-hover:scale-105 
+                 group-hover:-translate-y-1 
+                 group-hover:shadow-xl
+                 shadow-lg shadow-black/30 
+                 border border-white/10"
+          style="background-color: {frame.color};"
+        >
+          <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+          <div class="absolute inset-0 rounded-xl ring-1 ring-white/10"></div>
+        
+          <p class="relative text-sm sm:text-2xl text-white text-center font-semibold">
+            {frame.name}
+          </p>
+        </div>
         </a>
       {/each}
 

@@ -46,10 +46,10 @@
 	}
 </script>
 
-<div class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+<div class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
 	<Header />
 
-	<div class="flex-1 flex flex-col items-center justify-center text-center">
+	<div class="flex-1 flex flex-col items-center justify-start pt-10 sm:justify-center sm:pt-0 text-center">
 
 		<!-- Title -->
 		<h1 class="text-3xl sm:text-4xl text-white font-semibold">
