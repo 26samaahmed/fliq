@@ -136,13 +136,13 @@
 
 	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-3 mt-4 sm:mt-8 min-h-0">
 		<!-- Photo strip preview -->
-		<div class="flex flex-col items-center gap-3 lg:w-[52%]">
+		<div class="flex flex-col items-center gap-3 lg:w-[50%]">
 			<div class="w-full max-w-sm flex-1 flex items-center justify-center">
 				{#if currentImageBase64}
 					<img
 						src={`data:${currentMimeType};base64,${currentImageBase64}`}
 						alt="Photo strip"
-						class="max-h-[28vh] lg:max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
+						class="max-h-[28vh] lg:max-h-[70vh] w-auto object-contain shadow-lg transition-all duration-500"
 					/>
 				{:else}
 					<div
@@ -151,7 +151,7 @@
 						<div class="grid grid-cols-1 gap-2 w-full">
 							{#each [1, 2, 3] as _}
 								<div
-									class="w-full h-14 sm:h-20 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center"
+									class="w-full h-14 sm:h-20 bg-white/5 flex items-center justify-center"
 								>
 									<span class="text-white/20 text-2xl">⬜</span>
 								</div>
