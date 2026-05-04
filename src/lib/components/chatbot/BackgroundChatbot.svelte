@@ -10,6 +10,8 @@
     currentImageBase64 = null,
     currentMimeType = 'image/png',
     onImageUpdate,
+    photos = [],
+    onPhotosUpdate,
     disabled = false,
     twoUsers = false,
     selfImageBase64 = null,
@@ -20,6 +22,8 @@
     currentImageBase64?: string | null;
     currentMimeType?: string;
     onImageUpdate?: (imageBase64: string, mimeType: string) => void;
+    photos?: string[];
+    onPhotosUpdate?: (editedPhotos: string[]) => void;
     disabled?: boolean;
     twoUsers?: boolean;
     selfImageBase64?: string | null;
@@ -54,7 +58,9 @@
     const prompt = inputText.trim();
     if (!prompt || isLoading) return;
 
-    if (!currentImageBase64) {
+    const hasPhotos = photos.length > 0;
+
+    if (!hasPhotos && !currentImageBase64) {
       messages.push({ role: 'bot', text: 'No image found. Please take photos first.' });
       await tick();
       chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -70,23 +76,58 @@
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     try {
-      const res = await fetch('/api/background-edit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: currentMimeType, selfImageBase64, remoteImageBase64 })
-      });
+      if (hasPhotos) {
+        const results = await Promise.all(
+          photos.map(async (photoDataUrl, index) => {
+            const [meta, base64] = photoDataUrl.split(',');
+            const mimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+            const res = await fetch('/api/background-edit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ prompt, imageBase64: base64, mimeType, photoIndex: index })
+            });
+            const data = await res.json();
+            if (data.error) return { error: data.error, original: photoDataUrl };
+            return { dataUrl: `data:${data.mimeType};base64,${data.imageBase64}` };
+          })
+        );
 
-      const data = await res.json();
+        const firstError = results.find(r => 'error' in r);
+        if (firstError && 'error' in firstError) {
+          const errMsg: Message = { role: 'bot', text: firstError.error };
+          messages.push(errMsg);
+          onNewMessage?.(errMsg);
+          isLoading = false;
+          await tick();
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+          return;
+        }
 
-      if (data.error) {
-        const errMsg: Message = { role: 'bot', text: data.error };
-        messages.push(errMsg);
-        onNewMessage?.(errMsg);
-      } else {
-        const botMsg: Message = { role: 'bot', imageBase64: data.imageBase64, mimeType: data.mimeType };
+        const editedPhotos = results.map((r, i) =>
+          'dataUrl' in r ? r.dataUrl : photos[i]
+        );
+        const [firstMeta, firstBase64] = editedPhotos[0].split(',');
+        const firstMime = firstMeta.match(/:(.*?);/)?.[1] ?? 'image/png';
+        const botMsg: Message = { role: 'bot', imageBase64: firstBase64, mimeType: firstMime };
         messages.push(botMsg);
-        onNewMessage?.(botMsg);
-        onImageUpdate?.(data.imageBase64, data.mimeType);
+        onPhotosUpdate?.(editedPhotos);
+      } else {
+        const res = await fetch('/api/background-edit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, imageBase64: currentImageBase64, mimeType: currentMimeType, selfImageBase64, remoteImageBase64 })
+        });
+        const data = await res.json();
+        if (data.error) {
+          const errMsg: Message = { role: 'bot', text: data.error };
+          messages.push(errMsg);
+          onNewMessage?.(errMsg);
+        } else {
+          const botMsg: Message = { role: 'bot', imageBase64: data.imageBase64, mimeType: data.mimeType };
+          messages.push(botMsg);
+          onNewMessage?.(botMsg);
+          onImageUpdate?.(data.imageBase64, data.mimeType);
+        }
       }
     } catch {
       const errMsg: Message = { role: 'bot', text: 'Something went wrong. Please try again.' };

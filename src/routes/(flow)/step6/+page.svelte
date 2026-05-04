@@ -10,6 +10,7 @@
 
   const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 
+  let selectedPhotoDataUrls = $state<string[]>([]);
   let currentImageBase64 = $state<string | null>(null);
   let currentMimeType = $state('image/png');
   let compositing = $state(false);
@@ -24,10 +25,6 @@
     isHostSession = sessionStorage.getItem('isHost') === '1';
     isTwoUsers = sessionStorage.getItem('userCount') === '2';
 
-    const layout = sessionStorage.getItem('frame') ?? '1x3';
-    const frameBase = sessionStorage.getItem('frameBase') ?? '';
-    const frameOverlay = sessionStorage.getItem('frameOverlay') ?? '';
-
     if (isTwoUsers) {
       const pairs: { self: string; remote: string }[] = JSON.parse(sessionStorage.getItem('selectedPairs') ?? '[]');
       if (pairs.length === 0) return;
@@ -38,18 +35,34 @@
     const photos: string[] = JSON.parse(sessionStorage.getItem('selectedPhotos') ?? '[]');
     if (photos.length === 0) return;
 
-    compositing = true;
-    compositeStrip(layout, photos, frameBase, frameOverlay)
-      .then((dataUrl: string) => {
-        const [meta, base64] = dataUrl.split(',');
-        currentImageBase64 = base64;
-        currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
-        sessionStorage.setItem('photoStripBase64', base64);
-        sessionStorage.setItem('photoStripMimeType', currentMimeType);
-      })
-      .catch((err: unknown) => console.error('Compositing failed:', err))
-      .finally(() => { compositing = false; });
+    selectedPhotoDataUrls = photos;
+    recomposite(photos);
   });
+
+  async function recomposite(photoDataUrls: string[]) {
+    const layout = sessionStorage.getItem('frame') ?? '1x3';
+    const frameBase = sessionStorage.getItem('frameBase') ?? '';
+    const frameOverlay = sessionStorage.getItem('frameOverlay') ?? '';
+
+    compositing = true;
+    try {
+      const dataUrl = await compositeStrip(layout, photoDataUrls, frameBase, frameOverlay);
+      const [meta, base64] = dataUrl.split(',');
+      currentImageBase64 = base64;
+      currentMimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/png';
+      sessionStorage.setItem('photoStripBase64', base64);
+      sessionStorage.setItem('photoStripMimeType', currentMimeType);
+    } catch (err) {
+      console.error('Compositing failed:', err);
+    } finally {
+      compositing = false;
+    }
+  }
+
+  function handlePhotosUpdate(editedPhotos: string[]) {
+    selectedPhotoDataUrls = editedPhotos;
+    recomposite(editedPhotos);
+  }
 
   onMount(async () => {
     const roomID = sessionStorage.getItem('roomID');
@@ -155,6 +168,8 @@
         currentImageBase64={currentImageBase64}
         currentMimeType={currentMimeType}
         onImageUpdate={handleImageUpdate}
+        photos={selectedPhotoDataUrls}
+        onPhotosUpdate={handlePhotosUpdate}
         disabled={isTwoUsers && !isHostSession}
         twoUsers={isTwoUsers}
         selfImageBase64={selfImageBase64}
