@@ -1,4 +1,3 @@
-// Photo slot positions derived from the SVG frame assets (in SVG units)
 const LAYOUT_CONFIG: Record<string, { w: number; h: number; slots: { x: number; y: number; w: number; h: number }[] }> = {
   '1x3': {
     w: 120, h: 362,
@@ -40,14 +39,13 @@ const LAYOUT_CONFIG: Record<string, { w: number; h: number; slots: { x: number; 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = src;
+    setTimeout(() => reject(new Error('Image load timed out')), 10_000);
   });
 }
 
-// Draw image with object-cover behaviour into the destination rect
 function drawCover(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -68,9 +66,9 @@ function drawCover(
 
 export async function compositeStrip(
   layout: string,
-  photoDataUrls: string[],  // selected photos as data URLs
-  frameBase: string,         // URL of base frame image
-  frameOverlay: string = '' // URL of overlay image (optional)
+  photoDataUrls: string[],
+  frameBase: string,
+  frameOverlay: string = ''
 ): Promise<string> {
   const config = LAYOUT_CONFIG[layout] ?? LAYOUT_CONFIG['1x3'];
   const SCALE = 4;
@@ -82,13 +80,11 @@ export async function compositeStrip(
   canvas.height = ch;
   const ctx = canvas.getContext('2d')!;
 
-  // 1. Draw base frame
   if (frameBase) {
     const base = await loadImage(frameBase);
     ctx.drawImage(base, 0, 0, cw, ch);
   }
 
-  // 2. Draw photos into their slots
   for (let i = 0; i < config.slots.length; i++) {
     const photo = photoDataUrls[i];
     if (!photo) continue;
@@ -97,7 +93,6 @@ export async function compositeStrip(
     drawCover(ctx, img, slot.x * SCALE, slot.y * SCALE, slot.w * SCALE, slot.h * SCALE);
   }
 
-  // 3. Draw overlay on top (design/character decorations)
   if (frameOverlay) {
     const overlay = await loadImage(frameOverlay);
     ctx.drawImage(overlay, 0, 0, cw, ch);

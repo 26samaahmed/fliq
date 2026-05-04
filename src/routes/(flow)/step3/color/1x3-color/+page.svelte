@@ -31,7 +31,7 @@
   ];
 </script>
 
-<main class="bg-[#333745] min-h-screen flex flex-col p-6 font-aldrich">
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
   <Header />
 
   <div class="mt-4">
@@ -39,7 +39,7 @@
       <BackButton />
 
       <h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-        Step 3: Pick Strip Style
+        Pick Strip Style
       </h1>
 
       <div class="w-16"></div>
