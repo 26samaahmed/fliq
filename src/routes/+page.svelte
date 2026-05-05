@@ -1,7 +1,13 @@
 <script lang="ts">
-  import landing_frame from '$lib/assets/landing-page-frame.svg';
   import Header from '$lib/components/header/Header.svelte';
   import Footer from '$lib/components/footer/Footer.svelte';
+
+  let mounted = false;
+
+  import { onMount } from 'svelte';
+  onMount(() => {
+    mounted = true;
+  });
 </script>
 
 <main class="min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
@@ -26,9 +32,11 @@
     </a>
 
     <img
-      src={landing_frame}
+      src="/landing-page-frame.svg"
       alt="Frame preview"
-      class="w-full max-w-7xl animate-[float_8s_ease-in-out_infinite]"
+      loading="eager"
+      fetchpriority="high"
+      class="w-full max-w-7xl {mounted ? 'animate-[float_8s_ease-in-out_infinite]' : ''}"
     />
 
   </div>
