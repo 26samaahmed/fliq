@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Modal from '$lib/components/modal/Modal.svelte';
   import { supabase } from '$lib/supabase';
 
   export let open = false;
@@ -9,25 +10,26 @@
   let error = "";
 
   async function handleSend() {
-  error = "";
-  message = "";
+    error = "";
+    message = "";
 
-  const redirectTo =
-    window.location.origin + '/reset-password';
+    const redirectTo = window.location.origin + '/reset-password';
 
-  const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo
-  });
+    const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo
+    });
 
-  if (err) {
-    error = err.message;
-  } else {
+    if (err) {
+      error = err.message;
+      return;
+    }
+
     message = "Password reset link sent! Check your email.";
+
     setTimeout(() => {
       onClose();
     }, 2000);
   }
-}
 
   function handleCancel() {
     email = "";
@@ -42,55 +44,61 @@
   }
 </script>
 
-{#if open}
+<Modal {open} onClose={handleCancel}>
+
   <div
-    class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50"
-    on:click={handleCancel}
-    on:keydown={handleKeydown}
-    tabindex="0"
+    class="text-white w-full max-w-md flex flex-col items-center text-center gap-4"
+    onkeydown={handleKeydown}
   >
-    <div
-      class="bg-[#333745] rounded-xl border border-white/40 text-white shadow-2xl p-8 w-[420px]"
-      on:click|stopPropagation
-    >
-      <div class="text-2xl font-aldrich mb-2 text-center">
-        Forgot Password
-      </div>
 
-      <p class="text-sm text-center mb-4 text-white/70">
-        Enter your email and we’ll send you a reset link.
-      </p>
-
-      <input
-        type="email"
-        placeholder="Email"
-        bind:value={email}
-        class="w-full mb-4 px-4 py-2 rounded bg-[#2c2f3c] border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#DCDFF5]"
-      />
-
-      {#if error}
-        <p class="text-red-400 text-sm mb-2">{error}</p>
-      {/if}
-
-      {#if message}
-        <p class="text-green-400 text-sm mb-2">{message}</p>
-      {/if}
-
-      <div class="flex gap-4 mt-4">
-        <button
-          class="flex-1 items-center justify-center bg-[#D38A8A] text-white px-8 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"
-          on:click={handleSend}
-        >
-          Send Link
-        </button>
-
-        <button
-          class="flex-1 inline-flex items-center justify-center bg-white/10 text-white px-8 py-2 rounded-lg border-2 border-white/50 hover:bg-white/20 transition duration-300"
-          on:click={handleCancel}
-        >
-          Cancel
-        </button>
-      </div>
+    <!-- Title -->
+    <div class="text-2xl font-aldrich">
+      Forgot Password
     </div>
+
+    <p class="text-sm text-white/70">
+      Enter your email and we’ll send you a reset link.
+    </p>
+
+    <!-- Input -->
+    <input
+      type="email"
+      placeholder="Email"
+      bind:value={email}
+      class="w-full px-4 py-2 rounded bg-[#2c2f3c] border border-white/40
+             focus:outline-none focus:ring-2 focus:ring-[#DCDFF5]"
+    />
+
+    <!-- Messages -->
+    {#if error}
+      <p class="text-red-400 text-sm">{error}</p>
+    {/if}
+
+    {#if message}
+      <p class="text-green-400 text-sm">{message}</p>
+    {/if}
+
+    <!-- Buttons -->
+    <div class="w-full flex gap-3 mt-2">
+
+      <button
+        class="flex-1 bg-[#D38A8A] text-white py-2 rounded-lg border-2 border-white
+               hover:bg-[#C07070] transition duration-300"
+        onclick={handleSend}
+      >
+        Send Link
+      </button>
+
+      <button
+        class="flex-1 bg-white/10 text-white py-2 rounded-lg border-2 border-white/50
+               hover:bg-white/20 transition duration-300"
+        onclick={handleCancel}
+      >
+        Cancel
+      </button>
+
+    </div>
+
   </div>
-{/if}
+
+</Modal>
