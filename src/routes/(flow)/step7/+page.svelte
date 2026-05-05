@@ -43,7 +43,7 @@
 	async function saveStrip() {
 		const currentUser = get(user);
 
-		if (!currentUser || saving || saved || hasSavedThisSession) return;
+		if (!currentUser || saving || saved) return;
 
 		saving = true;
 
