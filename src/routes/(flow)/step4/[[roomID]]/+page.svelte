@@ -297,7 +297,7 @@
 
 	{#if roomFull}
 		<div class="flex-1 flex flex-col items-center justify-center text-center">
-			<p class="text-white text-lg">This room is full.</p>
+			<p class="text-white text-lg mb-5">This room is full.</p>
 			<a
 				href="/"
 				class="inline-flex items-center justify-center bg-[#D38A8A] text-white px-4 py-2 rounded-lg border-2 border-white hover:bg-[#C07070] transition duration-300"

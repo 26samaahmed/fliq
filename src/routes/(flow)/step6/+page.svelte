@@ -112,9 +112,8 @@
 	}
 </script>
 
-<main
-	class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]"
->
+<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
+
 	<Header />
 
 	<!-- Top bar -->
@@ -122,7 +121,9 @@
 		<div class="flex flex-col sm:flex-row items-center justify-between mb-2">
 			<BackButton />
 
-			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">Customize Background</h1>
+			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">
+				Customize Background
+			</h1>
 
 			<div class="w-16"></div>
 		</div>
@@ -134,39 +135,46 @@
 		</p>
 	</div>
 
-	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-3 mt-4 sm:mt-8 min-h-0">
+	<!-- MAIN LAYOUT -->
+	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-start gap-10 mt-4 sm:mt-8 min-h-0">
+
 		<!-- Photo strip preview -->
-		<div class="flex flex-col items-center gap-3 lg:w-[52%]">
-			<div class="w-full max-w-sm flex-1 flex items-center justify-center">
-				{#if currentImageBase64}
-					<img
-						src={`data:${currentMimeType};base64,${currentImageBase64}`}
-						alt="Photo strip"
-						class="max-h-[28vh] lg:max-h-[45vh] w-auto object-contain rounded-xl border border-white/10 shadow-lg transition-all duration-500"
-					/>
-				{:else}
-					<div
-						class="w-40 sm:w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-6 text-center"
-					>
-						<div class="grid grid-cols-1 gap-2 w-full">
-							{#each [1, 2, 3] as _}
-								<div
-									class="w-full h-14 sm:h-20 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center"
-								>
-									<span class="text-white/20 text-2xl">⬜</span>
-								</div>
-							{/each}
+		<div class="flex flex-col items-center lg:w-[45%] w-full">
+			<div class="w-full max-w-sm flex-1 flex items-center justify-center min-h-[60vh]">
+
+				<div class="w-full bg-white/10 border border-white/10 rounded-2xl p-5 shadow-lg flex items-center justify-center">
+
+					{#if currentImageBase64}
+						<img
+							src={`data:${currentMimeType};base64,${currentImageBase64}`}
+							alt="Photo strip"
+							class="max-h-[28vh] lg:max-h-[65vh] w-auto object-contain shadow-lg transition-all duration-500"
+						/>
+					{:else}
+						<div
+							class="w-40 sm:w-52 flex flex-col items-center gap-3 border-2 border-dashed border-white/20 rounded-xl p-6 text-center"
+						>
+							<div class="grid grid-cols-1 gap-2 w-full">
+								{#each [1, 2, 3] as _}
+									<div class="w-full h-14 sm:h-20 bg-white/5 flex items-center justify-center">
+										<span class="text-white/20 text-2xl">⬜</span>
+									</div>
+								{/each}
+							</div>
+
+							<p class="font-b612 text-white/40 text-xs mt-2">
+								Your photo strip will appear here after the photo capture steps.
+							</p>
 						</div>
-						<p class="font-b612 text-white/40 text-xs mt-2">
-							Your photo strip will appear here after the photo capture steps.
-						</p>
-					</div>
-				{/if}
+					{/if}
+
+				</div>
+
 			</div>
 		</div>
 
-		<!-- Chatbot side panel -->
-		<div class="lg:w-[48%] h-[48vh] lg:h-full lg:-ml-2">
+		<!-- Chatbot -->
+		<div class="lg:w-[55%] w-full h-[48vh] lg:h-[75vh]">
 			<BackgroundChatbot
 				{currentImageBase64}
 				{currentMimeType}
@@ -181,6 +189,7 @@
 				{externalMessages}
 			/>
 		</div>
+
 	</div>
 
 	<div class="flex justify-end mt-4">
@@ -194,4 +203,5 @@
 	</div>
 
 	<Footer />
+
 </main>
