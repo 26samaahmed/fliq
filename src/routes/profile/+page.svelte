@@ -113,6 +113,7 @@
 		selectedStrip = null;
 
 		await supabase.from('strips').delete().eq('id', deleted.id);
+		await supabase.storage.from('strips').remove([deleted.storage_path]);
 
 		clearTimeout(undoTimeout);
 		undoTimeout = setTimeout(() => {
