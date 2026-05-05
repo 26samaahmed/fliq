@@ -160,7 +160,7 @@
 		</p>
 	</div>
 
-	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 mt-8">
+	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-2 mt-8">
 
 		<!-- STRIP PREVIEW -->
 		<div class="lg:w-[60%] w-full flex justify-center">

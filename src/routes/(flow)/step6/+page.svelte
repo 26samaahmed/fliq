@@ -174,7 +174,7 @@
 		</div>
 
 		<!-- Chatbot -->
-		<div class="lg:w-[55%] w-full h-[48vh] lg:h-[75vh]">
+		<div class="lg:w-[55%] w-full h-[48vh] lg:h-[70vh]">
 			<BackgroundChatbot
 				{currentImageBase64}
 				{currentMimeType}
