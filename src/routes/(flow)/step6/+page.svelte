@@ -142,13 +142,15 @@
 		<div class="flex flex-col items-center lg:w-[45%] w-full">
 			<div class="w-full max-w-sm flex-1 flex items-center justify-center min-h-[60vh]">
 
-				<div class="w-full bg-white/10 border border-white/10 rounded-2xl p-5 shadow-lg flex items-center justify-center">
+				<div class="w-full flex items-center justify-center">
 
 					{#if currentImageBase64}
 						<img
-							src={`data:${currentMimeType};base64,${currentImageBase64}`}
-							alt="Photo strip"
-							class="max-h-[28vh] lg:max-h-[65vh] w-auto object-contain shadow-lg transition-all duration-500"
+						src={`data:${currentMimeType};base64,${currentImageBase64}`}
+						alt="Photo strip"
+						class="max-h-[28vh] lg:max-h-[65vh] w-auto object-contain
+									shadow-2xl border border-white/10
+									transition-all duration-500"
 						/>
 					{:else}
 						<div

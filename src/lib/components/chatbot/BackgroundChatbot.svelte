@@ -216,7 +216,7 @@
 							class="max-w-[75%] rounded-xl border border-gray-200 shadow-sm"
 						/>
 					{:else}
-						<span class="bg-white py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-gray-200">
+            <span class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-white/20 leading-relaxed">
 							{msg.text}
 						</span>
 					{/if}
@@ -224,13 +224,15 @@
 			{/if}
 		{/each}
 
-		{#if isLoading}
-			<div class="flex justify-start">
-				<span class="bg-white py-2 px-4 rounded-2xl text-sm shadow-sm border border-gray-200">
-					Loading...
-				</span>
-			</div>
-		{/if}
+    {#if isLoading}
+      <div class="flex justify-start">
+        <span class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl text-sm shadow-sm border border-white/20 flex gap-1 items-center">
+          <span class="animate-bounce">.</span>
+          <span class="animate-bounce [animation-delay:150ms]">.</span>
+          <span class="animate-bounce [animation-delay:300ms]">.</span>
+        </span>
+      </div>
+    {/if}
 	</div>
 
 	<!-- Input -->

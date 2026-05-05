@@ -171,12 +171,13 @@
 		</p>
 	</div>
 
-	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-2 mt-8">
+	
+	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center gap-8 mt-8">
 
-		<!-- STRIP PREVIEW -->
-		<div class="lg:w-[60%] w-full flex justify-center">
-			<div class="min-h-[60vh] flex items-center justify-center w-full">
-
+		<!-- STRIP -->
+		<div class="flex justify-center w-full">
+			<div class="min-h-[60vh] flex items-center justify-center">
+	
 				{#if stripBase64}
 					<img
 						src={`data:${mimeType};base64,${stripBase64}`}
@@ -188,69 +189,72 @@
 						No strip found — please complete the previous steps first.
 					</p>
 				{/if}
-
+	
 			</div>
 		</div>
+	
+		<!-- ACTIONS (BOTTOM CENTER) -->
+		<div class="w-full flex flex-col items-center gap-3">
 
-		<!-- ACTIONS -->
-		<div class="lg:w-[40%] w-full flex flex-col items-center gap-6">
-
-			<button
-				onclick={goToProfile}
-				class="w-full max-w-xs bg-[#D38A8A] text-white px-10 py-3 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg"
-			>
-				Go to Profile
-			</button>
-
-			<div class="relative w-full max-w-xs">
-
+			<!-- BUTTON ROW -->
+			<div class="flex gap-3 w-full max-w-[440px]">
+		
 				<button
-					onclick={toggleDropdown}
-					disabled={!stripBase64}
-					class="w-full bg-transparent text-white px-6 py-3 rounded-xl border border-white/40 hover:bg-white/10 transition duration-300 flex items-center justify-between disabled:opacity-40 disabled:cursor-not-allowed"
+					onclick={goToProfile}
+					class="flex-1 bg-[#D38A8A] text-white px-4 py-2.5 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg text-sm"
 				>
-					<span>Export strip</span>
-
-					<svg
-						class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						viewBox="0 0 24 24"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-					</svg>
+					Go to Profile
 				</button>
-
-				{#if showDropdown}
-					<div class="absolute left-0 right-0 mt-2 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10">
-
-						<button onclick={() => downloadAs('png')} class="w-full text-left px-4 py-2 hover:bg-white/10">
-							PNG
-						</button>
-
-						<button onclick={() => downloadAs('jpg')} class="w-full text-left px-4 py-2 hover:bg-white/10">
-							JPG
-						</button>
-
-						<button onclick={() => downloadAs('pdf')} class="w-full text-left px-4 py-2 hover:bg-white/10">
-							PDF
-						</button>
-
-					</div>
-				{/if}
-
+		
+				<div class="relative flex-1">
+		
+					<button
+						onclick={toggleDropdown}
+						disabled={!stripBase64}
+						class="w-full bg-transparent text-white px-4 py-2.5 rounded-xl border border-white/40 hover:bg-white/10 transition duration-300 flex items-center justify-between text-sm disabled:opacity-40"
+					>
+						<span>Export</span>
+		
+						<svg
+							class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							viewBox="0 0 24 24"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+						</svg>
+					</button>
+		
+					{#if showDropdown}
+						<div class="absolute text-white text-xs left-0 right-0 mt-2 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10">
+		
+							<button onclick={() => downloadAs('png')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+								PNG
+							</button>
+		
+							<button onclick={() => downloadAs('jpg')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+								JPG
+							</button>
+		
+							<button onclick={() => downloadAs('pdf')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+								PDF
+							</button>
+		
+						</div>
+					{/if}
+		
+				</div>
+		
 			</div>
-
+		
 			{#if saving}
 				<p class="text-white/40 text-xs text-center">Saving to profile...</p>
 			{:else if saved}
 				<p class="text-white/40 text-xs text-center">Saved to your profile.</p>
 			{/if}
-
+		
 		</div>
-
-	</div>
 
 	<Footer />
 
