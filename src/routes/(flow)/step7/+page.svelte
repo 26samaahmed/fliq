@@ -16,6 +16,9 @@
 	let saving = $state(false);
 	let saved = $state(false);
 
+	// session-level guard to prevent duplicate inserts
+	let hasSavedThisSession = false;
+
 	onMount(async () => {
 		const stored = get(stripStore);
 
@@ -27,14 +30,20 @@
 			mimeType = sessionStorage.getItem('photoStripMimeType') ?? 'image/png';
 		}
 
-		if (stripBase64) {
-			await saveStrip();
-		}
+		if (!stripBase64) return;
+
+		// prevent duplicate save when navigating back/forth
+		if (hasSavedThisSession) return;
+
+		hasSavedThisSession = true;
+
+		await saveStrip();
 	});
 
 	async function saveStrip() {
 		const currentUser = get(user);
-		if (!currentUser || saved || saving) return;
+
+		if (!currentUser || saving || saved || hasSavedThisSession) return;
 
 		saving = true;
 
@@ -43,7 +52,10 @@
 
 			const byteString = atob(stripBase64!);
 			const arr = new Uint8Array(byteString.length);
-			for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
+
+			for (let i = 0; i < byteString.length; i++) {
+				arr[i] = byteString.charCodeAt(i);
+			}
 
 			const blob = new Blob([arr], { type: mimeType });
 
@@ -141,7 +153,6 @@
 
 	<Header />
 
-	<!-- HEADER -->
 	<div class="mt-4">
 		<div class="flex flex-col sm:flex-row items-center justify-between mb-2">
 			<BackButton />
@@ -164,9 +175,8 @@
 
 		<!-- STRIP PREVIEW -->
 		<div class="lg:w-[60%] w-full flex justify-center">
-	
 			<div class="min-h-[60vh] flex items-center justify-center w-full">
-	
+
 				{#if stripBase64}
 					<img
 						src={`data:${mimeType};base64,${stripBase64}`}
@@ -178,29 +188,29 @@
 						No strip found — please complete the previous steps first.
 					</p>
 				{/if}
-	
+
 			</div>
-	
 		</div>
-	
+
 		<!-- ACTIONS -->
 		<div class="lg:w-[40%] w-full flex flex-col items-center gap-6">
-	
+
 			<button
 				onclick={goToProfile}
 				class="w-full max-w-xs bg-[#D38A8A] text-white px-10 py-3 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg"
 			>
 				Go to Profile
 			</button>
-	
+
 			<div class="relative w-full max-w-xs">
+
 				<button
 					onclick={toggleDropdown}
 					disabled={!stripBase64}
 					class="w-full bg-transparent text-white px-6 py-3 rounded-xl border border-white/40 hover:bg-white/10 transition duration-300 flex items-center justify-between disabled:opacity-40 disabled:cursor-not-allowed"
 				>
 					<span>Export strip</span>
-	
+
 					<svg
 						class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
 						fill="none"
@@ -211,46 +221,35 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
 					</svg>
 				</button>
-	
+
 				{#if showDropdown}
 					<div class="absolute left-0 right-0 mt-2 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10">
-				
-						<button
-							type="button"
-							onclick={() => downloadAs('png')}
-							class="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-						>
+
+						<button onclick={() => downloadAs('png')} class="w-full text-left px-4 py-2 hover:bg-white/10">
 							PNG
 						</button>
-				
-						<button
-							type="button"
-							onclick={() => downloadAs('jpg')}
-							class="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-						>
+
+						<button onclick={() => downloadAs('jpg')} class="w-full text-left px-4 py-2 hover:bg-white/10">
 							JPG
 						</button>
-				
-						<button
-							type="button"
-							onclick={() => downloadAs('pdf')}
-							class="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-						>
+
+						<button onclick={() => downloadAs('pdf')} class="w-full text-left px-4 py-2 hover:bg-white/10">
 							PDF
 						</button>
-				
+
 					</div>
-			{/if}
+				{/if}
+
 			</div>
-	
+
 			{#if saving}
 				<p class="text-white/40 text-xs text-center">Saving to profile...</p>
 			{:else if saved}
 				<p class="text-white/40 text-xs text-center">Saved to your profile.</p>
 			{/if}
-	
+
 		</div>
-	
+
 	</div>
 
 	<Footer />
