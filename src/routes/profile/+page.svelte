@@ -9,7 +9,6 @@
 	import { user } from '$lib/stores/user';
 	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 
 	type Strip = {
 		id: string;
@@ -136,6 +135,29 @@
 
 		clearTimeout(undoTimeout);
 	}
+
+	async function downloadStrip(strip: Strip) {
+		try {
+			const response = await fetch(strip.publicUrl);
+			const blob = await response.blob();
+
+			const url = URL.createObjectURL(blob);
+
+			const link = document.createElement('a');
+			link.href = url;
+
+			const extension = strip.mime_type?.split('/')[1] || 'png';
+			link.download = `strip-${strip.id}.${extension}`;
+
+			document.body.appendChild(link);
+			link.click();
+
+			document.body.removeChild(link);
+			URL.revokeObjectURL(url);
+		} catch (err) {
+			console.error('Download failed:', err);
+		}
+	}
 </script>
 
 <main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
@@ -208,25 +230,37 @@
 							{#each strips as strip}
 								<div
 									class="relative group bg-white p-3 shadow-lg
-										   transition duration-300
-										   hover:scale-105 hover:-rotate-1 hover:shadow-2xl"
+											transition duration-300
+											hover:scale-105 hover:-rotate-1 hover:shadow-2xl"
 								>
+									<div class="relative overflow-hidden">
+										<img src={strip.publicUrl} class="w-full object-contain" />
 
-									<!-- delete -->
-									<button
-										class="absolute top-2 right-2 bg-black/60 text-white w-6 h-6 rounded-full
-											   opacity-0 group-hover:opacity-100"
-										onclick={() => confirmDelete(strip)}
-									>
-										×
-									</button>
+										<!-- action bar -->
+										<div
+											class="absolute bottom-0 left-0 right-0 bg-black/65 text-white
+													opacity-0 group-hover:opacity-100 transition
+													flex justify-around items-center py-2 text-xs sm:text-sm"
+										>
+											<button
+												class="hover:underline"
+												onclick={() => downloadStrip(strip)}
+											>
+												Download
+											</button>
 
-									<img src={strip.publicUrl} class="w-full object-contain" />
+											<button
+												class="hover:underline"
+												onclick={() => confirmDelete(strip)}
+											>
+												Delete
+											</button>
+										</div>
+									</div>
 
 									<p class="text-center text-[#333745] text-xs mt-2">
 										{formatDate(strip.created_at)}
 									</p>
-
 								</div>
 							{/each}
 
