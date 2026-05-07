@@ -148,7 +148,7 @@
 						<img
 						src={`data:${currentMimeType};base64,${currentImageBase64}`}
 						alt="Photo strip"
-						class="max-h-[28vh] lg:max-h-[65vh] w-auto object-contain
+						class="max-h-[55vh] lg:max-h-[65vh] w-auto object-contain
 									shadow-2xl border border-white/10
 									transition-all duration-500"
 						/>
