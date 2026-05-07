@@ -23,13 +23,31 @@
 
 	let showEditModal = false;
 
-	// delete state
 	let showDeleteModal = false;
 	let selectedStrip: Strip | null = null;
 
-	// undo state
 	let recentlyDeleted: Strip | null = null;
 	let undoTimeout: ReturnType<typeof setTimeout>;
+
+	// reactive broken image tracking (FIXED)
+	let brokenImages: Record<string, true> = {};
+
+	function markBroken(id: string) {
+		brokenImages = { ...brokenImages, [id]: true };
+	}
+
+	// derived clean list (better than filtering in markup)
+	$: cleanStrips = strips.filter(isValidStrip);
+
+	function isValidStrip(strip: any) {
+		return (
+			strip &&
+			typeof strip.id === 'string' &&
+			typeof strip.storage_path === 'string' &&
+			typeof strip.publicUrl === 'string' &&
+			strip.publicUrl.length > 0
+		);
+	}
 
 	function formatDate(dateStr: string): string {
 		const date = new Date(dateStr);
@@ -86,7 +104,6 @@
 		showEditModal = false;
 	}
 
-	// DELETE FLOW
 	function confirmDelete(strip: Strip) {
 		selectedStrip = strip;
 		showDeleteModal = true;
@@ -102,7 +119,6 @@
 
 		const deleted = selectedStrip;
 
-		// optimistic UI update
 		strips = strips.filter((s) => s.id !== deleted.id);
 
 		recentlyDeleted = deleted;
@@ -168,7 +184,7 @@
 		<h1 class="text-2xl sm:text-4xl pb-8">Your Profile</h1>
 
 		<div class="flex flex-col lg:flex-row gap-6 items-stretch">
-			<!-- PERSONAL INFO (RESTORED ORIGINAL STYLE) -->
+			<!-- PERSONAL INFO -->
 			<div class="w-full lg:w-1/3">
 				<div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 bg-[#2c2f3c]">
 					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">Personal Information</div>
@@ -208,27 +224,52 @@
 					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">Recently taken strips</div>
 
 					{#if stripsLoading}
-						<p class="text-white/50">Loading...</p>
-					{:else if strips.length === 0}
-						<p class="text-white/50">No strips yet</p>
+						<p class="text-white/50 mt-6">Loading...</p>
+					{:else if cleanStrips.length === 0}
+						<p class="text-white/50 mt-6">No strips yet</p>
 					{:else}
 						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-							{#each strips as strip}
+							{#each cleanStrips as strip (strip.id)}
 								<div
 									class="relative group bg-white p-3 shadow-lg
-											transition duration-300
-											hover:scale-105 hover:-rotate-1 hover:shadow-2xl"
+							transition duration-300
+							hover:scale-105 hover:-rotate-1 hover:shadow-2xl
+							{brokenImages[strip.id] ? 'opacity-60' : ''}"
 								>
 									<div class="relative overflow-hidden">
-										<img src={strip.publicUrl} class="w-full object-contain" />
+										<!-- IMAGE -->
+										{#if strip.publicUrl && !brokenImages[strip.id]}
+											<img
+												src={strip.publicUrl}
+												alt="strip"
+												loading="lazy"
+												decoding="async"
+												class="w-full object-contain"
+												onerror={() => markBroken(strip.id)}
+											/>
+										{:else}
+											<div
+												class="w-full aspect-square flex flex-col items-center justify-center
+									bg-gray-200 text-gray-500 text-xs text-center p-2"
+											>
+												<p class="font-medium">Cannot display strip</p>
+												<p class="opacity-70">
+													{!strip?.publicUrl ? 'Missing image URL' : 'Image failed to load'}
+												</p>
+											</div>
+										{/if}
 
-										<!-- action bar -->
+										<!-- ACTIONS -->
 										<div
 											class="absolute bottom-0 left-0 right-0 bg-black/65 text-white
-													opacity-0 group-hover:opacity-100 transition
-													flex justify-around items-center py-2 text-xs sm:text-sm"
+								opacity-0 group-hover:opacity-100 transition
+								flex justify-around items-center py-2 text-xs sm:text-sm"
 										>
-											<button class="hover:underline" onclick={() => downloadStrip(strip)}>
+											<button
+												class="hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
+												disabled={!strip.publicUrl || brokenImages[strip.id]}
+												onclick={() => downloadStrip(strip)}
+											>
 												Download
 											</button>
 
@@ -239,7 +280,7 @@
 									</div>
 
 									<p class="text-center text-[#333745] text-xs mt-2">
-										{formatDate(strip.created_at)}
+										{strip.created_at ? formatDate(strip.created_at) : 'Unknown date'}
 									</p>
 								</div>
 							{/each}
