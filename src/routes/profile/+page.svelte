@@ -64,9 +64,7 @@
 		}
 
 		strips = data.map((s: any) => {
-			const { data: urlData } = supabase.storage
-				.from('strips')
-				.getPublicUrl(s.storage_path);
+			const { data: urlData } = supabase.storage.from('strips').getPublicUrl(s.storage_path);
 
 			return { ...s, publicUrl: urlData.publicUrl };
 		});
@@ -161,23 +159,19 @@
 	}
 </script>
 
-<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
-
+<main
+	class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]"
+>
 	<Header />
 
 	<div class="flex-1 text-white max-w-7xl mx-auto w-full">
-
 		<h1 class="text-2xl sm:text-4xl pb-8">Your Profile</h1>
 
 		<div class="flex flex-col lg:flex-row gap-6 items-stretch">
-
 			<!-- PERSONAL INFO (RESTORED ORIGINAL STYLE) -->
 			<div class="w-full lg:w-1/3">
 				<div class="flex flex-col relative rounded border-white border-2 p-6 sm:p-8 bg-[#2c2f3c]">
-
-					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">
-						Personal Information
-					</div>
+					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">Personal Information</div>
 
 					<div class="flex justify-end pb-6">
 						<button class="underline text-[#AFADAD] hover:text-white" onclick={openEditModal}>
@@ -186,17 +180,16 @@
 					</div>
 
 					<div class="flex flex-col text-sm sm:text-base w-full">
-
 						<div class="flex justify-between">
 							<p>Full Name</p>
-							<p class="text-[#DCDFF5]">{$user?.user_metadata?.full_name ?? "Loading..."}</p>
+							<p class="text-[#DCDFF5]">{$user?.user_metadata?.full_name ?? 'Loading...'}</p>
 						</div>
 
 						<div class="h-px bg-white/30 my-4"></div>
 
 						<div class="flex justify-between">
 							<p>Email</p>
-							<p class="text-[#DCDFF5]">{$user?.email ?? "Loading..."}</p>
+							<p class="text-[#DCDFF5]">{$user?.email ?? 'Loading...'}</p>
 						</div>
 
 						<div class="h-px bg-white/30 my-4"></div>
@@ -205,29 +198,21 @@
 							<p>Password</p>
 							<p class="text-[#DCDFF5]">••••••••</p>
 						</div>
-
 					</div>
-
 				</div>
 			</div>
 
 			<!-- STRIPS -->
 			<div class="w-full lg:w-2/3">
 				<div class="relative bg-[#2c2f3c] border-2 border-white p-6 rounded">
-
-					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">
-						Recently taken strips
-					</div>
+					<div class="absolute text-xl -top-4 left-4 bg-[#333745] px-3">Recently taken strips</div>
 
 					{#if stripsLoading}
 						<p class="text-white/50">Loading...</p>
-
 					{:else if strips.length === 0}
 						<p class="text-white/50">No strips yet</p>
-
 					{:else}
 						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-
 							{#each strips as strip}
 								<div
 									class="relative group bg-white p-3 shadow-lg
@@ -243,17 +228,11 @@
 													opacity-0 group-hover:opacity-100 transition
 													flex justify-around items-center py-2 text-xs sm:text-sm"
 										>
-											<button
-												class="hover:underline"
-												onclick={() => downloadStrip(strip)}
-											>
+											<button class="hover:underline" onclick={() => downloadStrip(strip)}>
 												Download
 											</button>
 
-											<button
-												class="hover:underline"
-												onclick={() => confirmDelete(strip)}
-											>
+											<button class="hover:underline" onclick={() => confirmDelete(strip)}>
 												Delete
 											</button>
 										</div>
@@ -264,22 +243,15 @@
 									</p>
 								</div>
 							{/each}
-
 						</div>
 					{/if}
-
 				</div>
 			</div>
-
 		</div>
 	</div>
 
 	<!-- MODALS -->
-	<ConfirmDelete
-		open={showDeleteModal}
-		onCancel={cancelDelete}
-		onConfirm={deleteStrip}
-	/>
+	<ConfirmDelete open={showDeleteModal} onCancel={cancelDelete} onConfirm={deleteStrip} />
 
 	<EditInfo open={showEditModal} SaveChanges={closeEditModal} Cancel={closeEditModal} />
 
@@ -292,5 +264,4 @@
 	/>
 
 	<Footer />
-
 </main>

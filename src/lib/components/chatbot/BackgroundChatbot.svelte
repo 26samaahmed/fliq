@@ -127,9 +127,7 @@
 				}
 
 				const editedPhotos = results.map((r, i) =>
-					r.imageBase64
-						? `data:${r.mimeType};base64,${r.imageBase64}`
-						: photos[i]
+					r.imageBase64 ? `data:${r.mimeType};base64,${r.imageBase64}` : photos[i]
 				);
 
 				onPhotosUpdate?.(editedPhotos);
@@ -190,17 +188,13 @@
 <div
 	class="flex flex-col h-full max-w-lg mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden font-aldrich"
 >
-
 	<!-- Header -->
 	<div class="p-4 bg-gray-50 border-b border-gray-200">
 		<b class="text-lg">Background Chatbot</b>
 	</div>
 
 	<!-- Chat -->
-	<div
-		bind:this={chatContainer}
-		class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50"
-	>
+	<div bind:this={chatContainer} class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
 		{#each messages as msg}
 			{#if msg.role === 'user'}
 				<div class="flex justify-end">
@@ -216,7 +210,9 @@
 							class="max-w-[75%] rounded-xl border border-gray-200 shadow-sm"
 						/>
 					{:else}
-            <span class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-white/20 leading-relaxed">
+						<span
+							class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl max-w-[75%] text-sm shadow-sm border border-white/20 leading-relaxed"
+						>
 							{msg.text}
 						</span>
 					{/if}
@@ -224,15 +220,17 @@
 			{/if}
 		{/each}
 
-    {#if isLoading}
-      <div class="flex justify-start">
-        <span class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl text-sm shadow-sm border border-white/20 flex gap-1 items-center">
-          <span class="animate-bounce">.</span>
-          <span class="animate-bounce [animation-delay:150ms]">.</span>
-          <span class="animate-bounce [animation-delay:300ms]">.</span>
-        </span>
-      </div>
-    {/if}
+		{#if isLoading}
+			<div class="flex justify-start">
+				<span
+					class="bg-[#2E3140]/8 text-[#2E3140] py-2 px-4 rounded-2xl text-sm shadow-sm border border-white/20 flex gap-1 items-center"
+				>
+					<span class="animate-bounce">.</span>
+					<span class="animate-bounce [animation-delay:150ms]">.</span>
+					<span class="animate-bounce [animation-delay:300ms]">.</span>
+				</span>
+			</div>
+		{/if}
 	</div>
 
 	<!-- Input -->

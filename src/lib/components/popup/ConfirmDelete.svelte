@@ -13,17 +13,12 @@
 </script>
 
 <Modal {open} onClose={onCancel}>
-
 	<div class="w-[320px]">
-
 		<h2 class="text-lg mb-2">Delete strip?</h2>
 
-		<p class="text-sm text-white/60 mb-6">
-			This action cannot be undone.
-		</p>
+		<p class="text-sm text-white/60 mb-6">This action cannot be undone.</p>
 
 		<div class="flex justify-end gap-3">
-
 			<button
 				type="button"
 				onclick={onCancel}
@@ -39,9 +34,6 @@
 			>
 				Delete
 			</button>
-
 		</div>
-
 	</div>
-
 </Modal>

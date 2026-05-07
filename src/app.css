@@ -1,13 +1,13 @@
 /* 1. Load your Google Fonts FIRST */
-@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Aldrich&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Aldrich&display=swap');
 
 /* 2. Then load Tailwind */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 .font-aldrich {
-  font-family: 'Aldrich', sans-serif;
+	font-family: 'Aldrich', sans-serif;
 }
 
 .font-aclonica {
-  font-family: 'Aclonica', sans-serif;
+	font-family: 'Aclonica', sans-serif;
 }

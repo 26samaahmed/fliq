@@ -21,7 +21,6 @@
 		role="button"
 		tabindex="0"
 	>
-
 		<!-- MODAL CARD -->
 		<div
 			class="bg-[#333745] rounded-xl border border-white/40 text-white shadow-2xl p-8 w-[420px] animate-popup"
@@ -31,6 +30,5 @@
 		>
 			<slot />
 		</div>
-
 	</div>
 {/if}
