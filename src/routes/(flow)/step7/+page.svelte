@@ -61,9 +61,7 @@
 
 			const path = `${currentUser.id}/${Date.now()}.${ext}`;
 
-			const { error: uploadError } = await supabase.storage
-				.from('strips')
-				.upload(path, blob);
+			const { error: uploadError } = await supabase.storage.from('strips').upload(path, blob);
 
 			if (uploadError) throw uploadError;
 
@@ -149,17 +147,16 @@
 </script>
 
 <!-- MAIN PAGE -->
-<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
-
+<main
+	class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]"
+>
 	<Header />
 
 	<div class="mt-4">
 		<div class="flex flex-col sm:flex-row items-center justify-between mb-2">
 			<BackButton />
 
-			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-				Here's your final strip!
-			</h1>
+			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">Here's your final strip!</h1>
 
 			<div class="w-16"></div>
 		</div>
@@ -171,13 +168,10 @@
 		</p>
 	</div>
 
-	
 	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center gap-8 mt-8">
-
 		<!-- STRIP -->
 		<div class="flex justify-center w-full">
 			<div class="min-h-[60vh] flex items-center justify-center">
-	
 				{#if stripBase64}
 					<img
 						src={`data:${mimeType};base64,${stripBase64}`}
@@ -189,32 +183,28 @@
 						No strip found — please complete the previous steps first.
 					</p>
 				{/if}
-	
 			</div>
 		</div>
-	
+
 		<!-- ACTIONS (BOTTOM CENTER) -->
 		<div class="w-full flex flex-col items-center gap-3">
-
 			<!-- BUTTON ROW -->
 			<div class="flex gap-3 w-full max-w-[440px]">
-		
 				<button
 					onclick={goToProfile}
 					class="flex-1 bg-[#D38A8A] text-white px-4 py-2.5 rounded-xl border-2 border-white hover:bg-[#C07070] transition duration-300 shadow-lg text-sm"
 				>
 					Go to Profile
 				</button>
-		
+
 				<div class="relative flex-1">
-		
 					<button
 						onclick={toggleDropdown}
 						disabled={!stripBase64}
 						class="w-full bg-transparent text-white px-4 py-2.5 rounded-xl border border-white/40 hover:bg-white/10 transition duration-300 flex items-center justify-between text-sm disabled:opacity-40"
 					>
 						<span>Export</span>
-		
+
 						<svg
 							class="w-4 h-4 transition-transform duration-200 {showDropdown ? 'rotate-180' : ''}"
 							fill="none"
@@ -225,37 +215,43 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
 						</svg>
 					</button>
-		
+
 					{#if showDropdown}
-						<div class="absolute text-white text-xs left-0 right-0 mt-2 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10">
-		
-							<button onclick={() => downloadAs('png')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+						<div
+							class="absolute text-white text-xs left-0 right-0 mt-2 bg-[#2A2D3A] border border-white/10 rounded-lg shadow-lg overflow-hidden z-10"
+						>
+							<button
+								onclick={() => downloadAs('png')}
+								class="w-full text-left px-4 py-2 hover:bg-white/10"
+							>
 								PNG
 							</button>
-		
-							<button onclick={() => downloadAs('jpg')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+
+							<button
+								onclick={() => downloadAs('jpg')}
+								class="w-full text-left px-4 py-2 hover:bg-white/10"
+							>
 								JPG
 							</button>
-		
-							<button onclick={() => downloadAs('pdf')} class="w-full text-left px-4 py-2 hover:bg-white/10">
+
+							<button
+								onclick={() => downloadAs('pdf')}
+								class="w-full text-left px-4 py-2 hover:bg-white/10"
+							>
 								PDF
 							</button>
-		
 						</div>
 					{/if}
-		
 				</div>
-		
 			</div>
-		
+
 			{#if saving}
 				<p class="text-white/40 text-xs text-center">Saving to profile...</p>
 			{:else if saved}
 				<p class="text-white/40 text-xs text-center">Saved to your profile.</p>
 			{/if}
-		
 		</div>
 
-	<Footer />
-
+		<Footer />
+	</div>
 </main>

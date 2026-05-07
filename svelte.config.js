@@ -5,10 +5,10 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const adapter = process.env.VERCEL ? adapterVercel() : adapterNode();
 
 const config = {
-  preprocess: vitePreprocess(),
-  kit: {
-    adapter
-  }
+	preprocess: vitePreprocess(),
+	kit: {
+		adapter
+	}
 };
 
 export default config;

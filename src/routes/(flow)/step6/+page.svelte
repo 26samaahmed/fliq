@@ -112,8 +112,9 @@
 	}
 </script>
 
-<main class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
-
+<main
+	class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]"
+>
 	<Header />
 
 	<!-- Top bar -->
@@ -121,9 +122,7 @@
 		<div class="flex flex-col sm:flex-row items-center justify-between mb-2">
 			<BackButton />
 
-			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">
-				Customize Background
-			</h1>
+			<h1 class="text-lg sm:text-2xl text-white text-center flex-1">Customize Background</h1>
 
 			<div class="w-16"></div>
 		</div>
@@ -136,19 +135,18 @@
 	</div>
 
 	<!-- MAIN LAYOUT -->
-	<div class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-start gap-10 mt-4 sm:mt-8 min-h-0">
-
+	<div
+		class="flex-1 w-full max-w-5xl mx-auto flex flex-col lg:flex-row items-start gap-10 mt-4 sm:mt-8 min-h-0"
+	>
 		<!-- Photo strip preview -->
 		<div class="flex flex-col items-center lg:w-[45%] w-full">
 			<div class="w-full max-w-sm flex-1 flex items-center justify-center min-h-[60vh]">
-
 				<div class="w-full flex items-center justify-center">
-
 					{#if currentImageBase64}
 						<img
-						src={`data:${currentMimeType};base64,${currentImageBase64}`}
-						alt="Photo strip"
-						class="max-h-[55vh] lg:max-h-[65vh] w-auto object-contain
+							src={`data:${currentMimeType};base64,${currentImageBase64}`}
+							alt="Photo strip"
+							class="max-h-[55vh] lg:max-h-[65vh] w-auto object-contain
 									shadow-2xl border border-white/10
 									transition-all duration-500"
 						/>
@@ -169,9 +167,7 @@
 							</p>
 						</div>
 					{/if}
-
 				</div>
-
 			</div>
 		</div>
 
@@ -191,7 +187,6 @@
 				{externalMessages}
 			/>
 		</div>
-
 	</div>
 
 	<div class="flex justify-end mt-4">
@@ -205,5 +200,4 @@
 	</div>
 
 	<Footer />
-
 </main>

@@ -22,8 +22,7 @@ async function isBackgroundEditRequest(prompt: string): Promise<boolean> {
 		]
 	});
 
-	const answer =
-		result.candidates?.[0]?.content?.parts?.[0]?.text?.trim().toLowerCase();
+	const answer = result.candidates?.[0]?.content?.parts?.[0]?.text?.trim().toLowerCase();
 
 	return answer === 'yes';
 }
@@ -33,9 +32,7 @@ const TIMEOUT_MS = 60_000;
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 	return Promise.race([
 		promise,
-		new Promise<never>((_, reject) =>
-			setTimeout(() => reject(new Error('Request timed out')), ms)
-		)
+		new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Request timed out')), ms))
 	]);
 }
 
@@ -60,16 +57,10 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		// Only classify first image in batch
 		if (photoIndex === 0) {
-			const allowed = await withTimeout(
-				isBackgroundEditRequest(prompt.trim()),
-				TIMEOUT_MS
-			);
+			const allowed = await withTimeout(isBackgroundEditRequest(prompt.trim()), TIMEOUT_MS);
 
 			if (!allowed) {
-				return json(
-					{ error: 'I can only edit photo backgrounds.' },
-					{ status: 422 }
-				);
+				return json({ error: 'I can only edit photo backgrounds.' }, { status: 422 });
 			}
 		}
 
@@ -84,11 +75,11 @@ export const POST: RequestHandler = async ({ request }) => {
 					{ text: systemPrompt },
 					{ inlineData: { mimeType: 'image/jpeg', data: selfImageBase64 } },
 					{ inlineData: { mimeType: 'image/jpeg', data: remoteImageBase64 } }
-			  ]
+				]
 			: [
 					{ text: systemPrompt },
 					{ inlineData: { mimeType: mimeType || 'image/png', data: imageBase64 } }
-			  ];
+				];
 
 		const response = await withTimeout(
 			ai.models.generateContent({
@@ -111,10 +102,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		if (!imageBase64Out) {
-			return json(
-				{ error: 'No image was returned by the model' },
-				{ status: 500 }
-			);
+			return json({ error: 'No image was returned by the model' }, { status: 500 });
 		}
 
 		return json({
@@ -124,9 +112,6 @@ export const POST: RequestHandler = async ({ request }) => {
 	} catch (err) {
 		const message = err instanceof Error ? err.message : 'Unknown error';
 
-		return json(
-			{ error: message },
-			{ status: 500 }
-		);
+		return json({ error: message }, { status: 500 });
 	}
 };

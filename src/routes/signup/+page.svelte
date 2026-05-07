@@ -46,21 +46,20 @@
 	}
 </script>
 
-<div class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]">
+<div
+	class="font-aldrich min-h-screen flex flex-col p-6 bg-gradient-to-b from-[#2E3140] to-[#3B3F52]"
+>
 	<Header />
 
-	<div class="flex-1 flex flex-col items-center justify-start pt-10 sm:justify-center sm:pt-0 text-center">
-
+	<div
+		class="flex-1 flex flex-col items-center justify-start pt-10 sm:justify-center sm:pt-0 text-center"
+	>
 		<!-- Title -->
-		<h1 class="text-3xl sm:text-4xl text-white font-semibold">
-			Sign up for Fliq
-		</h1>
+		<h1 class="text-3xl sm:text-4xl text-white font-semibold">Sign up for Fliq</h1>
 
 		<p class="text-white/70 text-base sm:text-lg mt-3 max-w-md">
 			Create a free account or
-			<a href="/login" class="underline text-[#DCDFF5]">
-				log in
-			</a>.
+			<a href="/login" class="underline text-[#DCDFF5]"> log in </a>.
 		</p>
 
 		<!-- Card -->
@@ -68,7 +67,6 @@
 			class="mt-10 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-lg flex flex-col gap-5 text-white"
 			on:submit|preventDefault={handleSignup}
 		>
-
 			<!-- Name -->
 			<input
 				type="text"
@@ -125,7 +123,6 @@
 			>
 				Sign Up
 			</button>
-
 		</form>
 
 		<SuccessPopup
