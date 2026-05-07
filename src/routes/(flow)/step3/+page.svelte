@@ -86,7 +86,7 @@
         >
           <!-- Color preview box -->
           <div
-          class="relative w-24 h-32 sm:w-56 sm:h-64 rounded-xl overflow-hidden
+          class="relative w-32 h-36 sm:w-56 sm:h-64 rounded-xl overflow-hidden
                  flex items-center justify-center 
                  transition-all duration-300 
                  group-hover:scale-105 
