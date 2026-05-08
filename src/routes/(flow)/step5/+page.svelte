@@ -222,10 +222,14 @@
 							style="width: 240px; height: 130px;"
 						>
 							<div class="flex h-full">
-								<img src={shot.self} alt="You" class="w-1/2 h-full object-cover" />
 								<img
-									src={shot.remote}
-									alt={isHostSession ? 'Guest' : 'Host'}
+									src={isHostSession ? shot.self : shot.remote}
+									alt="Host"
+									class="w-1/2 h-full object-cover"
+								/>
+								<img
+									src={isHostSession ? shot.remote : shot.self}
+									alt="Guest"
 									class="w-1/2 h-full object-cover border-l-2 border-white/20"
 								/>
 							</div>
