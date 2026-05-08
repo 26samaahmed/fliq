@@ -34,7 +34,6 @@
 	const peers: Record<string, any> = {};
 	let remoteVideo: HTMLVideoElement | null = null;
 	let countdownTimer: ReturnType<typeof setInterval> | null = null;
-	let photosDiv: HTMLDivElement | undefined;
 
 	onMount(async () => {
 		const isCreator = !page.params.roomID;
@@ -59,7 +58,22 @@
 				config: {
 					iceServers: [
 						{ urls: 'stun:stun1.l.google.com:19302' },
-						{ urls: 'stun:stun2.l.google.com:19302' }
+						{ urls: 'stun:stun2.l.google.com:19302' },
+						{
+							urls: 'turn:openrelay.metered.ca:80',
+							username: 'openrelayproject',
+							credential: 'openrelayproject'
+						},
+						{
+							urls: 'turn:openrelay.metered.ca:443',
+							username: 'openrelayproject',
+							credential: 'openrelayproject'
+						},
+						{
+							urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+							username: 'openrelayproject',
+							credential: 'openrelayproject'
+						}
 					]
 				}
 			});
@@ -248,7 +262,7 @@
 		video.srcObject = stream;
 		video.setAttribute('autoplay', '');
 		video.setAttribute('playsinline', '');
-		video.muted = true;
+		video.muted = isLocal;
 		video.style.width = '100%';
 		video.style.height = '100%';
 		video.style.objectFit = 'cover';
@@ -352,7 +366,6 @@
 
 			<!-- Captured photos -->
 			<div
-				bind:this={photosDiv}
 				class="grid gap-3 justify-center w-full max-w-3xl"
 				style="grid-template-columns: repeat(auto-fill, 200px); grid-auto-rows: 200px;"
 			></div>
