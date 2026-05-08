@@ -72,7 +72,7 @@
 					if (!added) {
 						added = true;
 						remoteVideo = video;
-						addVideoStream(video, remoteStream);
+						addVideoStream(video, remoteStream, false);
 					} else {
 						video.srcObject = remoteStream;
 					}
@@ -232,7 +232,7 @@
 			if (!added) {
 				added = true;
 				remoteVideo = video;
-				addVideoStream(video, remoteStream);
+				addVideoStream(video, remoteStream, false);
 			} else {
 				video.srcObject = remoteStream;
 			}
@@ -244,7 +244,7 @@
 		peers[userID] = call;
 	}
 
-	function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
+	function addVideoStream(video: HTMLVideoElement, stream: MediaStream, isLocal = true) {
 		video.srcObject = stream;
 		video.setAttribute('autoplay', '');
 		video.setAttribute('playsinline', '');
@@ -258,6 +258,12 @@
 			track.addEventListener('ended', () => video.remove());
 		});
 		videoGrid?.appendChild(video);
+
+		if (!isLocal) {
+			// Host stays left (order 1), guest stays right (order 2)
+			myVideo.style.order = isHost ? '1' : '2';
+			video.style.order = isHost ? '2' : '1';
+		}
 	}
 
 	onDestroy(() => {
