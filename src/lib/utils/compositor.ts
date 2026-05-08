@@ -1,4 +1,4 @@
-const LAYOUT_CONFIG: Record<
+export const LAYOUT_CONFIG: Record<
 	string,
 	{ w: number; h: number; slots: { x: number; y: number; w: number; h: number }[] }
 > = {
