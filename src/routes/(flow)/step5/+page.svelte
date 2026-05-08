@@ -5,9 +5,15 @@
 	import Footer from '$lib/components/footer/Footer.svelte';
 	import ProgressBar from '$lib/components/progress-bar/ProgressBar.svelte';
 	import BackButton from '$lib/components/buttons/Back.svelte';
+	import { LAYOUT_CONFIG } from '$lib/utils/compositor';
 
 	const SERVER_URL = 'https://fliq-app-dv6z.onrender.com/';
 	const frameMap: Record<string, number> = { '1x3': 3, '1x4': 4, '2x2v': 4, '2x2h': 4 };
+
+	function getSlotSize(frame: string) {
+		const config = LAYOUT_CONFIG[frame] ?? LAYOUT_CONFIG['1x3'];
+		return { w: config.slots[0].w * 4, h: config.slots[0].h * 4 };
+	}
 
 	// 2-user mode
 	let shots = $state<{ self: string; remote: string }[]>([]);
@@ -70,8 +76,9 @@
 						sorted.map((i: number) => ({ self: shots[i].self, remote: shots[i].remote }))
 					)
 				);
+				const { w, h } = getSlotSize(sessionStorage.getItem('frame') ?? '1x3');
 				const combined = await Promise.all(
-					sorted.map((i: number) => combinePhotos(shots[i].self, shots[i].remote))
+					sorted.map((i: number) => combinePhotos(shots[i].remote, shots[i].self, w, h))
 				);
 				sessionStorage.setItem('selectedPhotos', JSON.stringify(combined));
 				goto('/step6');
@@ -101,39 +108,33 @@
 		}
 	}
 
-	function combinePhotos(self: string, remote: string): Promise<string> {
+	function coverFill(
+		ctx: CanvasRenderingContext2D,
+		img: HTMLImageElement,
+		dx: number, dy: number, dw: number, dh: number
+	) {
+		const ia = img.naturalWidth / img.naturalHeight;
+		const da = dw / dh;
+		let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+		if (ia > da) { sw = img.naturalHeight * da; sx = (img.naturalWidth - sw) / 2; }
+		else         { sh = img.naturalWidth / da;  sy = (img.naturalHeight - sh) / 2; }
+		ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+	}
+
+	function combinePhotos(self: string, remote: string, slotW: number, slotH: number): Promise<string> {
 		return new Promise((resolve) => {
 			const img1 = new Image();
 			const img2 = new Image();
 			let loaded = 0;
 			const onLoad = () => {
 				if (++loaded < 2) return;
-				// Keep output at the same dimensions as a single photo (W × H)
-				const outW = img1.width;
-				const outH = img1.height;
-				// Scale both photos side-by-side to fit within outW × outH
-				const srcW = img1.width + img2.width;
-				const srcH = Math.max(img1.height, img2.height);
-				const scale = Math.min(outW / srcW, outH / srcH);
-				const scaledW = srcW * scale;
-				const scaledH = srcH * scale;
-				// Center horizontally; push to bottom so black bar lands on top
-				const xOffset = (outW - scaledW) / 2;
-				const yOffset = (outH - scaledH) / 2;
 				const c = document.createElement('canvas');
-				c.width = outW;
-				c.height = outH;
+				c.width = slotW;
+				c.height = slotH;
 				const ctx = c.getContext('2d')!;
-				ctx.fillStyle = '#000';
-				ctx.fillRect(0, 0, outW, outH);
-				ctx.drawImage(img1, xOffset, yOffset, img1.width * scale, img1.height * scale);
-				ctx.drawImage(
-					img2,
-					xOffset + img1.width * scale,
-					yOffset,
-					img2.width * scale,
-					img2.height * scale
-				);
+				const half = slotW / 2;
+				coverFill(ctx, img1, 0, 0, half, slotH);
+				coverFill(ctx, img2, half, 0, half, slotH);
 				resolve(c.toDataURL('image/jpeg', 0.8));
 			};
 			img1.onload = onLoad;
@@ -147,12 +148,17 @@
 		const sorted = [...selectedIndices].sort((a, b) => a - b);
 		let photosToStore: string[];
 		if (isTwoUsers) {
+			const { w, h } = getSlotSize(sessionStorage.getItem('frame') ?? '1x3');
 			sessionStorage.setItem(
 				'selectedPairs',
 				JSON.stringify(sorted.map((i) => ({ self: shots[i].self, remote: shots[i].remote })))
 			);
 			photosToStore = await Promise.all(
-				sorted.map((i) => combinePhotos(shots[i].self, shots[i].remote))
+				sorted.map((i) =>
+					isHostSession
+						? combinePhotos(shots[i].self, shots[i].remote, w, h)
+						: combinePhotos(shots[i].remote, shots[i].self, w, h)
+				)
 			);
 			if (socket) socket.emit('broadcast-selection', sessionStorage.getItem('roomID'), sorted);
 		} else {
